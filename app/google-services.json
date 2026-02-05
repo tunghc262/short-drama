@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "65410611941",
+    "project_id": "test-ads-tung",
+    "storage_bucket": "test-ads-tung.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65410611941:android:45b4ebf73bb21b4d50720c",
+        "android_client_info": {
+          "package_name": "com.module.config"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-9G42TUxF7xr6wW7YwHjh02s72fC0zAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

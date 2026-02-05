@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_background"
+        tools:context=".views.activities.main.MainActivity">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/cl_movie_last"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_margin="@dimen/_12sdp"
+            android:background="#14171F"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/v_line_bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_banner_movie"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_start"
+                app:cardCornerRadius="@dimen/_4sdp"
+                app:cardElevation="0dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_banner_movie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_3sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_no_internet" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_pause"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_play_2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/_3sdp"
+                android:src="@drawable/ic_close_2" />
+
+            <TextView
+                android:id="@+id/tv_episode"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bg_cl_movie_last"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:paddingTop="@dimen/_2sdp"
+                android:text="EP.1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/v_line_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#35353B"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom_navigation"
+            app:layout_constraintEnd_toEndOf="@id/ll_bottom_navigation"
+            app:layout_constraintStart_toStartOf="@id/ll_bottom_navigation" />
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!--bottom nav home-->
+            <LinearLayout
+                android:id="@+id/ll_nav_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_main_home"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_home_selected" />
+
+                <TextView
+                    android:id="@+id/tv_main_home"
+                    style="@style/TextViewMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:text="@string/home"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+
+            <!--bottom nav for you-->
+            <LinearLayout
+                android:id="@+id/ll_nav_for_you"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_main_for_you"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_foryou" />
+
+                <TextView
+                    android:id="@+id/tv_main_for_you"
+                    style="@style/TextViewRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:text="@string/for_you"
+                    android:textColor="@color/color_65636B"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+
+            <!--bottom nav my list-->
+            <LinearLayout
+                android:id="@+id/ll_nav_my_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_main_my_list"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_my_list" />
+
+                <TextView
+                    android:id="@+id/tv_main_my_list"
+                    style="@style/TextViewRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:text="@string/my_list"
+                    android:textColor="@color/color_65636B"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+
+            <!--bottom nav profile-->
+            <LinearLayout
+                android:id="@+id/ll_nav_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_main_profile"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_profile" />
+
+                <TextView
+                    android:id="@+id/tv_main_profile"
+                    style="@style/TextViewRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:paddingHorizontal="@dimen/_2sdp"
+                    android:text="@string/profile"
+                    android:textColor="@color/color_65636B"
+                    android:textSize="@dimen/_11ssp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

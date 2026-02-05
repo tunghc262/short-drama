@@ -1,0 +1,12 @@
+package com.shortdrama.movie.app
+
+enum class AdPlaceName {
+    NATIVE_LANGUAGE,
+    NATIVE_LANGUAGE_DUP,
+    NATIVE_ONBOARD_1,
+    NATIVE_ONBOARD_3,
+    NATIVE_ONBOARD_FULLSCREEN_1,
+    NATIVE_ONBOARD_FULLSCREEN_2,
+
+    NATIVE_MAIN,
+}

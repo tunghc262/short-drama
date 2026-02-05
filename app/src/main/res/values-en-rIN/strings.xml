@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_ads_shown">Ads are about to be shown…</string>
+    <string name="text_language">Language</string>
+    <string name="text_ok">OK</string>
+    <string name="text_next">Next</string>
+    <string name="text_applying_language">Applying language…</string>
+    <string name="text_get_started">Get Started!</string>
+    <string name="text_save">Save</string>
+
+    <string name="title_on_boarding_1">Title On Board 1</string>
+    <string name="title_on_boarding_2">Title On Board 2</string>
+    <string name="title_on_boarding_3">Title On Board 3</string>
+    <string name="title_on_boarding_4">Title On Board 4</string>
+    <string name="content_on_boarding_1">Content On Board 1</string>
+    <string name="content_on_boarding_2">Content On Board 2</string>
+    <string name="content_on_boarding_3">Content On Board 3</string>
+    <string name="content_on_boarding_4">Content On Board 4</string>
+    <string name="text_continue">Continue</string>
+
+    <string name="text_feedback">Feedback</string>
+    <string name="text_send">Send</string>
+    <string name="text_feedback_content">Please rate of leave feedback to help us improve Application</string>
+
+    <string name="text_rate_us">Rate Us</string>
+    <string name="text_thank_you">Thank You</string>
+    <string name="text_rate_content">5 stars is the best we can get,\nSupport us to develop  app better!</string>
+    <string name="text_rate_now">Rate Now</string>
+
+    <string name="text_loading">Loading…</string>
+
+    <string name="exit_app_title">Leave App?</string>
+    <string name="exit_app_content">Are you sure you want to close this app</string>
+    <string name="text_exit">Exit</string>
+
+    <string name="text_no_internet_connection">No Internet Connection</string>
+    <string name="text_please_check_internet_connection">Please check internet connection!</string>
+    <string name="text_retry">Retry</string>
+    <string name="text_no_internet_content">Need to connect to the internet in order to work .Please connect and try again</string>
+</resources>

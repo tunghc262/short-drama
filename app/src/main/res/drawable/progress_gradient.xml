@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background của progress bar -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="@dimen/_24sdp" />
+            <solid android:color="#191919" /> <!-- Màu nền -->
+        </shape>
+    </item>
+
+    <!-- Phần tiến độ với gradient -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="@dimen/_24sdp" />
+                <gradient
+                    android:angle="0"
+                    android:centerColor="@color/color_center"
+                    android:endColor="@color/color_end"
+                    android:startColor="@color/color_start"
+                    android:type="linear" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

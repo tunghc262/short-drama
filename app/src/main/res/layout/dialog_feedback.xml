@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:padding="@dimen/_12sdp">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_close"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_close" />
+
+        <TextView
+            android:id="@+id/tv_feedback"
+            style="@style/TextViewBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_close"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="@string/text_feedback"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/TextViewRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_feedback"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="@string/text_feedback_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp" />
+
+        <EditText
+            android:id="@+id/edt_feedback"
+            style="@style/TextViewRegular"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_below="@id/tv_content"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:background="@drawable/bg_edit_text"
+            android:gravity="start|top"
+            android:hint="Enter content here..."
+            android:padding="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/color_black_50"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/btn_feedback"
+            style="@style/TextViewRegular"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_below="@id/edt_feedback"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:background="@drawable/bg_btn_fill_24"
+            android:gravity="center"
+            android:text="@string/text_send"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp" />
+
+    </RelativeLayout>
+</layout>
