@@ -18,10 +18,10 @@
             android:paddingBottom="@dimen/_25sdp">
 
             <com.shortdrama.movie.views.customs.NestedScrollableHost
-                android:layout_marginTop="@dimen/_10sdp"
                 android:id="@+id/nsh_banner_popular"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -53,7 +53,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_popular"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_12sdp"
@@ -76,21 +76,33 @@
                     android:text="@string/popular"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_13ssp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/btn_next_popular"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/ic_next_popular" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_popular_movie"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 android:layout_height="wrap_content"
-                app:spanCount="2"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_movie_popular"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_popular" />
+                app:layout_constraintTop_toBottomOf="@id/ll_popular"
+                app:spanCount="2"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_movie_popular" />
 
             <LinearLayout
                 android:id="@+id/ll_new_release"
@@ -122,16 +134,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_new_release"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_movie_new_release"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_new_release" />
+                app:layout_constraintTop_toBottomOf="@id/ll_new_release"
+                tools:listitem="@layout/item_movie_new_release" />
 
             <LinearLayout
                 android:id="@+id/ll_top_chart"
@@ -161,17 +172,16 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                app:spanCount="3"
                 android:id="@+id/rv_top_chart"
-                tools:listitem="@layout/item_movie_top_chart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:itemCount="2"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
+                android:clipToPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_top_chart" />
+                app:layout_constraintTop_toBottomOf="@id/ll_top_chart"
+                tools:listitem="@layout/item_movie_top_chart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

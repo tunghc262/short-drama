@@ -3,26 +3,29 @@ package com.shortdrama.movie.views.bases
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerView<VB : ViewDataBinding, T> :
-    RecyclerView.Adapter<BaseRecyclerView<VB, T>.ViewHolder>() {
+abstract class BaseRecyclerView<T> : RecyclerView.Adapter<BaseRecyclerView<T>.ViewHolder>() {
 
-    abstract fun inflateBinding(inflater: LayoutInflater): VB
+    abstract fun getItemLayout(): Int
     abstract fun submitData(newData: List<T>)
-    abstract fun setData(binding: VB, item: T, layoutPosition: Int)
-    open fun onClickViews(binding: VB, obj: T, layoutPosition: Int) {}
+    abstract fun setData(binding: ViewDataBinding, item: T, layoutPosition: Int)
+    open fun onResizeViews(binding: ViewDataBinding) {}
+    open fun onClickViews(binding: ViewDataBinding, obj: T, layoutPosition: Int) {}
 
-    private var _binding: VB? = null
-    protected val mBinding: VB get() = _binding!!
     val list: MutableList<T> = mutableListOf()
     var context: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        _binding = inflateBinding(LayoutInflater.from(parent.context))
-        return ViewHolder(mBinding)
+        return ViewHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                getItemLayout(), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,11 +40,17 @@ abstract class BaseRecyclerView<VB : ViewDataBinding, T> :
     }
 
 
-    inner class ViewHolder(var binding: VB) : BaseViewHolder<T>(binding) {
+    inner class ViewHolder(var binding: ViewDataBinding) : BaseViewHolder<T>(binding) {
 
         override fun bindData(obj: T) {
+            onResizeViews()
             onClickViews(obj)
+
             setData(binding, obj, layoutPosition)
+        }
+
+        override fun onResizeViews() {
+            onResizeViews(binding)
         }
 
         override fun onClickViews(obj: T) {

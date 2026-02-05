@@ -27,9 +27,11 @@ import com.shortdrama.movie.views.bases.ext.visibleView
 import com.shortdrama.movie.views.dialogs.ExitAppDialog
 import com.shortdrama.movie.views.dialogs.NotificationFullscreenPermissionDialog
 import com.shortdrama.movie.views.dialogs.NotificationPermissionDialog
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import kotlin.system.exitProcess
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var alarmManager: AlarmManager
 

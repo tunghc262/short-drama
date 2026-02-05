@@ -10,7 +10,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import kotlin.math.abs
 
 internal const val DISPLAY = 1080
 
@@ -139,4 +141,41 @@ fun TextView.removeUnderlines() {
 
 fun TextView.setTextColorById(idColor: Int) {
     setTextColor(ContextCompat.getColor(context, idColor))
+}
+
+
+fun RecyclerView.setHorizontalNestedScrollFix() {
+    this.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+        private var startX = 0f
+        private var startY = 0f
+        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+            when (e.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    startX = e.x
+                    startY = e.y
+                    rv.parent.requestDisallowInterceptTouchEvent(true)
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    val dx = abs(e.x - startX)
+                    val dy = abs(e.y - startY)
+
+                    if (dx > dy) {
+                        // Nếu vuốt ngang nhiều hơn vuốt dọc -> RecyclerView ngang chiếm quyền
+                        rv.parent.requestDisallowInterceptTouchEvent(true)
+                    } else {
+                        // Nếu vuốt dọc nhiều hơn -> Trả quyền cho NestedScrollView/ViewPager2 cha
+                        rv.parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    rv.parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+            return false
+        }
+        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+    })
 }

@@ -1,6 +1,5 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,13 +12,12 @@ import com.shortdrama.movie.databinding.ItemHomeTredingBannerBinding
 import com.shortdrama.movie.views.bases.BaseViewHolder
 
 class HomeTrendingBannerAdapter(
-    private val activity: Activity,
-    val onClickItem: (Int) -> Unit
+    val onClickItem: (TVSeriesUiModel) -> Unit
 ) : RecyclerView.Adapter<HomeTrendingBannerAdapter.DataViewHolder>() {
     private var mContext: Context? = null
-    private val listItems = arrayListOf<Int>()
+    private val listItems = arrayListOf<TVSeriesUiModel>()
 
-    fun submitData(listPhotoSlide: List<Int>) {
+    fun submitData(listPhotoSlide: List<TVSeriesUiModel>) {
         listItems.clear()
         listItems.addAll(listPhotoSlide)
         notifyDataSetChanged()
@@ -49,15 +47,13 @@ class HomeTrendingBannerAdapter(
     }
 
     inner class DataViewHolder(var binding: ItemHomeTredingBannerBinding) :
-        BaseViewHolder<Int>(binding) {
-        override fun bindData(obj: Int) {
-            mContext?.let {
-                Glide.with(it).load(obj).into(binding.ivBanner)
-                binding.root.setOnClickListener {
-                    onClickItem(obj)
-                }
+        BaseViewHolder<TVSeriesUiModel>(binding) {
+        override fun bindData(obj: TVSeriesUiModel) {
+            Glide.with(binding.imgPlay.context).load(obj.posterPath).into(binding.ivBanner)
+            binding.tvNameVideo.text = obj.originalName
+            binding.root.setOnClickListener {
+                onClickItem(obj)
             }
         }
     }
-
 }

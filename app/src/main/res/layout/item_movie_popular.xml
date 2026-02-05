@@ -102,7 +102,7 @@
                     android:backgroundTint="#2F2F2F"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_7sdp"
+                    android:paddingVertical="@dimen/_6sdp"
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <ImageView
@@ -131,7 +131,6 @@
             android:background="@drawable/bg_top_image"
             android:fontFamily="@font/poppins_bold"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:paddingVertical="@dimen/_2sdp"
             android:text="HOT"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"

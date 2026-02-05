@@ -81,13 +81,15 @@
             app:layout_constraintTop_toBottomOf="@id/ll_toolbar">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:id="@+id/rv_cate_home"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
         <androidx.viewpager2.widget.ViewPager2
+            android:layout_marginTop="@dimen/_5ssp"
             android:id="@+id/vp_home"
             android:layout_width="match_parent"
             android:layout_height="0dp"

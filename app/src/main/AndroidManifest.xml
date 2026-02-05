@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
@@ -23,41 +22,38 @@
         android:theme="@style/Theme.BaseTemplate"
         tools:replace="android:fullBackupContent"
         tools:targetApi="31">
-
+        <activity
+            android:name=".views.activities.play_movie.PlayMovieActivity"
+            android:exported="false" />
         <activity
             android:name=".views.activities.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.StatusWhite"></activity>
-
+            android:theme="@style/Theme.StatusWhite" />
         <activity
             android:name=".views.activities.language.LanguageActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.StatusWhite" />
-
         <activity
             android:name=".views.activities.language.LanguageDupActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.StatusWhite" />
-
         <activity
             android:name=".views.activities.language.LanguageSettingActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.StatusWhite" />
-
         <activity
             android:name=".views.activities.onboard.OnboardActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.StatusWhite" />
-
         <activity
             android:name=".views.activities.main.MainActivity"
-            android:hardwareAccelerated="true"
             android:exported="true"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.StatusWhite">
             <intent-filter>
@@ -66,12 +62,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".views.activities.premium.PremiumActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.StatusWhite" />
-
         <activity
             android:name=".views.activities.notification.NotificationFullscreenActivity"
             android:excludeFromRecents="true"
@@ -80,27 +74,21 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:theme="@style/TransparentActivityTheme"
-            android:turnScreenOn="true" />
-
-        <!-- RECEIVE -->
+            android:turnScreenOn="true" /> <!-- RECEIVE -->
         <receiver
             android:name=".notification.DailyWorkReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-
-        <!--SERVICE-->
+        </receiver> <!-- SERVICE -->
         <service
             android:name=".services.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!--PROVIDER-->
+        </service> <!-- PROVIDER -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -109,29 +97,22 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider>
-
-        <!--META DATA-->
+        </provider> <!-- META DATA -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/white" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/notification_channel_id" />
-
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="true" />
-
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="true" />
-
     </application>
 
 </manifest>

@@ -13,20 +13,19 @@ import com.shortdrama.movie.views.activities.main.fragments.home.fragments.HomeT
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.customs.ViewCommon
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
     private var tabHomeAdapter: TabHomeAdapter? = null;
     private var homeViewPager: HomeViewPager? = null
-
     override fun getLayoutFragment(): Int = R.layout.fragment_home
     override fun initViews() {
         super.initViews()
         setUpTabHome()
         setUpViewPager()
     }
-
     private fun setUpViewPager() {
         activity?.let { act ->
             homeViewPager = HomeViewPager(act)
@@ -52,10 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     position: Int,
                     positionOffset: Float,
                     positionOffsetPixels: Int
-                ) {
-
-                }
-
+                ) {}
                 override fun onPageScrollStateChanged(state: Int) {
                     when (state) {
                         ViewPager2.SCROLL_STATE_IDLE -> {}
@@ -66,7 +62,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             })
         }
     }
-
     override fun onClickViews() {
         super.onClickViews()
         activity?.let { act ->
@@ -90,7 +85,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 mBinding.vpHome.setCurrentItem(pos, false)
             })
             mBinding.rvCateHome.apply {
-                layoutManager = LinearLayoutManager(act, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = androidx.recyclerview.widget.GridLayoutManager(act, 4)
                 adapter = tabHomeAdapter
             }
             tabHomeAdapter?.submitData(listCate)

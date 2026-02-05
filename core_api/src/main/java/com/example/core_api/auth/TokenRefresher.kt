@@ -1,14 +1,12 @@
 package com.example.core_api.auth
 
-import com.module.ads.remote.FirebaseQuery
-
 class TokenRefresher(
     private val api: AuthenApi,
     private val store: TokenStore
 ) {
-
+    //FirebaseQuery.getKeyApiToken()
     suspend fun refresh(): String? {
-        val res = api.refreshToken(FirebaseQuery.getKeyApiToken())
+        val res = api.refreshToken("ffb24ad430fe9dd87c5d54547e57354d")
         if (res.status != "success") return null
 
         store.save(

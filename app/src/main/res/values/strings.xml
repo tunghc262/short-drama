@@ -90,4 +90,7 @@
     <string name="watch_full_drama">Watch Full Drama</string>
     <string name="episodes">Episodes</string>
     <string name="share">Share</string>
+    <string name="watch_full_movie">Watch Full Movie</string>
+    <string name="data_not_found">Data Not Found</string>
+    <string name="download">Download</string>
 </resources>

@@ -109,6 +109,8 @@ public class FirebaseQuery {
 
     public static final String NUMBER_OF_2FLOOR = "number_of_2floor";
 
+    public static final String NUMBER_LOCK_MOVIE = "number_lock_movie";
+
     public static final String KEY_API_TOKEN = "api_key_token";
     public static final String KEY_API = "api_key";
 
@@ -387,6 +389,9 @@ public class FirebaseQuery {
 
         long numberOf2Floor = firebaseRemoteConfig.getLong(NUMBER_OF_2FLOOR);
         setNumberOf2Floor(numberOf2Floor);
+
+        long numberLockMovie = firebaseRemoteConfig.getLong(NUMBER_LOCK_MOVIE);
+        setNumberLockMovie(numberLockMovie);
 
         String keyApiToken = firebaseRemoteConfig.getString(KEY_API_TOKEN);
         setKeyApiToken(keyApiToken);
@@ -929,6 +934,14 @@ public class FirebaseQuery {
 
     public static long getNumberOf2Floor() {
         return SharePreferUtils.getLong(NUMBER_OF_2FLOOR, 2);
+    }
+
+    public static void setNumberLockMovie(long timeScroll) {
+        SharePreferUtils.putLong(NUMBER_LOCK_MOVIE, timeScroll);
+    }
+
+    public static long getNumberLockMovie() {
+        return SharePreferUtils.getLong(NUMBER_LOCK_MOVIE, 5);
     }
 
     public static void setKeyApiToken(String keyApiToken) {

@@ -28,6 +28,8 @@ object AppConstants {
     const val TABLE_NAME_HISTORY_WATCH = "watch_history_movie"
     const val TABLE_NAME_MOVIE_FAVORITE = "favourite_movie_table"
     const val DATABASE_NAME = "short_drama"
+    const val OBJ_MOVIE = "OBJ_MOVIE"
+    const val CURRENT_EPISODE_MOVIE = "CURRENT_EPISODE_MOVIE"
 }
 
 

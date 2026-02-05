@@ -42,13 +42,4 @@ object AppModule {
     fun provideMovieFavorite(appDatabase: AppDatabase): MovieFavoriteDao {
         return appDatabase.movieFavoriteDao
     }
-
-    @Provides
-    @Singleton
-    fun provideRetrofitClient(context: Context, baseUrl: String): Retrofit =
-        RetrofitClient.getClient(context, baseUrl)
-
-    @Provides
-    @Singleton
-    fun providerApiService(retrofit: Retrofit): ApiServer = retrofit.create(ApiServer::class.java)
 }
