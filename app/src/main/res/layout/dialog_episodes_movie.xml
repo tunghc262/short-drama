@@ -7,108 +7,114 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_bottom_sheet"
+        android:orientation="vertical"
         android:paddingHorizontal="@dimen/_10sdp">
 
-        <View
-            android:id="@+id/iv_line_top_dialog"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@drawable/bg_btn_fill_24"
-            android:backgroundTint="#4C4C4C"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_banner_movie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:cardCornerRadius="@dimen/_5sdp"
-            app:cardElevation="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_line_top_dialog">
+            <View
+                android:id="@+id/iv_line_top_dialog"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/bg_btn_fill_24"
+                android:backgroundTint="#4C4C4C"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_banner_movie"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_70sdp"
-                android:scaleType="centerCrop" />
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/tv_movie_name"
-            style="@style/TextViewMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="LAPD! Open your heart"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintBottom_toTopOf="@id/rv_genre"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
-            app:layout_constraintTop_toTopOf="@id/cv_banner_movie" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_genre"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:background="#1F1F1F"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
-            app:layout_constraintTop_toBottomOf="@id/tv_movie_name"
-            tools:listitem="@layout/item_genre_episodes" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@id/cv_banner_movie"
-            app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
-            app:layout_constraintTop_toBottomOf="@id/rv_genre">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_views"
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/icon_view"
-                app:layout_constraintBottom_toBottomOf="@id/cv_banner_movie"
-                app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
-                app:layout_constraintTop_toBottomOf="@id/rv_genre" />
-
-            <TextView
-                android:id="@+id/tv_views"
-                style="@style/TextViewMedium"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_banner_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_2sdp"
-                android:gravity="center_vertical"
-                android:text="33.8k"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_line_top_dialog">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_banner_movie"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:scaleType="centerCrop" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_movie_name"
+                style="@style/TextViewMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="LAPD! Open your heart"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_views"
-                app:layout_constraintTop_toTopOf="@id/iv_views" />
-        </LinearLayout>
+                app:layout_constraintBottom_toTopOf="@id/rv_genre"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
+                app:layout_constraintTop_toTopOf="@id/cv_banner_movie" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_genre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="#1F1F1F"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_name"
+                tools:listitem="@layout/item_genre_episodes" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/cv_banner_movie"
+                app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
+                app:layout_constraintTop_toBottomOf="@id/rv_genre">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_views"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/icon_view"
+                    app:layout_constraintBottom_toBottomOf="@id/cv_banner_movie"
+                    app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
+                    app:layout_constraintTop_toBottomOf="@id/rv_genre" />
+
+                <TextView
+                    android:id="@+id/tv_views"
+                    style="@style/TextViewMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:gravity="center_vertical"
+                    android:text="33.8k"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_views"
+                    app:layout_constraintTop_toTopOf="@id/iv_views" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -132,12 +138,11 @@
 
                     <TextView
                         android:id="@+id/tv_summary"
-                        style="@style/TextViewRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
+                        android:fontFamily="@font/poppins_regular"
                         android:text="@string/summary"
-                        android:textColor="@color/white"
+                        android:textColor="@color/white_60"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -150,6 +155,7 @@
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/bg_btn_fill_24"
                         android:backgroundTint="@color/white"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@id/tv_title"
                         app:layout_constraintStart_toStartOf="@id/tv_title"
                         app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -167,9 +173,9 @@
                         android:id="@+id/tv_episodes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
+                        android:fontFamily="@font/poppins_bold"
                         android:text="@string/episodes"
-                        android:textColor="@color/white_60"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -182,7 +188,7 @@
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/bg_btn_fill_24"
                         android:backgroundTint="@color/white"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@id/tv_title"
                         app:layout_constraintStart_toStartOf="@id/tv_title"
                         app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -192,14 +198,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_episode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_280sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="true"
+                android:paddingBottom="@dimen/_10sdp"
+                android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="5"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_container_episode"
-                android:paddingBottom="@dimen/_200sdp"
-                android:visibility="visible" />
+                tools:listitem="@layout/item_container_episode" />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/ns_summary_hand"
@@ -263,5 +270,7 @@
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
 </layout>

@@ -4,10 +4,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -20,8 +22,10 @@ import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.remote.FirebaseQuery
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
+import com.shortdrama.movie.data.entity.HistoryWatchEntity
 import com.shortdrama.movie.databinding.ActivityPlayMovieBinding
 import com.shortdrama.movie.utils.SharePrefUtils
+import com.shortdrama.movie.utils.ShareUtils
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.GenreMovieAdapter
 import com.shortdrama.movie.views.bases.BaseActivity
 import com.shortdrama.movie.views.bases.ext.goneView
@@ -29,6 +33,9 @@ import com.shortdrama.movie.views.bases.ext.isNetwork
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.showToastByString
 import com.shortdrama.movie.views.bases.ext.visibleView
+import com.shortdrama.movie.views.dialogs.EpisodesMovieDialog
+import com.shortdrama.movie.views.dialogs.PlaySpeedMovieDialog
+import com.shortdrama.movie.views.dialogs.ResolutionMovieDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,12 +47,12 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private var movieModel: TVSeriesUiModel? = null
     private var episodesList: List<EpisodeModel> = listOf()
     private var currentEpisodeIndex: Int = 0
-
+    private var currentEpisode: EpisodeModel? = null
+    private var currentResolutionIndex: Int = 0
     private var player: ExoPlayer? = null
     private lateinit var trackSelector: DefaultTrackSelector
     private val handler = Handler(Looper.getMainLooper())
     private var updateSeekBar: Runnable? = null
-
     private var genreMovieAdapter: GenreMovieAdapter? = null
 
     // History & State
@@ -53,6 +60,11 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private var watchTime = 0L
     private var isSavedHistory = false
     private var speedId: Int = 2 // Default 1x
+    private val hideHandler = Handler(Looper.getMainLooper())
+    private var isControlsVisible = true
+    private val hideControlsRunnable = Runnable {
+        hideAllControls()
+    }
 
     override fun getLayoutActivity(): Int = R.layout.activity_play_movie
 
@@ -86,6 +98,115 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     override fun onClickViews() {
         super.onClickViews()
         mBinding.ivBack.onClickAlpha { finish() }
+
+        mBinding.playerMovie.onClickAlpha {
+            player?.let {
+                if (it.isPlaying) {
+                    if (isControlsVisible) {
+                        it.pause()
+                        hideHandler.removeCallbacks(hideControlsRunnable)
+                    } else {
+                        showAllControls()
+                    }
+                } else {
+                    it.play()
+                }
+            }
+        }
+
+        mBinding.tvSpeed.onClickAlpha {
+            PlaySpeedMovieDialog(this, speedId) { speedModel ->
+                speedId = speedModel.id
+                player?.playbackParameters = PlaybackParameters(speedModel.speed)
+                mBinding.tvSpeed.text = speedModel.nameSpeed
+            }.show()
+        }
+
+        mBinding.sbVideo.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+
+                override fun onProgressChanged(
+                    seekBar: SeekBar,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        seekBar.parent.requestDisallowInterceptTouchEvent(true)
+                        seekBar.invalidate()
+                        val duration = player?.duration ?: return
+                        val seekTo = duration * progress / 1000
+                        player?.seekTo(seekTo)
+                        mBinding.ivPlayPause.goneView()
+                        startHideTimer()
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {
+                    hideHandler.removeCallbacks(hideControlsRunnable)
+                    player?.pause()
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    player?.play()
+                    startHideTimer()
+                }
+            }
+        )
+
+        mBinding.tvQuality.onClickAlpha {
+            ResolutionMovieDialog(
+                this@PlayMovieActivity,
+                currentResolutionIndex
+            ) { resolutionMovieModel ->
+                currentResolutionIndex = resolutionMovieModel.id
+                mBinding.tvQuality.text = resolutionMovieModel.title
+                applyResolution(resolutionMovieModel.id)
+            }.show()
+        }
+        mBinding.llButtonFavourite.onClickAlpha {
+            movieModel?.let { obj ->
+                currentEpisode?.let { currentEpisode ->
+                    val watchHistoryEntity = HistoryWatchEntity(
+                        id = obj.id,
+                        name = obj.name,
+                        originalName = obj.originalName,
+                        overview = obj.overview,
+                        numberOfSeasons = obj.numberOfSeasons,
+                        numberOfEpisodes = obj.numberOfEpisodes,
+                        posterPath = obj.posterPath,
+                        genres = obj.genres,
+                        episodeCurrentId = currentEpisode.id,
+                        episodeCurrentNo = currentEpisode.episodeNumber,
+                        timestamp = System.currentTimeMillis()
+                    )
+                }
+//                movieViewModel.addWatchMovie(watchHistoryEntity)
+            }
+        }
+        mBinding.llButtonEpisodes.onClickAlpha {
+            movieModel?.let {
+                EpisodesMovieDialog(
+                    this@PlayMovieActivity,
+                    listEpisodes = episodesList,
+                    tvSeriesUiModel = it,
+                    onClickItemEpisode = { episodeIndex ->
+                        currentEpisodeIndex = episodeIndex
+                        currentEpisode = episodesList[episodeIndex]
+                        playEpisode(currentEpisodeIndex)
+                    },
+                    numberLockMovie = FirebaseQuery.getNumberLockMovie().toInt(),
+                    currentEpisodeIndex = currentEpisodeIndex
+                ).show()
+            }
+        }
+        mBinding.llButtonShareMovie.onClickAlpha {
+            ShareUtils.shareApp(this)
+        }
+
+        mBinding.llButtonDownloadMovie.onClickAlpha {
+            showToastByString("Download success")
+        }
+
     }
 
     override fun observerData() {
@@ -94,12 +215,15 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                 response?.episodes?.let { list ->
                     episodesList = list
                     val startEpisodeId = intent.getIntExtra(AppConstants.CURRENT_EPISODE_MOVIE, -1)
-                    currentEpisodeIndex = list.indexOfFirst { it.id == startEpisodeId }.coerceAtLeast(0)
+                    currentEpisodeIndex =
+                        list.indexOfFirst { it.id == startEpisodeId }.coerceAtLeast(0)
+                    currentEpisode = list[currentEpisodeIndex]
                     playEpisode(currentEpisodeIndex)
                 }
             }
         }
     }
+
     private fun setupPlayer() {
         player = ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
@@ -126,6 +250,14 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             mBinding.ivPlayPause.visibility = if (isPlaying) View.GONE else View.VISIBLE
+            if (isPlaying) {
+                // Khi video bắt đầu phát, đợi 2s rồi ẩn controls
+                startHideTimer()
+            } else {
+                // Khi video dừng (Pause), hiện controls lên và không tự ẩn
+                hideHandler.removeCallbacks(hideControlsRunnable)
+                showAllControls()
+            }
         }
 
         override fun onPlayerError(error: PlaybackException) {
@@ -210,6 +342,47 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         trackSelector.setParameters(builder.build())
     }
 
+    private fun showAllControls() {
+        if (isControlsVisible) return
+        isControlsVisible = true
+        val views = listOf(
+            mBinding.llToolbar,
+            mBinding.llGroupButton1,
+            mBinding.clInfo,
+            mBinding.sbVideo,
+            mBinding.tvSpeed,
+            mBinding.tvQuality
+        )
+        views.forEach { view ->
+            view.visibility = View.VISIBLE
+            view.animate().alpha(1f).setDuration(300).start()
+        }
+        startHideTimer()
+    }
+
+    private fun hideAllControls() {
+        if (player?.isPlaying == false) return
+        isControlsVisible = false
+        val views = listOf(
+            mBinding.llToolbar,
+            mBinding.llGroupButton1,
+            mBinding.clInfo,
+            mBinding.sbVideo,
+            mBinding.tvSpeed,
+            mBinding.tvQuality
+        )
+        views.forEach { view ->
+            view.animate().alpha(0f).setDuration(300).withEndAction {
+                view.visibility = View.GONE
+            }.start()
+        }
+    }
+
+    private fun startHideTimer() {
+        hideHandler.removeCallbacks(hideControlsRunnable)
+        hideHandler.postDelayed(hideControlsRunnable, 3000)
+    }
+
     override fun onPause() {
         super.onPause()
         player?.pause()
@@ -218,6 +391,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         updateSeekBar?.let { handler.removeCallbacks(it) }
+        hideHandler.removeCallbacks(hideControlsRunnable)
         player?.release()
         player = null
     }

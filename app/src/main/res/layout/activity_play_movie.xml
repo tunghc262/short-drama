@@ -14,39 +14,6 @@
         android:background="@color/color_background"
         tools:context=".views.activities.play_movie.PlayMovieActivity">
 
-        <LinearLayout
-            android:id="@+id/ll_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_back"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:rotation="180"
-                android:src="@drawable/ic_arrow_right" />
-
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/TextViewSemiBold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_30sdp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="EP.1 - married a pris..."
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_empty"
@@ -55,7 +22,7 @@
             android:layout_marginBottom="@dimen/_70sdp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,18 +42,16 @@
                 android:textColor="@color/color_65636B"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_toolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.media3.ui.PlayerView
                 android:id="@+id/player_movie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -246,6 +211,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -374,5 +340,38 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:rotation="180"
+                android:src="@drawable/ic_arrow_right" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/TextViewSemiBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="EP.1 - married a pris..."
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

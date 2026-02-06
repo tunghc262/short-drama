@@ -63,6 +63,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
             mBinding.rvNewRelease.setHorizontalNestedScrollFix()
 
             movieTopChartAdapter = MovieTopChartAdapter(act, onClickItem = { obj ->
+                goToWatchMovie(obj)
             })
 
             val layoutManager = GridLayoutManager(act, 2, GridLayoutManager.HORIZONTAL, false)
@@ -143,6 +144,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
             }
         }
     }
+
     private fun goToWatchMovie(movie: TVSeriesUiModel) {
         activity?.let { act ->
             val intent = Intent(act, PlayMovieActivity::class.java)

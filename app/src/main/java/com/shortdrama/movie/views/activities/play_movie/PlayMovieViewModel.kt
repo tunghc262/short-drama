@@ -16,11 +16,9 @@ import kotlinx.coroutines.launch
 class PlayMovieViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
-
     // list episodes
     private val _listEpisodes = MutableStateFlow<TVSeriesEpisodeUiModel?>(null)
     val listEpisodes: StateFlow<TVSeriesEpisodeUiModel?> = _listEpisodes.asStateFlow()
-
     //get episodes by series_id
     fun loadEpisodes(id: Int, numberSeason: Int) {
         Log.e("TAG_EPISODE_API", "loadEpisodes: 1")

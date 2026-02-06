@@ -2,6 +2,8 @@ package com.shortdrama.movie.utils
 
 import android.content.Context
 import com.shortdrama.movie.R
+import com.shortdrama.movie.data.models.PlayMovieSpeedModel
+import com.shortdrama.movie.data.models.ResolutionMovieModel
 import com.shortdrama.movie.notification.NotificationData
 
 object DataUtils {
@@ -104,4 +106,22 @@ object DataUtils {
             )
         )
     }
+
+    val listPlaySpeedMovie = listOf(
+        PlayMovieSpeedModel(0, "0.5x", 0.5f),
+        PlayMovieSpeedModel(1, "0.75x", 0.75f),
+        PlayMovieSpeedModel(2, "1x", 1f),
+        PlayMovieSpeedModel(3, "1.25x", 1.25f),
+        PlayMovieSpeedModel(4, "1.5x", 1.5f),
+        PlayMovieSpeedModel(5, "1.75x", 1.75f),
+        PlayMovieSpeedModel(6, "2x", 2f),
+        PlayMovieSpeedModel(7, "3x", 3f)
+    )
+
+    val listResolution = listOf(
+        ResolutionMovieModel(0, "Auto (Recommend)", "Adjust to optimize your experience"),
+        ResolutionMovieModel(1, "1080P", "High resolution"),
+        ResolutionMovieModel(2, "720P", "Medium resolution"),
+        ResolutionMovieModel(3, "480P", "Low resolution"),
+    )
 }

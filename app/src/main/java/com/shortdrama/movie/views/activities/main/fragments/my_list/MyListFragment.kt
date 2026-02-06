@@ -9,7 +9,10 @@ import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.FragmentHomeBinding
 import com.shortdrama.movie.databinding.FragmentMyListBinding
 import com.shortdrama.movie.views.bases.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MyListFragment : BaseFragment<FragmentMyListBinding>() {
     override fun getLayoutFragment(): Int = R.layout.fragment_my_list
     override fun initViews() {
