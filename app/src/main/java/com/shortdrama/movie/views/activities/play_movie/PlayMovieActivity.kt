@@ -6,11 +6,14 @@ import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
@@ -23,10 +26,13 @@ import com.module.ads.remote.FirebaseQuery
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.data.entity.HistoryWatchEntity
+import com.shortdrama.movie.data.entity.MovieFavoriteEntity
 import com.shortdrama.movie.databinding.ActivityPlayMovieBinding
 import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.utils.ShareUtils
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.GenreMovieAdapter
+import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.FavoriteViewModel
+import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.HistoryViewModel
 import com.shortdrama.movie.views.bases.BaseActivity
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.isNetwork
@@ -35,15 +41,19 @@ import com.shortdrama.movie.views.bases.ext.showToastByString
 import com.shortdrama.movie.views.bases.ext.visibleView
 import com.shortdrama.movie.views.dialogs.EpisodesMovieDialog
 import com.shortdrama.movie.views.dialogs.PlaySpeedMovieDialog
+import com.shortdrama.movie.views.dialogs.RemoveFavouriteDialog
 import com.shortdrama.movie.views.dialogs.ResolutionMovieDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@UnstableApi
 @AndroidEntryPoint
 class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
     private val viewModel: PlayMovieViewModel by viewModels()
+    private val favouriteViewModel: FavoriteViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
     private var movieModel: TVSeriesUiModel? = null
     private var episodesList: List<EpisodeModel> = listOf()
     private var currentEpisodeIndex: Int = 0
@@ -166,7 +176,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         mBinding.llButtonFavourite.onClickAlpha {
             movieModel?.let { obj ->
                 currentEpisode?.let { currentEpisode ->
-                    val watchHistoryEntity = HistoryWatchEntity(
+                    val favouriteMovieEntity = MovieFavoriteEntity(
                         id = obj.id,
                         name = obj.name,
                         originalName = obj.originalName,
@@ -174,13 +184,20 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                         numberOfSeasons = obj.numberOfSeasons,
                         numberOfEpisodes = obj.numberOfEpisodes,
                         posterPath = obj.posterPath,
-                        genres = obj.genres,
-                        episodeCurrentId = currentEpisode.id,
-                        episodeCurrentNo = currentEpisode.episodeNumber,
-                        timestamp = System.currentTimeMillis()
+                        genres = obj.genres
                     )
+                    if (SharePrefUtils.getBoolean(obj.id.toString(), false)) {
+                        mBinding.ivFavourite.setImageResource(R.drawable.ic_mark_selected)
+                        SharePrefUtils.putBoolean(obj.id.toString(), false)
+                        favouriteViewModel.addToFavourite(favouriteMovieEntity)
+                    } else {
+                        RemoveFavouriteDialog(this) {
+                            mBinding.ivFavourite.setImageResource(R.drawable.ic_mark)
+                            SharePrefUtils.putBoolean(obj.id.toString(), true)
+                            favouriteViewModel.removeFromFavourite(favouriteMovieEntity.id)
+                        }.show()
+                    }
                 }
-//                movieViewModel.addWatchMovie(watchHistoryEntity)
             }
         }
         mBinding.llButtonEpisodes.onClickAlpha {
@@ -211,14 +228,17 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
     override fun observerData() {
         lifecycleScope.launch {
-            viewModel.listEpisodes.collectLatest { response ->
-                response?.episodes?.let { list ->
-                    episodesList = list
-                    val startEpisodeId = intent.getIntExtra(AppConstants.CURRENT_EPISODE_MOVIE, -1)
-                    currentEpisodeIndex =
-                        list.indexOfFirst { it.id == startEpisodeId }.coerceAtLeast(0)
-                    currentEpisode = list[currentEpisodeIndex]
-                    playEpisode(currentEpisodeIndex)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.listEpisodes.collectLatest { response ->
+                    response?.episodes?.let { list ->
+                        episodesList = list
+                        val startEpisodeId =
+                            intent.getIntExtra(AppConstants.CURRENT_EPISODE_MOVIE, -1)
+                        currentEpisodeIndex =
+                            list.indexOfFirst { it.id == startEpisodeId }.coerceAtLeast(0)
+                        currentEpisode = list[currentEpisodeIndex]
+                        playEpisode(currentEpisodeIndex)
+                    }
                 }
             }
         }
@@ -321,7 +341,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                             lastPosition = position
                         }
                         if (!isSavedHistory && watchTime >= 10_000L) {
-//                            saveToHistory()
+                            saveToHistory()
                         }
                     }
                 }
@@ -329,6 +349,27 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
             }
         }
         handler.post(updateSeekBar!!)
+    }
+
+    private fun saveToHistory() {
+        isSavedHistory = true
+        movieModel?.let {
+            val currentEp = episodesList[currentEpisodeIndex]
+            val history = HistoryWatchEntity(
+                it.id,
+                it.name,
+                it.originalName,
+                it.overview,
+                it.numberOfSeasons,
+                it.numberOfEpisodes,
+                it.posterPath,
+                it.genres,
+                currentEp.id,
+                currentEp.episodeNumber,
+                System.currentTimeMillis()
+            )
+            historyViewModel.addToWatchHistory(history)
+        }
     }
 
     private fun applyResolution(id: Int) {

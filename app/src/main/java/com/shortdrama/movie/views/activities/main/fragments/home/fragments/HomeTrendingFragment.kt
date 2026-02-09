@@ -2,10 +2,12 @@ package com.shortdrama.movie.views.activities.main.fragments.home.fragments
 
 import android.content.Intent
 import android.util.Log
+import androidx.annotation.OptIn
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.core_api.model.ui.TVSeriesUiModel
 import com.shortdrama.movie.R
@@ -145,6 +147,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
         }
     }
 
+    @OptIn(UnstableApi::class)
     private fun goToWatchMovie(movie: TVSeriesUiModel) {
         activity?.let { act ->
             val intent = Intent(act, PlayMovieActivity::class.java)
