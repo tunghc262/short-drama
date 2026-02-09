@@ -12,7 +12,7 @@ import com.example.core_api.model.ui.TVSeriesUiModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHistotyBinding
-import com.shortdrama.movie.views.activities.main.fragments.home.adapter.MovieNewReleaseAdapter
+import com.shortdrama.movie.views.activities.main.fragments.my_list.adapter.HistoryMovieAdapter
 import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.HistoryViewModel
 import com.shortdrama.movie.views.activities.play_movie.PlayMovieActivity
 import com.shortdrama.movie.views.bases.BaseFragment
@@ -24,16 +24,27 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
     private val viewModel: HistoryViewModel by activityViewModels()
-    private var historyAdapter: MovieNewReleaseAdapter? = null
+    private var historyAdapter: HistoryMovieAdapter? = null
     override fun getLayoutFragment(): Int = R.layout.fragment_histoty
 
     @OptIn(UnstableApi::class)
     override fun initViews() {
         super.initViews()
-        historyAdapter = MovieNewReleaseAdapter { movie ->
+        historyAdapter = HistoryMovieAdapter { obj ->
             activity?.let { act ->
+                val movies = TVSeriesUiModel(
+                    id = obj.id,
+                    name = obj.name,
+                    originalName = obj.originalName,
+                    overview = obj.overview,
+                    numberOfSeasons = obj.numberOfSeasons,
+                    numberOfEpisodes = obj.numberOfEpisodes,
+                    posterPath = obj.posterPath,
+                    genres = obj.genres
+                )
                 val intent = Intent(act, PlayMovieActivity::class.java)
-                intent.putExtra(AppConstants.OBJ_MOVIE, movie)
+                intent.putExtra(AppConstants.OBJ_MOVIE, movies)
+                intent.putExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, obj.episodeCurrentId)
                 startActivity(intent)
             }
         }
@@ -53,19 +64,7 @@ class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
                     if (list.isNotEmpty()) {
                         mBinding.rvMyHistory.visibleView()
                         mBinding.llEmpty.goneView()
-                        val movies = list.map {
-                            TVSeriesUiModel(
-                                id = it.id,
-                                name = it.name,
-                                originalName = it.originalName,
-                                overview = it.overview,
-                                numberOfSeasons = it.numberOfSeasons,
-                                numberOfEpisodes = it.numberOfEpisodes,
-                                posterPath = it.posterPath,
-                                genres = it.genres
-                            )
-                        }
-                        historyAdapter?.submitData(movies)
+                        historyAdapter?.submitData(list)
                     } else {
                         mBinding.rvMyHistory.goneView()
                         mBinding.llEmpty.visibleView()

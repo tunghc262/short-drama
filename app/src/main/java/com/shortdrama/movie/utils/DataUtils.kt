@@ -5,6 +5,7 @@ import com.shortdrama.movie.R
 import com.shortdrama.movie.data.models.PlayMovieSpeedModel
 import com.shortdrama.movie.data.models.ResolutionMovieModel
 import com.shortdrama.movie.notification.NotificationData
+import java.util.concurrent.ThreadLocalRandom
 
 object DataUtils {
     fun getNotificationLockCountry(context: Context): List<NotificationData> {
@@ -124,4 +125,17 @@ object DataUtils {
         ResolutionMovieModel(2, "720P", "Medium resolution"),
         ResolutionMovieModel(3, "480P", "Low resolution"),
     )
+
+    fun randomFutureDate(): Long {
+        val now = System.currentTimeMillis() + (24L * 60 * 60 * 1000)
+        val twoWeeksLater = now + (14L * 24 * 60 * 60 * 1000)
+        return ThreadLocalRandom.current().nextLong(now, twoWeeksLater + 1)
+    }
+
+    fun generateComingSoonDates(count: Int): List<Long> {
+        val now = System.currentTimeMillis() + (24L * 60 * 60 * 1000)
+        val daysInMillis = (0 until 14).map { now + it * 24L * 60 * 60 * 1000 }
+        val shuffledDays = daysInMillis.shuffled()
+        return shuffledDays.take(count.coerceAtMost(shuffledDays.size))
+    }
 }

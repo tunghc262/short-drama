@@ -152,6 +152,8 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:1.15.2"
     // work manager
     implementation("androidx.work:work-runtime-ktx:2.11.0")
+    //flex box
+    implementation "com.google.android.flexbox:flexbox:3.0.0"
 
     // Firebase messaging
     implementation("com.google.firebase:firebase-messaging")

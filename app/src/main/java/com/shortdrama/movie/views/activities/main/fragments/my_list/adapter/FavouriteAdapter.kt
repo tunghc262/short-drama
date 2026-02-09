@@ -48,7 +48,7 @@ class FavouriteAdapter(
 
     override fun onClickViews(binding: ViewDataBinding, obj: TVSeriesUiModel, layoutPosition: Int) {
         super.onClickViews(binding, obj, layoutPosition)
-        if (binding is ItemMovieTopChartBinding) {
+        if (binding is ItemMovieFavoriteBinding) {
             binding.root.setOnClickListener {
                 onClickItem(obj)
             }

@@ -37,6 +37,7 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>() {
                 adapter = homePagerAdapter
                 offscreenPageLimit = 1
                 isUserInputEnabled = false
+                animation = null
             }
             mBinding.vpMainForYou.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {

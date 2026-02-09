@@ -58,6 +58,8 @@ data class TVSeriesUiModel(
 
     val genres: List<GenreTVSeriesModel>? = emptyList(),
 
-    val videos: List<VideoListTVSeriesModel>? = emptyList()
+    val videos: List<VideoListTVSeriesModel>? = emptyList(),
+
+    val dateComingSoon: Long? = 0L
 
 ) : Parcelable

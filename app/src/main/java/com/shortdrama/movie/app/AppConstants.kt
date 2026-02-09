@@ -29,7 +29,7 @@ object AppConstants {
     const val TABLE_NAME_MOVIE_FAVORITE = "favourite_movie_table"
     const val DATABASE_NAME = "short_drama"
     const val OBJ_MOVIE = "OBJ_MOVIE"
-    const val CURRENT_EPISODE_MOVIE = "CURRENT_EPISODE_MOVIE"
+    const val CURRENT_EPISODE_MOVIE_ID = "CURRENT_EPISODE_MOVIE_ID"
 }
 
 

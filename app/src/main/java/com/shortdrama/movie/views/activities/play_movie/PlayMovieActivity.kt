@@ -175,28 +175,26 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         }
         mBinding.llButtonFavourite.onClickAlpha {
             movieModel?.let { obj ->
-                currentEpisode?.let { currentEpisode ->
-                    val favouriteMovieEntity = MovieFavoriteEntity(
-                        id = obj.id,
-                        name = obj.name,
-                        originalName = obj.originalName,
-                        overview = obj.overview,
-                        numberOfSeasons = obj.numberOfSeasons,
-                        numberOfEpisodes = obj.numberOfEpisodes,
-                        posterPath = obj.posterPath,
-                        genres = obj.genres
-                    )
-                    if (SharePrefUtils.getBoolean(obj.id.toString(), false)) {
-                        mBinding.ivFavourite.setImageResource(R.drawable.ic_mark_selected)
+                val favouriteMovieEntity = MovieFavoriteEntity(
+                    id = obj.id,
+                    name = obj.name,
+                    originalName = obj.originalName,
+                    overview = obj.overview,
+                    numberOfSeasons = obj.numberOfSeasons,
+                    numberOfEpisodes = obj.numberOfEpisodes,
+                    posterPath = obj.posterPath,
+                    genres = obj.genres
+                )
+                if (SharePrefUtils.getBoolean(obj.id.toString(), false)) {
+                    RemoveFavouriteDialog(this) {
+                        mBinding.ivFavourite.setImageResource(R.drawable.ic_mark)
                         SharePrefUtils.putBoolean(obj.id.toString(), false)
-                        favouriteViewModel.addToFavourite(favouriteMovieEntity)
-                    } else {
-                        RemoveFavouriteDialog(this) {
-                            mBinding.ivFavourite.setImageResource(R.drawable.ic_mark)
-                            SharePrefUtils.putBoolean(obj.id.toString(), true)
-                            favouriteViewModel.removeFromFavourite(favouriteMovieEntity.id)
-                        }.show()
-                    }
+                        favouriteViewModel.removeFromFavourite(favouriteMovieEntity.id)
+                    }.show()
+                } else {
+                    mBinding.ivFavourite.setImageResource(R.drawable.ic_mark_selected)
+                    SharePrefUtils.putBoolean(obj.id.toString(), true)
+                    favouriteViewModel.addToFavourite(favouriteMovieEntity)
                 }
             }
         }
@@ -233,7 +231,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                     response?.episodes?.let { list ->
                         episodesList = list
                         val startEpisodeId =
-                            intent.getIntExtra(AppConstants.CURRENT_EPISODE_MOVIE, -1)
+                            intent.getIntExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, -1)
                         currentEpisodeIndex =
                             list.indexOfFirst { it.id == startEpisodeId }.coerceAtLeast(0)
                         currentEpisode = list[currentEpisodeIndex]
@@ -354,6 +352,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private fun saveToHistory() {
         isSavedHistory = true
         movieModel?.let {
+            Log.e("MOVIE", "saveToHistory: ${it.name}")
             val currentEp = episodesList[currentEpisodeIndex]
             val history = HistoryWatchEntity(
                 it.id,

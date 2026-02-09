@@ -200,6 +200,98 @@ public class NativeUtils {
         }
     }
 
+    public static void populateNativeAdView2(NativeAd nativeAd, NativeAdView adView) {
+        try {
+            adView.setMediaView(adView.findViewById(R.id.ad_media));
+            adView.setHeadlineView(adView.findViewById(R.id.ad_headline));
+            adView.setBodyView(adView.findViewById(R.id.ad_body));
+            adView.setCallToActionView(adView.findViewById(R.id.ad_call_to_action));
+            adView.setIconView(adView.findViewById(R.id.ad_app_icon));
+            adView.setPriceView(adView.findViewById(R.id.ad_price));
+            adView.setStarRatingView(adView.findViewById(R.id.ad_stars));
+            adView.setStoreView(adView.findViewById(R.id.ad_store));
+            adView.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
+
+            if (adView.getHeadlineView() != null) {
+                ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
+            }
+            if (adView.getMediaView() != null) {
+                adView.getMediaView().setMediaContent(nativeAd.getMediaContent());
+            }
+
+            if (adView.getBodyView() != null) {
+                if (nativeAd.getBody() == null) {
+                    adView.getBodyView().setVisibility(View.INVISIBLE);
+                } else {
+                    adView.getBodyView().setVisibility(View.VISIBLE);
+                    ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
+                }
+            }
+
+            if (adView.getIconView() != null) {
+                if (nativeAd.getIcon() == null) {
+                    adView.getIconView().setVisibility(View.GONE);
+                } else {
+                    ((ImageView) adView.getIconView()).setImageDrawable(nativeAd.getIcon().getDrawable());
+                    adView.getIconView().setVisibility(View.VISIBLE);
+                }
+            }
+
+            if (adView.getPriceView() != null) {
+                if (nativeAd.getPrice() == null) {
+                    adView.getPriceView().setVisibility(View.INVISIBLE);
+                } else {
+                    adView.getPriceView().setVisibility(View.VISIBLE);
+                    ((TextView) adView.getPriceView()).setText(nativeAd.getPrice());
+                }
+            }
+
+            if (adView.getStoreView() != null) {
+                if (nativeAd.getStore() == null) {
+                    adView.getStoreView().setVisibility(View.INVISIBLE);
+                } else {
+                    adView.getStoreView().setVisibility(View.VISIBLE);
+                    ((TextView) adView.getStoreView()).setText(nativeAd.getStore());
+                }
+            }
+
+            if (adView.getStarRatingView() != null) {
+                if (nativeAd.getStarRating() == null) {
+                    adView.getStarRatingView().setVisibility(View.INVISIBLE);
+                } else {
+                    ((RatingBar) adView.getStarRatingView()).setRating(nativeAd.getStarRating().floatValue());
+                    adView.getStarRatingView().setVisibility(View.VISIBLE);
+                }
+            }
+
+            if (adView.getAdvertiserView() != null) {
+                if (nativeAd.getAdvertiser() == null) {
+                    adView.getAdvertiserView().setVisibility(View.INVISIBLE);
+                } else {
+                    ((TextView) adView.getAdvertiserView()).setText(nativeAd.getAdvertiser());
+                    adView.getAdvertiserView().setVisibility(View.VISIBLE);
+                }
+            }
+
+            if (nativeAd.getMediaContent() != null) {
+                VideoController vc = nativeAd.getMediaContent().getVideoController();
+                if (vc.hasVideoContent()) {
+                    vc.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
+                        @Override
+                        public void onVideoEnd() {
+                            super.onVideoEnd();
+                        }
+                    });
+                }
+            }
+
+            adView.setNativeAd(nativeAd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private static void setContentTextColor(TextView textContent, String namePlace) {
         try {
             ConfigAdPlaceNative configAdPlaceNative = FirebaseQuery.getConfigController().configMap.get(namePlace);

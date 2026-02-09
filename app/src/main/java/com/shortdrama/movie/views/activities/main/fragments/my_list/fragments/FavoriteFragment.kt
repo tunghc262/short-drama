@@ -8,6 +8,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.core_api.model.ui.TVSeriesUiModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.FragmentFavoriteBinding
+import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.views.activities.main.fragments.my_list.adapter.FavouriteAdapter
 import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.FavoriteViewModel
 import com.shortdrama.movie.views.bases.BaseFragment
@@ -27,11 +28,13 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
             favouriteAdapter = FavouriteAdapter(act) {
                 RemoveFavouriteDialog(act) {
                     viewModel.removeFromFavourite(it.id)
+                    SharePrefUtils.putBoolean(it.id.toString(), false)
                 }.show()
             }
         }
         mBinding.rvMyFavourite.adapter = favouriteAdapter
     }
+
     override fun onClickViews() {
         super.onClickViews()
     }

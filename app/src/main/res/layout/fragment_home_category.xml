@@ -1,16 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.activities.main.fragments.home.fragments.HomeTrendingFragment">
+        android:background="@color/color_background">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cate_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_tab_category" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_movie_categories"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_25sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_cate_categories"
+            app:spanCount="3"
+            tools:listitem="@layout/item_movie_category" />
+
+        <View
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_overlay_drop"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_cate_categories"
+            app:layout_constraintEnd_toEndOf="@+id/rv_cate_categories"
+            app:layout_constraintTop_toTopOf="@+id/rv_cate_categories" />
+        <ImageView
+            android:id="@+id/iv_drop_tab"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="0dp"
+            android:rotation="90"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_cate_categories"
+            app:layout_constraintEnd_toEndOf="@+id/rv_cate_categories"
+            app:layout_constraintTop_toTopOf="@+id/rv_cate_categories" />
 
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
