@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,30 +14,34 @@ import com.bumptech.glide.Glide
 import com.example.core_api.model.core.EpisodeModel
 import com.example.core_api.model.ui.TVSeriesUiModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.module.ads.utils.NetworkUtils.isNetwork
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.DialogEpisodesMovieBinding
+import com.shortdrama.movie.views.activities.play_movie.PlayMovieViewModel
 import com.shortdrama.movie.views.activities.play_movie.adapter.EpisodesMovieAdapter
 import com.shortdrama.movie.views.activities.play_movie.adapter.GenreEpisodesAdapter
-import com.shortdrama.movie.views.bases.BaseBottomSheetDialog
+import com.shortdrama.movie.views.bases.BaseBottomSheetDialogFragment
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setTextColorById
 import com.shortdrama.movie.views.bases.ext.visibleView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-
-class EpisodesMovieDialog(
+@AndroidEntryPoint
+class EpisodesForYouDialog(
     val activity: Activity,
     val numberLockMovie: Int,
     val currentEpisodeIndex: Int,
-    val listEpisodes: List<EpisodeModel>,
     val tvSeriesUiModel: TVSeriesUiModel,
     val onClickItemEpisode: (Int) -> Unit,
-) : BaseBottomSheetDialog<DialogEpisodesMovieBinding>(activity) {
-
+) : BaseBottomSheetDialogFragment<DialogEpisodesMovieBinding>() {
+    private val viewModel: PlayMovieViewModel by activityViewModels()
     private var episodesMovieAdapter: EpisodesMovieAdapter? = null
-
-    override fun getLayoutDialog(): Int = R.layout.dialog_episodes_movie
-
+    private var currentEpisode: Int = -1
+    override fun getLayoutFragment(): Int = R.layout.dialog_episodes_movie
+    private var episodesList: List<EpisodeModel> = listOf()
     override fun initViews() {
         super.initViews()
         val bottomSheet = mBinding.root.parent as? View
@@ -56,7 +62,31 @@ class EpisodesMovieDialog(
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         initData()
+        if (isNetwork(activity)) {
+            tvSeriesUiModel.numberOfSeasons?.let { seasonNo ->
+                viewModel.loadEpisodes(
+                    tvSeriesUiModel.id,
+                    seasonNo
+                )
+            }
+        }
 
+    }
+
+    override fun observerData() {
+        lifecycleScope.launch {
+            viewModel.listEpisodes.collectLatest { episodes ->
+                Log.e("TAG_EPISODE_API", "loadEpisodes2: ${episodes?.id}")
+                episodes?.episodes?.let {
+                    episodesMovieAdapter?.submitListData(
+                        it,
+                        currentEpisode,
+                        tvSeriesUiModel
+                    )
+                    episodesList = it
+                }
+            }
+        }
     }
 
     private fun initData() {
@@ -75,7 +105,9 @@ class EpisodesMovieDialog(
         }
 
         episodesMovieAdapter = EpisodesMovieAdapter(activity, numberLockMovie) { episodeIndex ->
-            onClickItemEpisode(episodeIndex)
+            val item = episodesList[episodeIndex]
+            onClickItemEpisode(item.id)
+            Log.e("MOVIE", "EpisodesMovieAdapter: ${item.name} - ${item.id}")
             dismiss()
         }
         mBinding.rvEpisode.apply {
@@ -101,7 +133,6 @@ class EpisodesMovieDialog(
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
             }
         });
-        episodesMovieAdapter?.submitListData(listEpisodes, currentEpisodeIndex, tvSeriesUiModel)
     }
 
     override fun onClickViews() {

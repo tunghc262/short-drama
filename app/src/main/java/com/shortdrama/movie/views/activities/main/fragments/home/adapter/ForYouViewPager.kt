@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
@@ -272,6 +274,7 @@ class ForYouViewPager(
     }
 
     // ------------------- ExoPlayer Controls -------------------
+    @OptIn(UnstableApi::class)
     fun playAt(position: Int) {
         if (position == currentPlayingPos) return
         val item = getItem(position) as? ForYouModel.Movie ?: return

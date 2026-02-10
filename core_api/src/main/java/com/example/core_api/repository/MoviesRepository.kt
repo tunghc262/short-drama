@@ -1,13 +1,18 @@
 package com.example.core_api.repository
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.core_api.api.MoviesApiService
+import com.example.core_api.api.TVSeriesPagingSource
 import com.example.core_api.mapper.toTVSeriesEpisodeUiModel
 import com.example.core_api.mapper.toTVSeriesUiModel
 import com.example.core_api.model.ui.TVSeriesEpisodeUiModel
 import com.example.core_api.model.ui.TVSeriesUiModel
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
+import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -69,5 +74,17 @@ class MoviesRepository @Inject constructor(
         } catch (e: Exception) {
             null
         }
+    }
+
+    // calling list tv series paging
+    fun getTVSeriesPaging(): Flow<PagingData<TVSeriesUiModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                prefetchDistance = 2
+            ),
+            pagingSourceFactory = { TVSeriesPagingSource(this) }
+        ).flow
     }
 }
