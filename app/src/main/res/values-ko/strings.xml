@@ -1,4 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Short Drama</string>
+    <string name="notification_channel_id" translatable="false">Notification Channel</string>
 
+    <string name="text_ads_shown">Ads are about to be shown…</string>
+    <string name="text_language">Language</string>
+    <string name="text_ok">OK</string>
+    <string name="text_next">Next</string>
+    <string name="text_applying_language">Applying language…</string>
+    <string name="text_get_started">Get Started!</string>
+    <string name="text_save">Save</string>
+
+    <string name="title_on_boarding_1">Top Drama Stories</string>
+    <string name="title_on_boarding_2">Diverse Film Genres</string>
+    <string name="title_on_boarding_3">Smooth Streaming</string>
+    <string name="title_on_boarding_4">Title On Board 4</string>
+    <string name="content_on_boarding_1">Content On Board 1</string>
+    <string name="content_on_boarding_2">Content On Board 2</string>
+    <string name="content_on_boarding_3">Content On Board 3</string>
+    <string name="content_on_boarding_4">Content On Board 4</string>
+    <string name="text_continue">Continue</string>
+
+    <string name="text_feedback">Feedback</string>
+    <string name="text_send">Send</string>
+    <string name="text_feedback_content">Please rate of leave feedback to help us improve Application</string>
+
+    <string name="text_rate_us">Rate Us</string>
+    <string name="text_thank_you">Thank You</string>
+    <string name="text_rate_content">5 stars is the best we can get,\nSupport us to develop  app better!</string>
+    <string name="text_rate_now">Rate Now</string>
+
+    <string name="text_loading">Loading…</string>
+
+    <string name="exit_app_title">Leave App?</string>
+    <string name="exit_app_content">Are you sure you want to close this app</string>
+    <string name="text_exit">Exit</string>
+
+    <string name="text_no_internet_connection">No Internet Connection</string>
+    <string name="text_please_check_internet_connection">Please check internet connection!</string>
+    <string name="text_retry">Retry</string>
+    <string name="text_no_internet_content">Need to connect to the internet in order to work .Please connect and try again</string>
+
+    <string name="notification_scr_title_1">Perfect Photos for Stories 🌟</string>
+    <string name="notification_scr_content_1">Make beautiful story cards using colorful templates 🌈</string>
+    <string name="notification_scr_title_2">Freestyle Mode Is Ready ✂️</string>
+    <string name="notification_scr_content_2">Arrange your photos your way with full editing freedom 💫</string>
+    <string name="notification_scr_title_3">Fresh Templates Every Day 📚</string>
+    <string name="notification_scr_content_3">Make birthday, travel, and love collages with new designs 💝</string>
+    <string name="notification_scr_title_4">Create Fun Photo Designs 🎨</string>
+    <string name="notification_scr_content_4">Decorate your pics with stickers, frames &amp; filters easily ✨</string>
+
+    <string name="notification_scr_title_1_country">Try New Photo Layouts 🖼️</string>
+    <string name="notification_scr_content_1_country">See your pics shine in modern collage grids and designs 💛</string>
+    <string name="notification_scr_title_2_country">Your Photos, Newly Designed 🎨</string>
+    <string name="notification_scr_content_2_country">Add text, stickers, and effects to create stunning edits 💫</string>
+    <string name="notification_scr_title_3_country">Freestyle Editing Unlocked ✂️</string>
+    <string name="notification_scr_content_3_country">Create your own unique layout with full creative freedom ✨</string>
+    <string name="notification_scr_title_4_country">Make Story-Ready Photos Today 🌈</string>
+    <string name="notification_scr_content_4_country">Edit your pics into beautiful Instagram &amp; FB story cards 💬</string>
+
+    <string name="notification_lock_scr_title_1">Try New Collage Looks 🌈</string>
+    <string name="notification_lock_scr_content_1">Create colorful photo collages with fun layouts instantly 💫</string>
+    <string name="notification_lock_scr_title_2">Make Trendy Status Photos 💬</string>
+    <string name="notification_lock_scr_content_2">Use ready-made templates to design stylish status pics quickly ✨</string>
+    <string name="notification_lock_scr_title_3">Cute Aesthetic Edits for You 🌸</string>
+    <string name="notification_lock_scr_content_3">Add filters, stickers &amp; text to make your photos pop 🎀</string>
+    <string name="notification_lock_scr_title_4">New Photo Grids Just Added 🖼️</string>
+    <string name="notification_lock_scr_content_4">Try bright and creative collage grids for your pictures 💛</string>
+
+    <string name="notification_lock_scr_title_1_country">Discover Your New Collage Style 💚</string>
+    <string name="notification_lock_scr_content_1_country">Create trendy photo collages in seconds with fresh layouts ✨</string>
+    <string name="notification_lock_scr_title_2_country">Make Cute Aesthetic Edits 🌸</string>
+    <string name="notification_lock_scr_content_2_country">Turn your photos into soft, stylish edits using filters &amp; stickers ✨</string>
+    <string name="notification_lock_scr_title_3_country">Fresh Daily Templates Are Here 📚</string>
+    <string name="notification_lock_scr_content_3_country">Pick from new birthday, love, and aesthetic templates every day 🎀</string>
+    <string name="notification_lock_scr_title_4_country">Upgrade Your Photo Status 📱</string>
+    <string name="notification_lock_scr_content_4_country">Make aesthetic status photos quickly with new templates 🌟</string>
+    <string name="home">Home</string>
+    <string name="for_you">For You</string>
+    <string name="my_list">My List</string>
+    <string name="profile">Profile</string>
+    <string name="the_book_of_dreams">The Book of Dreams</string>
+    <string name="trending">Trending</string>
+    <string name="news">New</string>
+    <string name="ranking">Ranking</string>
+    <string name="category">Category</string>
+    <string name="popular">Popular</string>
+    <string name="new_release">New Release</string>
+    <string name="top_chart">Top Chart</string>
+    <string name="watch_full_drama">Watch Full Drama</string>
+    <string name="episodes">Episodes</string>
+    <string name="share">Share</string>
+    <string name="watch_full_movie">Watch Full Movie</string>
+    <string name="data_not_found">Data Not Found</string>
+    <string name="download">Download</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="choose_resolution">Choose Resolution</string>
+    <string name="summary">Summary</string>
+    <string name="you_might_like">You Might Like</string>
+    <string name="intro_new">Enjoy the full range of top-rated, exclusive films as soon as they are released.</string>
+    <string name="next">Next</string>
 </resources>

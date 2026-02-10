@@ -9,268 +9,336 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_background">
+        android:background="#100C1C">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_background"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_300sdp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
             android:scaleType="centerCrop"
+            android:src="@drawable/img_bg_iap"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/_24sdp"
-            android:gravity="center|bottom"
+            android:layout_height="wrap_content"
+            android:gravity="start|bottom"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/rl_weekly"
+            app:layout_constraintBottom_toBottomOf="@id/iv_background"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textColor="@color/black" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_12sdp"
-                    android:layout_height="@dimen/_12sdp"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="VIP"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                style="@style/TextViewBold"
+                style="@style/TextViewSemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unlock All Feature"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_20ssp" />
+                android:layout_marginStart="@dimen/_12sdp"
+                android:text="Join membership"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:fontFamily="@font/poppins_light"
+                android:text="Enjoy the following benefits"
+                android:textColor="@color/white_60"
+                android:textSize="@dimen/_12ssp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    android:id="@+id/tv_premium_1"
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="210 Free Images, 30 Images Per Day"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/ic_unlimited_viewing" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@mipmap/ic_launcher" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="Unlimidted \nViewing"
+                        android:textColor="#BDBBC4"
+                        android:textSize="@dimen/_9ssp" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="200% Faster Processing"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/ic_high_resolution" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@mipmap/ic_launcher" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="High \nresolution "
+                        android:textColor="#BDBBC4"
+                        android:textSize="@dimen/_9ssp" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="Unlock All Feature"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/ic_exclusive_film" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@mipmap/ic_launcher" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="Exclusive \nFilm"
+                        android:textColor="#BDBBC4"
+                        android:textSize="@dimen/_9ssp" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="Highest Quality Photos"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/ic_no_ads" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="No ads \nexperience"
+                        android:textColor="#BDBBC4"
+                        android:textSize="@dimen/_9ssp" />
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    style="@style/TextViewRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="Ad-Free Experience"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
-
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_weekly"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/bg_btn_premium_selected"
-            android:padding="@dimen/_12sdp"
-            app:layout_constraintBottom_toTopOf="@id/rl_monthly"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+            app:layout_constraintTop_toBottomOf="@+id/guideline">
 
-            <TextView
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Weekly"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_checkbox_weekly"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_checkbox_selected" />
+                <RelativeLayout
+                    android:id="@+id/rl_yearly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/bg_btn_premium_selected"
+                    app:layout_constraintBottom_toTopOf="@id/rl_monthly"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/tv_price_weekly"
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:layout_toStartOf="@id/iv_checkbox_weekly"
-                android:text="$10.99"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
-        </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_checkbox_yearly"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:padding="@dimen/_1sdp"
+                        android:src="@drawable/ic_checkbox_selected_iap" />
 
-        <RelativeLayout
-            android:id="@+id/rl_monthly"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/bg_btn_premium"
-            android:padding="@dimen/_12sdp"
-            app:layout_constraintBottom_toTopOf="@id/ll_trial"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:layout_toEndOf="@id/iv_checkbox_yearly"
+                        android:background="@drawable/bg_info_premium"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_12ssp">
 
-            <TextView
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Monthly"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Yearly memberships"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_checkbox_monthly"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_checkbox" />
+                        <TextView
+                            android:id="@+id/tv_price_yearly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="$4.89/weekly"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+                    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_price_monthly"
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:layout_toStartOf="@id/iv_checkbox_monthly"
-                android:text="$10.99"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
-        </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/_128sdp"
-            android:layout_height="@dimen/_32sdp"
-            android:layout_marginStart="@dimen/_minus12sdp"
-            android:layout_marginBottom="@dimen/_minus16sdp"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toTopOf="@id/rl_weekly"
-            app:layout_constraintStart_toStartOf="@id/rl_weekly" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_monthly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/bg_btn_premium"
+                    app:layout_constraintBottom_toTopOf="@id/rl_weekly"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_checkbox_monthly"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:padding="@dimen/_1sdp"
+                        android:src="@drawable/ic_checkbox" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:layout_toEndOf="@id/iv_checkbox_monthly"
+                        android:background="@drawable/bg_info_premium"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_12ssp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Monthly membership"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+
+                        <TextView
+                            android:id="@+id/tv_price_monthly"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="$24.9/month"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_weekly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/bg_btn_premium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_checkbox_weekly"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:padding="@dimen/_1sdp"
+                        android:src="@drawable/ic_checkbox" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:layout_toEndOf="@id/iv_checkbox_weekly"
+                        android:background="@drawable/bg_info_premium"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_12ssp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="Weekly membership"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_14ssp" />
+
+                        <TextView
+                            android:id="@+id/tv_price_weekly"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="$6.99/week"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="@dimen/_72sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_minus12sdp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_btn_ug_premium"
+                    android:fontFamily="@font/poppins_semibold_italic"
+                    android:gravity="center"
+                    android:text="Save 30%"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@id/rl_yearly"
+                    app:layout_constraintEnd_toEndOf="@id/rl_yearly" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
 
         <LinearLayout
             android:id="@+id/ll_trial"
@@ -280,7 +348,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/tv_continue"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -306,95 +374,131 @@
                 android:textColor="#B3E1E3E8" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_continue"
-            style="@style/TextViewBold"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_42sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/bg_btn_fill_24"
-            android:gravity="center"
-            android:text="Continue"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16ssp"
-            app:layout_constraintBottom_toTopOf="@id/tv_sub"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_sub"
-            style="@style/TextViewRegular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_12sdp"
-            android:gravity="center"
-            android:text="Subscription Will Auto - Renew. Cancel Anytime."
-            android:textColor="@color/black"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
         <LinearLayout
             android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_12sdp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="#2A233B" />
 
             <TextView
-                android:id="@+id/tv_terms_of_use"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="1"
-                android:text="Terms Of Use"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Auto-renewable. Cancel anytime."
+                android:textColor="#848484"
+                android:textSize="@dimen/_12ssp" />
+
+            <RelativeLayout
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/bg_btn_ug_premium">
+
+                <TextView
+                    android:id="@+id/tv_continue"
+                    style="@style/TextViewBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="JOIN NOW!"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_privacy_policy"
-                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:id="@+id/tv_sub"
+                style="@style/TextViewRegular"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:gravity="center"
-                android:lines="1"
-                android:text="Privacy Policy"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp" />
-
-            <TextView
-                android:id="@+id/tv_restore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="1"
-                android:text="Restore"
+                android:text="Subscription Will Auto - Renew. Cancel Anytime."
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
-                android:visibility="gone" />
+                app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_privacy_policy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="Privacy &amp; Policy"
+                    android:textColor="#848484"
+                    android:textSize="@dimen/_10ssp" />
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:layout_gravity="center_vertical"
+                    android:background="#393939" />
+
+                <TextView
+                    android:id="@+id/tv_terms_of_use"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="Term &amp; Conditions"
+                    android:textColor="#848484"
+                    android:textSize="@dimen/_10ssp" />
+            </LinearLayout>
         </LinearLayout>
 
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_close"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
             android:layout_margin="@dimen/_12sdp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_close_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.35" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

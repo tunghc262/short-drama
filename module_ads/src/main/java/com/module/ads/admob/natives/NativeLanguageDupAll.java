@@ -10,19 +10,15 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdValue;
-import com.google.android.gms.ads.AdapterResponseInfo;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
+import com.module.ads.R;
 import com.module.ads.callback.CallbackNative;
-import com.module.ads.mmp.AdjustTracking;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
-import com.module.ads.utils.FBTracking;
 import com.module.ads.utils.PurchaseUtils;
 
 public class NativeLanguageDupAll {
@@ -65,6 +61,7 @@ public class NativeLanguageDupAll {
 
                     @Override
                     public void onAdLoaded() {
+                        Log.e("TamBT", "onAdLoaded: native language dup normal");
                         super.onAdLoaded();
                         isLoadingNormal = false;
                         if (callbackNative != null) {
@@ -74,7 +71,7 @@ public class NativeLanguageDupAll {
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Log.e("TAG", "onAdFailedToLoad: ");
+                        Log.e("TamBT", "onAdFailedToLoad: native language dup normal " + loadAdError.getMessage());
                         isLoadingNormal = false;
                         if (callbackNative != null) {
                             callbackNative.onFailed();
@@ -126,6 +123,7 @@ public class NativeLanguageDupAll {
 
                         @Override
                         public void onAdLoaded() {
+                            Log.e("TamBT", "onAdLoaded: native language dup high");
                             super.onAdLoaded();
                             isLoadingHigh = false;
                             if (callbackNative != null) {
@@ -135,7 +133,7 @@ public class NativeLanguageDupAll {
 
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            Log.e("TAG", "onAdFailedToLoad: native language click high");
+                            Log.e("TamBT", "onAdFailedToLoad: native language dup high " + loadAdError.getMessage());
                             isLoadingHigh = false;
                             if (FirebaseQuery.getEnableNativeLanguageDup()) {
                                 loadAdsNormal(activity);
@@ -203,8 +201,8 @@ public class NativeLanguageDupAll {
             }
             if (nativeAd != null) {
                 lnNative.setVisibility(View.VISIBLE);
-                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNative(namePlace), null);
-                NativeUtils.populateNativeAdView(nativeAd, nativeAdView, namePlace);
+                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_2, null);
+                NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                 lnNative.removeAllViews();
                 lnNative.addView(nativeAdView);
             }

@@ -7,12 +7,13 @@ import com.bumptech.glide.Glide
 import com.example.core_api.model.ui.TVSeriesUiModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemMovieFavoriteBinding
-import com.shortdrama.movie.databinding.ItemMovieTopChartBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
+import com.shortdrama.movie.views.bases.ext.onClickAlpha
 
 class FavouriteAdapter(
     val activity: Activity,
-    val onClickItem: (TVSeriesUiModel) -> Unit
+    val onClickItem: (TVSeriesUiModel) -> Unit,
+    val onClickRemoveItem: (TVSeriesUiModel) -> Unit
 ) : BaseRecyclerView<TVSeriesUiModel>() {
     override fun getItemLayout(): Int = R.layout.item_movie_favorite
 
@@ -51,6 +52,9 @@ class FavouriteAdapter(
         if (binding is ItemMovieFavoriteBinding) {
             binding.root.setOnClickListener {
                 onClickItem(obj)
+            }
+            binding.icMark.onClickAlpha {
+                onClickRemoveItem(obj)
             }
         }
     }

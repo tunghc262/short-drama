@@ -1,12 +1,12 @@
 package com.shortdrama.movie.views.activities.language
 
+import android.annotation.SuppressLint
 import androidx.databinding.ViewDataBinding
 import com.shortdrama.movie.R
 import com.shortdrama.movie.data.models.LanguageModel
 import com.shortdrama.movie.databinding.ItemLanguageBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
 import com.shortdrama.movie.views.bases.ext.invisibleView
-import com.shortdrama.movie.views.bases.ext.setTextColorById
 import com.shortdrama.movie.views.bases.ext.visibleView
 
 class LanguageAdapter(
@@ -27,12 +27,8 @@ class LanguageAdapter(
                 binding.tvLanguage.text = item.languageName
                 item.isCheck = currentSelected == layoutPosition
                 if (item.isCheck) {
-                    binding.tvLanguage.setTextColorById(R.color.black)
-                    binding.rlLanguage.setBackgroundResource(R.drawable.bg_item_language_selected)
                     binding.ivCheck.setImageResource(R.drawable.ic_checkbox_selected)
                 } else {
-                    binding.tvLanguage.setTextColorById(R.color.black)
-                    binding.rlLanguage.setBackgroundResource(R.drawable.bg_item_language)
                     binding.ivCheck.setImageResource(R.drawable.ic_checkbox)
                 }
             }
@@ -55,6 +51,7 @@ class LanguageAdapter(
 
     override fun getItemLayout(): Int = R.layout.item_language
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun submitData(newData: List<LanguageModel>) {
         list.clear()
         list.addAll(newData)

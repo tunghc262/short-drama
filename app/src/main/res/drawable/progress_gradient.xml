@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="@dimen/_24sdp" />
-            <solid android:color="#191919" /> <!-- Màu nền -->
+            <solid android:color="#1AE4E8EB" /> <!-- Màu nền -->
         </shape>
     </item>
 

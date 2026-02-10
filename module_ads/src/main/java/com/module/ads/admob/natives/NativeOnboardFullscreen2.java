@@ -10,14 +10,13 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdapterResponseInfo;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
+import com.module.ads.R;
 import com.module.ads.callback.CallbackNative;
-import com.module.ads.mmp.AdjustTracking;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
 import com.module.ads.utils.FBTracking;
@@ -67,7 +66,7 @@ public class NativeOnboardFullscreen2 {
                         public void onAdLoaded() {
                             super.onAdLoaded();
                             isLoadingHigh = false;
-                            Log.e("TAG", "onAdLoaded: native full onboard high");
+                            Log.e("TamBT", "onAdLoaded: native full onboard high 2");
                             if (callbackNative != null) {
                                 callbackNative.onLoaded();
                             }
@@ -77,7 +76,7 @@ public class NativeOnboardFullscreen2 {
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                             isLoadingHigh = false;
                             nativeAdHigh = null;
-                            Log.e("TAG", "onAdFailedToLoad: native full onboard high - " + loadAdError.getMessage());
+                            Log.e("TamBT", "onAdFailedToLoad: native full onboard high 2 - " + loadAdError.getMessage());
                             if (FirebaseQuery.getEnableNativeFullScr2()) {
                                 loadAdsNormal(activity);
                             } else {
@@ -141,7 +140,7 @@ public class NativeOnboardFullscreen2 {
                     @Override
                     public void onAdLoaded() {
                         super.onAdLoaded();
-                        Log.e("TAG", "onAdLoaded: native full onboard normal");
+                        Log.e("TamBT", "onAdLoaded: native full onboard normal 2");
                         isLoadingNormal = false;
                         if (callbackNative != null) {
                             callbackNative.onLoaded();
@@ -150,13 +149,12 @@ public class NativeOnboardFullscreen2 {
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Log.e("TAG", "onAdFailedToLoad: native full onboard normal - " + loadAdError.getMessage());
+                        Log.e("TamBT", "onAdFailedToLoad: native full onboard normal 2 - " + loadAdError.getMessage());
                         isLoadingNormal = false;
                         if (callbackNative != null) {
                             callbackNative.onFailed();
                         }
                     }
-
                     @Override
                     public void onAdImpression() {
                         FBTracking.funcTrackingIAA(activity, FBTracking.EVENT_AD_IMPRESSION);
@@ -199,8 +197,8 @@ public class NativeOnboardFullscreen2 {
                 nativeAd = nativeAdNormal;
             }
             if (nativeAd != null) {
-                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNativeFull(namePlace), null);
-                NativeUtils.populateNativeAdView(nativeAd, nativeAdView, namePlace);
+                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_fullscreen_1, null);
+                NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                 lnNative.setVisibility(View.VISIBLE);
                 lnNative.removeAllViews();
                 lnNative.addView(nativeAdView);

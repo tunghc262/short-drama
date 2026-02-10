@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -27,24 +28,31 @@
                 android:id="@+id/iv_thumb"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@+id/ll_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.75"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/img_onboard_1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_60sdp"
+                android:background="@drawable/bg_overlay_ob"
+                app:layout_constraintBottom_toBottomOf="@id/iv_thumb" />
 
             <LinearLayout
                 android:id="@+id/ll_text"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginVertical="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_thumb">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:id="@+id/tv_title"
@@ -53,8 +61,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/app_name"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp" />
 
                 <TextView
                     android:id="@+id/tv_content"
@@ -65,7 +73,8 @@
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_10ssp"
+                    android:visibility="gone" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,32 +91,32 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_indicator_1"
-                    android:layout_width="@dimen/_6sdp"
-                    android:layout_height="@dimen/_6sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/circle_indicator_selected" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_indicator_2"
-                    android:layout_width="@dimen/_6sdp"
-                    android:layout_height="@dimen/_6sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_4sdp"
                     android:src="@drawable/circle_indicator" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_indicator_3"
-                    android:layout_width="@dimen/_6sdp"
-                    android:layout_height="@dimen/_6sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/circle_indicator" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_next"
-                style="@style/TextViewBold"
+                style="@style/TextViewSemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -116,8 +125,8 @@
                 android:paddingHorizontal="@dimen/_14sdp"
                 android:paddingVertical="@dimen/_4sdp"
                 android:text="@string/text_next"
-                android:textColor="@color/color_text"
-                android:textSize="@dimen/_12ssp" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -130,10 +139,11 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lav_hand"
-                android:layout_width="@dimen/_88sdp"
-                android:layout_height="@dimen/_88sdp"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_100sdp"
+                app:lottie_colorFilter="@color/purple"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +162,7 @@
 
                 <include
                     android:id="@+id/shimmer_ads_bottom"
-                    layout="@layout/shimmer_native_medium" />
+                    layout="@layout/shimmer_native_large" />
             </LinearLayout>
         </RelativeLayout>
 

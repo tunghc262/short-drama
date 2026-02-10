@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
 import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.ads.admob.inters.IntersInApp
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHistotyBinding
@@ -42,10 +43,14 @@ class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
                     posterPath = obj.posterPath,
                     genres = obj.genres
                 )
-                val intent = Intent(act, PlayMovieActivity::class.java)
-                intent.putExtra(AppConstants.OBJ_MOVIE, movies)
-                intent.putExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, obj.episodeCurrentId)
-                startActivity(intent)
+                activity?.let { act ->
+                    IntersInApp.getInstance().showAds(act) {
+                        val intent = Intent(act, PlayMovieActivity::class.java)
+                        intent.putExtra(AppConstants.OBJ_MOVIE, movies)
+                        intent.putExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, obj.episodeCurrentId)
+                        startActivity(intent)
+                    }
+                }
             }
         }
         mBinding.rvMyHistory.adapter = historyAdapter

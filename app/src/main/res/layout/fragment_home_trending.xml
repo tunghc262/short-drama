@@ -52,14 +52,29 @@
                 app:selectedDotColor="#EEEEEE" />
 
             <LinearLayout
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:id="@+id/ln_native"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/dot_indicators"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <include
+                    android:id="@+id/shimmer_ads_bottom"
+                    layout="@layout/shimmer_native_medium" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/ll_popular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dot_indicators">
+                app:layout_constraintTop_toBottomOf="@id/ln_native">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_15sdp"

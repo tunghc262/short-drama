@@ -7,6 +7,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.ViewDataBinding
 import com.example.core_api.model.core.EpisodeModel
 import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.ads.admob.reward.RewardInApp
+import com.module.ads.remote.FirebaseQuery
+import com.module.ads.utils.PurchaseUtils
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemContainerEpisodeBinding
 import com.shortdrama.movie.utils.SharePrefUtils
@@ -14,16 +17,22 @@ import com.shortdrama.movie.views.bases.BaseRecyclerView
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setTextColorById
+import com.shortdrama.movie.views.bases.ext.showToastByString
 import com.shortdrama.movie.views.bases.ext.visibleView
+import com.shortdrama.movie.views.dialogs.UnlockEpisodeDialog
+import kotlin.math.max
 
 class EpisodesMovieAdapter(
     private val activity: Activity,
     val numberLockMovie: Int,
-    val onClickItem: (Int) -> Unit
+    val onClickItem: (Int) -> Unit,
+    val onClickUpgrade: () -> Unit
 ) : BaseRecyclerView<EpisodeModel>() {
 
     private var currentSelected = 0
     private var tvSeriesUiModel: TVSeriesUiModel? = null
+
+    private var maxUnlockedEpisode: Int = 0
     override fun getItemLayout(): Int = R.layout.item_container_episode
 
     override fun submitData(newData: List<EpisodeModel>) {}
@@ -63,27 +72,41 @@ class EpisodesMovieAdapter(
                 binding.root.setBackgroundResource(R.drawable.bg_btn_2a2a2a)
             }
             val key = "${tvSeriesUiModel?.id}_${item.id}"
-            if (item.episodeNumber >= numberLockMovie && !SharePrefUtils.getBoolean(key, false)) {
+            val isLocked = item.episodeNumber > numberLockMovie && !SharePrefUtils.getBoolean(
+                key,
+                false
+            ) && FirebaseQuery.getEnableAds() && !PurchaseUtils.isNoAds(activity)
+            val prevEpisodeNumber = item.episodeNumber - 1
+            val prevKey =
+                "${tvSeriesUiModel?.id}_${prevEpisodeNumber}"  // Giả sử id episode là episodeNumber, nếu không thì cần map đúng id
+            val prevUnlocked = prevEpisodeNumber < 1 || SharePrefUtils.getBoolean(prevKey, false)
+            if (isLocked) {
                 binding.ivLock.visibleView()
             } else {
+                maxUnlockedEpisode = max(maxUnlockedEpisode, layoutPosition)
                 binding.ivLock.goneView()
             }
             binding.root.onClickAlpha {
-                if (item.episodeNumber >= numberLockMovie && !SharePrefUtils.getBoolean(
-                        key,
-                        false
-                    )
-                ) {
-                    Log.e("MOVIE", "show : unlockEpisodesDialog")
-//                    val unlockEpisodesDialog = UnlockEpisodesDialog(activity, onClickWatchAds = {
-//                        RewardInApp.getInstance().showReward(activity, object : CallbackAd {
-//                            override fun onNextAction() {
-//                                SharePrefUtils.putBoolean(key, true)
-//                                onClickItem(item.id)
-//                            }
-//                        })
-//                    })
-//                    unlockEpisodesDialog.show()
+                if (isLocked) {
+                    if ((layoutPosition - 1 == maxUnlockedEpisode)) {
+                        Log.e("MOVIE", "show : unlockEpisodesDialog")
+                        val unlockEpisodesDialog = UnlockEpisodeDialog(
+                            activity,
+                            onClickWatchAds = {
+                                RewardInApp.getInstance().showReward(activity) {
+                                    SharePrefUtils.putBoolean(key, true)
+                                    setSelectedItem(layoutPosition)
+                                    onClickItem(layoutPosition)
+                                }
+                            },
+                            onClickUpgrade = {
+                                onClickUpgrade()
+                            }
+                        )
+                        unlockEpisodesDialog.show()
+                    } else {
+                        activity.showToastByString("Please unlock episodes in sequential order!")
+                    }
                 } else {
                     setSelectedItem(layoutPosition)
                     onClickItem(layoutPosition)

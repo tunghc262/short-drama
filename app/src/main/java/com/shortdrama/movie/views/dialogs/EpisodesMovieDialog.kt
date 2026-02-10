@@ -1,6 +1,7 @@
 package com.shortdrama.movie.views.dialogs
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -30,6 +31,7 @@ class EpisodesMovieDialog(
     val listEpisodes: List<EpisodeModel>,
     val tvSeriesUiModel: TVSeriesUiModel,
     val onClickItemEpisode: (Int) -> Unit,
+    val onClickUpgrade: () -> Unit,
 ) : BaseBottomSheetDialog<DialogEpisodesMovieBinding>(activity) {
 
     private var episodesMovieAdapter: EpisodesMovieAdapter? = null
@@ -74,10 +76,17 @@ class EpisodesMovieDialog(
             genreAdapter.submitData(it)
         }
 
-        episodesMovieAdapter = EpisodesMovieAdapter(activity, numberLockMovie) { episodeIndex ->
-            onClickItemEpisode(episodeIndex)
-            dismiss()
-        }
+        episodesMovieAdapter = EpisodesMovieAdapter(
+            activity,
+            numberLockMovie,
+            onClickItem = { episodeIndex ->
+                onClickItemEpisode(episodeIndex)
+                dismiss()
+            },
+            onClickUpgrade = {
+                onClickUpgrade()
+            }
+        )
         mBinding.rvEpisode.apply {
             setHasFixedSize(true)
             adapter = episodesMovieAdapter

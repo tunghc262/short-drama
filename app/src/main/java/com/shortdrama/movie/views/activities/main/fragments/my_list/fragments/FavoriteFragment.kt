@@ -1,16 +1,20 @@
 package com.shortdrama.movie.views.activities.main.fragments.my_list.fragments
 
+import android.content.Intent
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.ads.admob.inters.IntersInApp
 import com.shortdrama.movie.R
+import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentFavoriteBinding
 import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.views.activities.main.fragments.my_list.adapter.FavouriteAdapter
 import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.FavoriteViewModel
+import com.shortdrama.movie.views.activities.play_movie.PlayMovieActivity
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.visibleView
@@ -25,12 +29,24 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
     override fun initViews() {
         super.initViews()
         activity?.let { act ->
-            favouriteAdapter = FavouriteAdapter(act) {
-                RemoveFavouriteDialog(act) {
-                    viewModel.removeFromFavourite(it.id)
-                    SharePrefUtils.putBoolean(it.id.toString(), false)
-                }.show()
-            }
+            favouriteAdapter = FavouriteAdapter(
+                act,
+                onClickItem = { movie ->
+                    activity?.let { act ->
+                        IntersInApp.getInstance().showAds(act) {
+                            val intent = Intent(act, PlayMovieActivity::class.java)
+                            intent.putExtra(AppConstants.OBJ_MOVIE, movie)
+                            startActivity(intent)
+                        }
+                    }
+                },
+                onClickRemoveItem = {
+                    RemoveFavouriteDialog(act) {
+                        viewModel.removeFromFavourite(it.id)
+                        SharePrefUtils.putBoolean(it.id.toString(), false)
+                    }.show()
+                }
+            )
         }
         mBinding.rvMyFavourite.adapter = favouriteAdapter
     }

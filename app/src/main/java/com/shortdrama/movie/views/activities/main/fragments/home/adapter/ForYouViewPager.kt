@@ -277,11 +277,24 @@ class ForYouViewPager(
     @OptIn(UnstableApi::class)
     fun playAt(position: Int) {
         if (position == currentPlayingPos) return
-        val item = getItem(position) as? ForYouModel.Movie ?: return
+        Log.d("ForYouPlayer", "playAt called for position: $position")
+        releasePlayer()
+        val item = getItem(position) as? ForYouModel.Movie ?: run {
+            Log.w("ForYouPlayer", "No movie at pos $position")
+            return
+        }
+
+        val video = item.data.videos?.firstOrNull()?.link?.takeIf { it.isNotEmpty() } ?: run {
+            Log.e("ForYouPlayer", "No video URL at pos $position")
+            return
+        }
+
+        Log.d("ForYouPlayer", "Video URL: $video")
 
         // Stop previous
         if (currentPlayingPos != RecyclerView.NO_POSITION) {
-            getCurrentHolder()?.apply {
+            (recyclerView?.findViewHolderForAdapterPosition(currentPlayingPos)
+                    as? ItemViewHolder)?.apply {
                 binding.playerMoviePreview.player = null
                 viewStillPath()
             }
@@ -301,7 +314,10 @@ class ForYouViewPager(
             }
         }
 
-        val videoUrl = item.data.videos?.firstOrNull()?.link ?: return
+        val videoUrl = item.data.videos?.firstOrNull()?.link
+        if (videoUrl.isNullOrEmpty()) {
+            return
+        }
 
         val dataSourceFactory = DefaultHttpDataSource.Factory()
         val mediaSource = HlsMediaSource.Factory(dataSourceFactory)
@@ -311,8 +327,8 @@ class ForYouViewPager(
         player?.apply {
             setMediaSource(mediaSource)
             prepare()
+            playWhenReady = true
         }
-
         currentPlayingPos = position
         startSeekBarUpdate()
     }
@@ -322,12 +338,6 @@ class ForYouViewPager(
         player?.stop()
         updateSeekBar?.let { handler.removeCallbacks(it) }
     }
-
-    fun play() {
-        player?.play()
-        getCurrentHolder()?.binding?.ivPlayPause?.goneView()
-    }
-
     fun pause() {
         player?.pause()
         updateSeekBar?.let { handler.removeCallbacks(it) }
@@ -343,7 +353,9 @@ class ForYouViewPager(
                 val position = player?.currentPosition ?: 0L
                 val progress = (position * 1000 / duration).toInt()
 
-                getCurrentHolder()?.binding?.sbVideo?.progress = progress
+                (recyclerView?.findViewHolderForAdapterPosition(currentPlayingPos)
+                        as? ItemViewHolder)
+                    ?.binding?.sbVideo?.progress = progress
                 handler.postDelayed(this, 16)
             }
         }
@@ -352,7 +364,9 @@ class ForYouViewPager(
 
     private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(state: Int) {
-            val holder = getCurrentHolder() ?: return
+            val holder = recyclerView
+                ?.findViewHolderForAdapterPosition(currentPlayingPos) as? ItemViewHolder
+                ?: return
             when (state) {
                 Player.STATE_BUFFERING -> holder.showLoading(true)
                 Player.STATE_READY -> {
@@ -366,12 +380,19 @@ class ForYouViewPager(
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-            getCurrentHolder()?.binding?.ivPlayPause?.visibility =
+            val holder = recyclerView
+                ?.findViewHolderForAdapterPosition(currentPlayingPos)
+                    as? ItemViewHolder
+
+            holder?.binding?.ivPlayPause?.visibility =
                 if (isPlaying) View.GONE else View.VISIBLE
         }
 
         override fun onPlayerError(error: PlaybackException) {
-            getCurrentHolder()?.showLoading(false)
+            val holder = recyclerView
+                ?.findViewHolderForAdapterPosition(currentPlayingPos)
+                    as? ItemViewHolder
+            holder?.showLoading(false)
             Log.e("ExoPlayer", error.errorCodeName, error)
         }
     }

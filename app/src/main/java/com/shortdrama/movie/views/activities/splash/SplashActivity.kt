@@ -29,6 +29,7 @@ import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.utils.UsageManager
 import com.shortdrama.movie.views.activities.language.LanguageActivity
 import com.shortdrama.movie.views.activities.main.MainActivity
+import com.shortdrama.movie.views.activities.premium.PremiumActivity
 import com.shortdrama.movie.views.bases.BaseActivity
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.isNetwork
@@ -241,15 +242,20 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     val intent = Intent(this, LanguageActivity::class.java)
                     startActivity(intent)
                 } else {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    if (FirebaseQuery.getEnableIap() && PurchaseUtils.isNoAds(this) && FirebaseQuery.getEnableAds()) {
+                        val intent = Intent(this, PremiumActivity::class.java)
+                        intent.putExtra(AppConstants.IS_FROM_ONBOARDING, true)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             } else {
                 val intent = Intent(this, LanguageActivity::class.java)
                 startActivity(intent)
             }
         }
-
         finish()
     }
 
@@ -328,7 +334,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         )
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressedCallback() {}
 
     override fun onDestroy() {
         bp?.release()

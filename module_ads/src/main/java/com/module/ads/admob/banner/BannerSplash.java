@@ -29,9 +29,11 @@ public class BannerSplash {
         return bannerSplash;
     }
 
+    public static boolean isLoaded = false;
+
     public void loadAds(Activity activity, CallbackBanner callbackBanner) {
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableBanner()) {
-            Log.e("TAG", "loadAds: banner splash");
+            Log.e("TamBT", "loadAds: banner splash");
             mAdView = new AdView(activity);
             mAdView.setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, BannerUtils.getAdWidth(activity)));
 
@@ -40,7 +42,7 @@ public class BannerSplash {
             mAdView.setAdListener(new AdListener() {
                 @Override
                 public void onAdLoaded() {
-                    Log.e("TAG", "onAdLoaded: banner splash");
+                    Log.e("TamBT", "onAdLoaded: banner splash");
                     if (callbackBanner != null) {
                         callbackBanner.onLoaded();
                     }
@@ -48,6 +50,7 @@ public class BannerSplash {
 
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    isLoaded = true;
                     if (callbackBanner != null) {
                         callbackBanner.onFailed();
                     }
@@ -55,6 +58,7 @@ public class BannerSplash {
 
                 @Override
                 public void onAdImpression() {
+                    isLoaded = true;
                     FBTracking.funcTrackingIAA(activity, FBTracking.EVENT_AD_IMPRESSION);
                 }
             });
@@ -68,7 +72,7 @@ public class BannerSplash {
 
     public void showAds(LinearLayout lnBanner) {
         try {
-            Log.e("TAG", "showAds: banner splash");
+            Log.e("TamBT", "showAds: banner splash");
             if (mAdView != null) {
                 lnBanner.setVisibility(View.VISIBLE);
                 lnBanner.removeAllViews();

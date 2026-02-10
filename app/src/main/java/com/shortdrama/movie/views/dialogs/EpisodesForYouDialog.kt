@@ -104,12 +104,12 @@ class EpisodesForYouDialog(
             genreAdapter.submitData(it)
         }
 
-        episodesMovieAdapter = EpisodesMovieAdapter(activity, numberLockMovie) { episodeIndex ->
-            val item = episodesList[episodeIndex]
-            onClickItemEpisode(item.id)
-            Log.e("MOVIE", "EpisodesMovieAdapter: ${item.name} - ${item.id}")
-            dismiss()
-        }
+//        episodesMovieAdapter = EpisodesMovieAdapter(activity, numberLockMovie) { episodeIndex ->
+//            val item = episodesList[episodeIndex]
+//            onClickItemEpisode(item.id)
+//            Log.e("MOVIE", "EpisodesMovieAdapter: ${item.name} - ${item.id}")
+//            dismiss()
+//        }
         mBinding.rvEpisode.apply {
             setHasFixedSize(true)
             adapter = episodesMovieAdapter

@@ -82,7 +82,7 @@ class LanguageDupActivity : BaseActivity<ActivityLanguageBinding>() {
 
     override fun onClickViews() {
         super.onClickViews()
-        mBinding.ivDone.setOnClickListener {
+        mBinding.btnNext.setOnClickListener {
             logEvent("language_2_click_save")
             onClickDone()
         }

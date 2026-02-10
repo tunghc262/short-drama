@@ -30,6 +30,7 @@ object AppConstants {
     const val DATABASE_NAME = "short_drama"
     const val OBJ_MOVIE = "OBJ_MOVIE"
     const val CURRENT_EPISODE_MOVIE_ID = "CURRENT_EPISODE_MOVIE_ID"
+    const val IS_FROM_ONBOARDING = "IS_FROM_ONBOARDING"
 }
 
 

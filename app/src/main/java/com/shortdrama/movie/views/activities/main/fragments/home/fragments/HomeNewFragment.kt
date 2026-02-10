@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.ads.admob.inters.IntersInApp
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeNewBinding
@@ -34,7 +35,7 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
     override fun initViews() {
         super.initViews()
         initAdapter()
-        viewModel.loadExclusive(200)
+//        viewModel.loadExclusive(200)
         viewModel.loadNewRelease(61)
         viewModel.loadComingSoon(64)
     }
@@ -101,9 +102,11 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
 
     private fun goToWatchMovie(movie: TVSeriesUiModel) {
         activity?.let { act ->
-            val intent = Intent(act, PlayMovieActivity::class.java)
-            intent.putExtra(AppConstants.OBJ_MOVIE, movie)
-            startActivity(intent)
+            IntersInApp.getInstance().showAds(act) {
+                val intent = Intent(act, PlayMovieActivity::class.java)
+                intent.putExtra(AppConstants.OBJ_MOVIE, movie)
+                startActivity(intent)
+            }
         }
     }
 }

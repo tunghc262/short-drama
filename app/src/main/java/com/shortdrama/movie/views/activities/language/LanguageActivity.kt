@@ -33,9 +33,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         super.initViews()
         initAdmob()
         initList()
-        mBinding.ivDone.alpha = 0.5f
-        mBinding.ivDone.isEnabled = false
-
+        mBinding.btnNext.goneView()
         if (AppUtils.isSession2()) {
             logEvent("language_1_ss_view")
         } else {

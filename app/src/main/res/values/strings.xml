@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">BaseTemplate</string>
+    <string name="app_name" translatable="false">Short Drama</string>
     <string name="notification_channel_id" translatable="false">Notification Channel</string>
 
     <string name="text_ads_shown">Ads are about to be shown…</string>
@@ -10,9 +10,9 @@
     <string name="text_get_started">Get Started!</string>
     <string name="text_save">Save</string>
 
-    <string name="title_on_boarding_1">Title On Board 1</string>
-    <string name="title_on_boarding_2">Title On Board 2</string>
-    <string name="title_on_boarding_3">Title On Board 3</string>
+    <string name="title_on_boarding_1">Top Drama Stories</string>
+    <string name="title_on_boarding_2">Diverse Film Genres</string>
+    <string name="title_on_boarding_3">Smooth Streaming</string>
     <string name="title_on_boarding_4">Title On Board 4</string>
     <string name="content_on_boarding_1">Content On Board 1</string>
     <string name="content_on_boarding_2">Content On Board 2</string>
@@ -98,4 +98,5 @@
     <string name="summary">Summary</string>
     <string name="you_might_like">You Might Like</string>
     <string name="intro_new">Enjoy the full range of top-rated, exclusive films as soon as they are released.</string>
+    <string name="next">Next</string>
 </resources>

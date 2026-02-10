@@ -23,15 +23,24 @@
         tools:replace="android:fullBackupContent"
         tools:targetApi="31">
         <activity
-            android:name=".views.activities.play_movie.PlayMovieActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.StatusWhite"
+            android:name=".views.activities.see_more.SeeMorePopularActivity"
             android:exported="false" />
+        <activity
+            android:name=".views.activities.play_movie.PlayMovieActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.StatusWhite" />
         <activity
             android:name=".views.activities.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.StatusWhite" />
+            android:theme="@style/Theme.StatusWhite">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".views.activities.language.LanguageActivity"
             android:hardwareAccelerated="true"
@@ -57,13 +66,7 @@
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.StatusWhite">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.StatusWhite"></activity>
         <activity
             android:name=".views.activities.premium.PremiumActivity"
             android:screenOrientation="portrait"

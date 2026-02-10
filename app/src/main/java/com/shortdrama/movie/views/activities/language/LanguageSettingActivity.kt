@@ -34,7 +34,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageBinding>() {
 
     override fun onClickViews() {
         super.onClickViews()
-        mBinding.ivDone.onClickAlpha {
+        mBinding.btnNext.onClickAlpha {
             onClickDone()
         }
         mBinding.ivBack.onClickAlpha {

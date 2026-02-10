@@ -8,6 +8,8 @@ import android.os.Build
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.module.ads.admob.banner.BannerInApp
+import com.module.ads.admob.inters.IntersInApp
 import com.module.ads.remote.FirebaseQuery
 import com.module.ads.views.UpdateAppDialog
 import com.shortdrama.movie.R
@@ -23,6 +25,7 @@ import com.shortdrama.movie.views.activities.main.fragments.my_list.MyListFragme
 import com.shortdrama.movie.views.activities.main.fragments.profile.ProfileFragment
 import com.shortdrama.movie.views.bases.BaseActivity
 import com.shortdrama.movie.views.bases.ext.goneView
+import com.shortdrama.movie.views.bases.ext.showToastByString
 import com.shortdrama.movie.views.bases.ext.visibleView
 import com.shortdrama.movie.views.dialogs.ExitAppDialog
 import com.shortdrama.movie.views.dialogs.NotificationFullscreenPermissionDialog
@@ -46,6 +49,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initViews() {
         super.initViews()
+        BannerInApp.getInstance().loadAndShow(
+            this,
+            mBinding.lnBanner,
+            FirebaseQuery.getIdBannerInApp()
+        )
+        IntersInApp.getInstance().loadAdsAll(this)
         UpdateAppDialog(this).showDialog()
         initPermission()
         ivNavCurrent = mBinding.ivMainHome
@@ -71,15 +80,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             mBinding.vpMain.setCurrentItem(0, false)
         }
         mBinding.llNavForYou.setOnClickListener {
-            if (mBinding.vpMain.currentItem == 1) return@setOnClickListener
-            mBinding.clMovieLast.goneView()
-            setOnClickBottomNav(
-                mBinding.ivMainForYou,
-                R.drawable.ic_foryou,
-                R.drawable.ic_foryou_selected,
-                mBinding.tvMainForYou
-            )
-            mBinding.vpMain.setCurrentItem(1, false)
+            showToastByString("Coming Soon!")
+//            if (mBinding.vpMain.currentItem == 1) return@setOnClickListener
+//            mBinding.clMovieLast.goneView()
+//            setOnClickBottomNav(
+//                mBinding.ivMainForYou,
+//                R.drawable.ic_foryou,
+//                R.drawable.ic_foryou_selected,
+//                mBinding.tvMainForYou
+//            )
+//            mBinding.vpMain.setCurrentItem(1, false)
         }
         mBinding.llNavMyList.setOnClickListener {
             if (mBinding.vpMain.currentItem == 2) return@setOnClickListener
@@ -228,7 +238,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressedCallback() {
         val dialogExit = ExitAppDialog(this, onClickExit = {
             finish()
             exitProcess(0)

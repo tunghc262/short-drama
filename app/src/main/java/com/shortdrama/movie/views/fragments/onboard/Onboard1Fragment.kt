@@ -39,7 +39,7 @@ class Onboard1Fragment : BaseFragment<FragmentOnboardBinding>() {
     override fun initViews() {
         super.initViews()
 
-        Glide.with(this).load(R.drawable.img_on_board_1).into(mBinding.ivThumb)
+        Glide.with(this).load(R.drawable.img_onboard_1).into(mBinding.ivThumb)
         mBinding.tvTitle.setTextById(R.string.title_on_boarding_1)
         mBinding.tvContent.setTextById(R.string.content_on_boarding_1)
 

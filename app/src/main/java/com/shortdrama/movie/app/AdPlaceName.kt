@@ -9,4 +9,5 @@ enum class AdPlaceName {
     NATIVE_ONBOARD_FULLSCREEN_2,
 
     NATIVE_MAIN,
+    NATIVE_POPULAR,
 }

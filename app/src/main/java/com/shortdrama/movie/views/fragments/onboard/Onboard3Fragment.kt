@@ -9,9 +9,11 @@ import com.module.ads.remote.FirebaseQuery
 import com.module.ads.utils.PurchaseUtils
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AdPlaceName
+import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentOnboardBinding
 import com.shortdrama.movie.utils.AppUtils
 import com.shortdrama.movie.views.activities.main.MainActivity
+import com.shortdrama.movie.views.activities.premium.PremiumActivity
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.invisibleView
@@ -35,7 +37,7 @@ class Onboard3Fragment : BaseFragment<FragmentOnboardBinding>() {
 
     override fun initViews() {
         super.initViews()
-        Glide.with(this).load(R.drawable.img_on_board_1).into(mBinding.ivThumb)
+        Glide.with(this).load(R.drawable.img_onboard_3).into(mBinding.ivThumb)
         mBinding.tvTitle.setTextById(R.string.title_on_boarding_3)
         mBinding.tvContent.setTextById(R.string.content_on_boarding_3)
         mBinding.rlAdsFullscreen.goneView()
@@ -127,9 +129,16 @@ class Onboard3Fragment : BaseFragment<FragmentOnboardBinding>() {
 
     private fun onNextActivity() {
         activity?.let { act ->
-            val intent = Intent(act, MainActivity::class.java)
-            startActivity(intent)
-            act.finish()
+            if (FirebaseQuery.getEnableIap() && !PurchaseUtils.isNoAds(context) && FirebaseQuery.getEnableAds()) {
+                val intent = Intent(act, PremiumActivity::class.java)
+                intent.putExtra(AppConstants.IS_FROM_ONBOARDING, true)
+                startActivity(intent)
+                act.finish()
+            } else {
+                val intent = Intent(act, MainActivity::class.java)
+                startActivity(intent)
+                act.finish()
+            }
         }
     }
 

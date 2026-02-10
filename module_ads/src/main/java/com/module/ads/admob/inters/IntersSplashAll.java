@@ -13,6 +13,7 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.module.ads.admob.banner.BannerSplash;
 import com.module.ads.callback.CallbackAd;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
@@ -66,7 +67,7 @@ public class IntersSplashAll {
                         new InterstitialAdLoadCallback() {
                             @Override
                             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                                Log.e("TAG", "onAdLoaded: inter splash high");
+                                Log.e("TamBT", "onAdLoaded: inter splash high");
                                 isLoadingHigh = false;
                                 interstitialAdHigh = interstitialAd;
                                 isTimeOut = true;
@@ -74,7 +75,7 @@ public class IntersSplashAll {
                                 interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                     @Override
                                     public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                        Log.e("TAG", "onAdFailedToShowFullScreenContent: inter splash high");
+                                        Log.e("TamBT", "onAdFailedToShowFullScreenContent: inter splash high");
                                     }
 
                                     @Override
@@ -107,7 +108,18 @@ public class IntersSplashAll {
                                             @Override
                                             public void run() {
                                                 if (activity != null && !activity.isFinishing()) {
-                                                    interstitialAd.show(activity);
+                                                    if (!BannerSplash.isLoaded) {
+                                                        new Handler().postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                Log.e("TamBT", "show inters splash: high delay");
+                                                                interstitialAd.show(activity);
+                                                            }
+                                                        }, 3000L);
+                                                    } else {
+                                                        Log.e("TamBT", " show inters splash: high not delay");
+                                                        interstitialAd.show(activity);
+                                                    }
                                                 }
                                             }
                                         }, 500L);
@@ -117,7 +129,7 @@ public class IntersSplashAll {
 
                             @Override
                             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                Log.e("TAG", "onAdFailedToLoad: inter splash high");
+                                Log.e("TamBT", "onAdFailedToLoad: inter splash high " + loadAdError.getMessage());
                                 isLoadingHigh = false;
                                 interstitialAdHigh = null;
                                 int numberOf2Floor = (int) FirebaseQuery.getNumberOf2Floor();
@@ -158,7 +170,7 @@ public class IntersSplashAll {
                         new InterstitialAdLoadCallback() {
                             @Override
                             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                                Log.e("TAG", "onAdLoaded: inter splash 2 high");
+                                Log.e("TamBT", "onAdLoaded: inter splash 2 high");
                                 isLoadingHigh2 = false;
                                 interstitialAdHigh2 = interstitialAd;
                                 isTimeOut = true;
@@ -166,7 +178,7 @@ public class IntersSplashAll {
                                 interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                     @Override
                                     public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                        Log.e("TAG", "onAdFailedToShowFullScreenContent: inter splash 2 high");
+                                        Log.e("TamBT", "onAdFailedToShowFullScreenContent: inter splash 2 high");
                                     }
 
                                     @Override
@@ -199,7 +211,18 @@ public class IntersSplashAll {
                                             @Override
                                             public void run() {
                                                 if (activity != null && !activity.isFinishing()) {
-                                                    interstitialAd.show(activity);
+                                                    if (!BannerSplash.isLoaded) {
+                                                        new Handler().postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                Log.e("TamBT", "show inters splash 2: high delay");
+                                                                interstitialAd.show(activity);
+                                                            }
+                                                        }, 3000L);
+                                                    } else {
+                                                        Log.e("TamBT", " show inters splash 2 : high not delay");
+                                                        interstitialAd.show(activity);
+                                                    }
                                                 }
                                             }
                                         }, 500L);
@@ -291,7 +314,20 @@ public class IntersSplashAll {
                                             @Override
                                             public void run() {
                                                 if (activity != null && !activity.isFinishing()) {
-                                                    interstitialAd.show(activity);
+                                                    if (activity != null && !activity.isFinishing()) {
+                                                        if (!BannerSplash.isLoaded) {
+                                                            new Handler().postDelayed(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Log.e("TamBT", "show inters splash 3: high delay");
+                                                                    interstitialAd.show(activity);
+                                                                }
+                                                            }, 3000L);
+                                                        } else {
+                                                            Log.e("TamBT", " show inters splash 3 : high not delay");
+                                                            interstitialAd.show(activity);
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }, 500L);
@@ -336,7 +372,7 @@ public class IntersSplashAll {
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                            Log.e("TAG", "onAdLoaded: inter splash normal");
+                            Log.e("TamBT", "onAdLoaded: inter splash normal");
                             isTimeOut = true;
                             isLoadingNormal = false;
                             interstitialAdNormal = interstitialAd;
@@ -344,7 +380,7 @@ public class IntersSplashAll {
                             interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                    Log.e("TAG", "onAdFailedToShowFullScreenContent: inter splash normal");
+                                    Log.e("TamBT", "onAdFailedToShowFullScreenContent: inter splash normal");
                                 }
 
                                 @Override
@@ -376,7 +412,20 @@ public class IntersSplashAll {
                                         @Override
                                         public void run() {
                                             if (activity != null && !activity.isFinishing()) {
-                                                interstitialAd.show(activity);
+                                                if (activity != null && !activity.isFinishing()) {
+                                                    if (!BannerSplash.isLoaded) {
+                                                        new Handler().postDelayed(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                Log.e("TamBT", "show inters splash normal delay");
+                                                                interstitialAd.show(activity);
+                                                            }
+                                                        }, 3000L);
+                                                    } else {
+                                                        Log.e("TamBT", " show inters splash normal not delay");
+                                                        interstitialAd.show(activity);
+                                                    }
+                                                }
                                             }
                                         }
                                     }, 500L);
@@ -387,7 +436,7 @@ public class IntersSplashAll {
 
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            Log.e("TAG", "onAdFailedToLoad: inter splash normal");
+                            Log.e("TamBT", "onAdFailedToLoad: inter splash normal" + loadAdError.getMessage());
                             isTimeOut = true;
                             destroyAd();
                             if (mCallBack != null) {

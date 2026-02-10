@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.ads.admob.inters.IntersInApp
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeCategoryBinding
@@ -51,9 +52,13 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
     private fun initListCate() {
         activity?.let { act ->
             categoryAdapter = HomeCategoryAdapter { obj ->
-                val intent = Intent(act, PlayMovieActivity::class.java)
-                intent.putExtra(AppConstants.OBJ_MOVIE, obj)
-                startActivity(intent)
+                activity?.let { act ->
+                    IntersInApp.getInstance().showAds(act) {
+                        val intent = Intent(act, PlayMovieActivity::class.java)
+                        intent.putExtra(AppConstants.OBJ_MOVIE, obj)
+                        startActivity(intent)
+                    }
+                }
             }
             mBinding.rvMovieCategories.adapter = categoryAdapter
         }

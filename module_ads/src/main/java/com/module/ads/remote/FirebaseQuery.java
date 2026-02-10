@@ -54,6 +54,7 @@ public class FirebaseQuery {
     public static final String ID_NATIVE_FULL_ONBOARD_2_HIGH = "native_full_scr_2_high";
 
     public static final String ID_NATIVE_IN_APP = "native_in_app";
+    public static final String ID_NATIVE_MAIN = "native_main";
 
     public static final String ID_OPEN_START = "open_start";
     public static final String ID_OPEN_RESUME = "open_resume";
@@ -113,6 +114,7 @@ public class FirebaseQuery {
 
     public static final String KEY_API_TOKEN = "api_key_token";
     public static final String KEY_API = "api_key";
+    public static final String SHOW_IAP = "show_iap";
 
     private FirebaseRemoteConfig remoteConfig;
     private GoogleMobileAdsConsentManager googleMobileAdsConsentManager;
@@ -309,6 +311,9 @@ public class FirebaseQuery {
         String idNativeInApp = firebaseRemoteConfig.getString(ID_NATIVE_IN_APP);
         setIdNativeInApp(idNativeInApp);
 
+        String idNativeMain = firebaseRemoteConfig.getString(ID_NATIVE_MAIN);
+        setIdNativeMain(idNativeMain);
+
         String idBannerSplash = firebaseRemoteConfig.getString(ID_BANNER_SPLASH);
         setIdBannerSplash(idBannerSplash);
 
@@ -374,6 +379,9 @@ public class FirebaseQuery {
 
         boolean enableIntersInAppHigh = firebaseRemoteConfig.getBoolean(ENABLE_INTERS_IN_APP_HIGH);
         setEnableIntersInAppHigh(enableIntersInAppHigh);
+
+        boolean enableIap = firebaseRemoteConfig.getBoolean(SHOW_IAP);
+        setEnableIap(enableIap);
 
         long timeScrollNativeFullScr = firebaseRemoteConfig.getLong(TIME_SCROLL_NATIVE_FULL_SCR);
         setTimeScrollNativeFullScr(timeScrollNativeFullScr);
@@ -696,6 +704,14 @@ public class FirebaseQuery {
         return SharePreferUtils.getString(ID_NATIVE_IN_APP, "");
     }
 
+    public static void setIdNativeMain(String idAds) {
+        SharePreferUtils.putString(ID_NATIVE_MAIN, idAds);
+    }
+
+    public static String getIdNativeMain() {
+        return SharePreferUtils.getString(ID_NATIVE_MAIN, "");
+    }
+
     public static void setIdOpenStart(String idAds) {
         SharePreferUtils.putString(ID_OPEN_START, idAds);
     }
@@ -894,6 +910,14 @@ public class FirebaseQuery {
 
     public static boolean getEnableIntersInAppHigh() {
         return SharePreferUtils.getBoolean(ENABLE_INTERS_IN_APP_HIGH, true);
+    }
+
+    public static void setEnableIap(boolean enable) {
+        SharePreferUtils.putBoolean(SHOW_IAP, enable);
+    }
+
+    public static boolean getEnableIap() {
+        return SharePreferUtils.getBoolean(SHOW_IAP, true);
     }
 
     public static void setTimeScrollNativeFullScr(long timeScroll) {

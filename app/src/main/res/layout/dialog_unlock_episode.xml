@@ -18,7 +18,7 @@
             android:layout_height="@dimen/_20sdp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_close_2"
-            app:tint="#80FFFFFF" />
+            app:tint="#70FFFFFF" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -48,43 +48,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_content"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/btn_upgrade"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/bg_btn_ug_premium"
+                android:gravity="start|center"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:src="@drawable/ic_diamond" />
+
                 <TextView
-                    android:id="@+id/tv_remove"
-                    style="@style/TextViewMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:background="@drawable/bg_btn_cancel"
+                    style="@style/TextViewSemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:gravity="center"
-                    android:text="Remove"
+                    android:text="Upgrade Premium"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_13ssp" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/btn_watch_ads"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_btn_fill_24"
+                android:gravity="start|center"
                 android:orientation="horizontal">
 
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:src="@drawable/ic_ads" />
+
                 <TextView
-                    android:id="@+id/tv_cancel"
-                    style="@style/TextViewMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:background="@drawable/bg_btn_fill_24"
-                    android:gravity="center"
-                    android:text="Cancel"
+                    style="@style/TextViewSemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:text="Watch ads"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
+                    android:textSize="@dimen/_13ssp" />
+            </RelativeLayout>
 
 
         </LinearLayout>

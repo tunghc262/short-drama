@@ -1,0 +1,47 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="49dp"
+    android:height="49dp"
+    android:viewportWidth="49"
+    android:viewportHeight="49">
+    <path
+        android:pathData="M0.25 24.25c0-13.25 10.75-24 24-24h0c13.25 0 24 10.75 24 24v0c0 13.25-10.75 24-24 24h0c-13.25 0-24-10.75-24-24z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="2.37"
+                android:startY="0.25"
+                android:endX="46.13"
+                android:endY="48.25">
+                <item
+                    android:color="#FF392F59"
+                    android:offset="0"/>
+                <item
+                    android:color="#FF1C0D3B"
+                    android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:strokeWidth="0.5"
+        android:pathData="M0.25 24.25c0-13.25 10.75-24 24-24h0c13.25 0 24 10.75 24 24v0c0 13.25-10.75 24-24 24h0c-13.25 0-24-10.75-24-24z">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="1.07"
+                android:startY="0.25"
+                android:endX="47.25"
+                android:endY="46.25">
+                <item
+                    android:color="#FF59498B"
+                    android:offset="0"/>
+                <item
+                    android:color="#FF271251"
+                    android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#FFEFEAFF"
+        android:pathData="M32.25 14.25c2.2 0 4 1.8 4 4v12c0 2.2-1.8 4-4 4h-16c-2.2 0-4-1.8-4-4v-12c0-2.2 1.8-4 4-4h16Zm-7.21 6v8h3.2c2.53 0 4.01-1.5 4.01-4.03v-0.01c0-2.53-1.49-3.96-4-3.96h-3.21Zm-5.86 0l-2.93 8h1.84l0.64-1.94h2.97l0.63 1.94h1.85l-2.93-8h-2.07Zm8.86 1.38c1.54 0 2.42 0.92 2.42 2.58v0.02c0 1.73-0.85 2.63-2.42 2.63H26.8v-5.23h1.24Zm-7.8 0.17l1.05 3.26h-2.15l1.06-3.26h0.03Z"/>
+</vector>

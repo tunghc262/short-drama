@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.play_movie
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -33,6 +34,7 @@ import com.shortdrama.movie.utils.ShareUtils
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.GenreMovieAdapter
 import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.FavoriteViewModel
 import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.HistoryViewModel
+import com.shortdrama.movie.views.activities.premium.PremiumActivity
 import com.shortdrama.movie.views.bases.BaseActivity
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.isNetwork
@@ -210,7 +212,11 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                         playEpisode(currentEpisodeIndex)
                     },
                     numberLockMovie = FirebaseQuery.getNumberLockMovie().toInt(),
-                    currentEpisodeIndex = currentEpisodeIndex
+                    currentEpisodeIndex = currentEpisodeIndex,
+                    onClickUpgrade = {
+                        val intent = Intent(this, PremiumActivity::class.java)
+                        startActivity(intent)
+                    }
                 ).show()
             }
         }
