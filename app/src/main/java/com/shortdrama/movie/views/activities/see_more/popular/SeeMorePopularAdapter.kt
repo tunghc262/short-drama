@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.admob.natives.NativeInAppAll
 import com.module.ads.callback.CallbackNative
 import com.module.ads.remote.FirebaseQuery
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AdPlaceName
 import com.shortdrama.movie.databinding.ItemAdsPopularBinding
@@ -24,12 +25,12 @@ const val TYPE_ADS = 2
 
 class SeeMorePopularAdapter(
     val activity: Activity,
-    private val onClickItem: (TVSeriesUiModel) -> Unit,
+    private val onClickItem: (DramaWithGenresUIModel) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    internal var listMovie = arrayListOf<TVSeriesUiModel>()
+    internal var listMovie = arrayListOf<DramaWithGenresUIModel>()
 
-    fun submitData(newData: List<TVSeriesUiModel>) {
+    fun submitData(newData: List<DramaWithGenresUIModel>) {
         listMovie.clear()
         listMovie.addAll(newData)
         notifyDataSetChanged()
@@ -91,8 +92,8 @@ class SeeMorePopularAdapter(
     }
 
     inner class ItemAdsViewHolder(val mBinding: ItemAdsPopularBinding) :
-        BaseViewHolder<TVSeriesUiModel>(mBinding) {
-        override fun bindData(obj: TVSeriesUiModel) {
+        BaseViewHolder<DramaWithGenresUIModel>(mBinding) {
+        override fun bindData(obj: DramaWithGenresUIModel) {
             initAds()
         }
 
@@ -124,18 +125,27 @@ class SeeMorePopularAdapter(
 
     inner class MovieViewHolder(private var binding: ItemMoviePopularBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindData(item: TVSeriesUiModel) {
+        fun bindData(item: DramaWithGenresUIModel) {
             onClickView(item)
-            Glide.with(binding.ivBannerMovie.context).load(item.posterPath)
-                .into(binding.ivBannerMovie)
-            binding.tvMovieName.text = item.name
-            binding.tvMovieStyle.text = item.genres?.get(0)?.name
-            if (layoutPosition in listOf(0, 1, 3)) {
+            StorageSource.getStorageDownloadUrl(
+                item.dramaUIModel.dramaThumb,
+                onSuccess = { uri ->
+                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("TAG_drama_thumb", "bindData: ")
+                })
+            binding.tvMovieName.text = item.dramaUIModel.dramaName
+            if (item.dramaGenresUIModel.isNotEmpty()) {
+                binding.tvMovieStyle.text = item.dramaGenresUIModel[0].genresName
+            }
+            val listHot = if (listMovie[1].isAds) listOf(0, 2, 3) else listOf(0, 1, 3)
+            if (layoutPosition in listHot) {
                 binding.tvHot.visibleView()
             }
         }
 
-        private fun onClickView(item: TVSeriesUiModel) {
+        private fun onClickView(item: DramaWithGenresUIModel) {
             binding.root.setOnClickListener {
                 onClickItem(item)
             }

@@ -5,8 +5,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.admob.inters.IntersInApp
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeNewBinding
@@ -29,15 +29,14 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
     private val viewModel: HomeNewViewModel by activityViewModels()
     private var exclusiveAdapter: MovieExclusiveAdapter? = null
     private var newReleaseAdapter: HomeCategoryAdapter? = null
-    private var listComingSoon: MutableList<TVSeriesUiModel> = mutableListOf()
+    private var listComingSoon: MutableList<DramaWithGenresUIModel> = mutableListOf()
     private var comingSoonAdapter: MovieComingSoonAdapter? = null
     override fun getLayoutFragment(): Int = R.layout.fragment_home_new
     override fun initViews() {
         super.initViews()
         initAdapter()
-//        viewModel.loadExclusive(200)
-        viewModel.loadNewRelease(61)
-        viewModel.loadComingSoon(64)
+        viewModel.loadNewRelease()
+        viewModel.loadComingSoon()
     }
 
     private fun initAdapter() {
@@ -74,20 +73,15 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.exclusive.collect { list ->
-                    if (list.isNotEmpty()) {
-                        val randomList = list.shuffled().take(6)
-                        exclusiveAdapter?.submitData(randomList)
-                    }
+                    exclusiveAdapter?.submitData(list)
                 }
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.newRelease.collect { list ->
-                    if (list.isNotEmpty()) {
-                        val randomList = list.shuffled().take(9)
-                        newReleaseAdapter?.submitData(randomList)
-                    }
+
+                    newReleaseAdapter?.submitData(list)
                 }
             }
         }
@@ -95,18 +89,15 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.comingSoon.collect { list ->
-                    if (list.isNotEmpty()) {
-                        val randomList = list.shuffled().take(4)
-                        listComingSoon.clear()
-                        listComingSoon.addAll(randomList)
-                        comingSoonAdapter?.submitData(randomList)
-                    }
+                    listComingSoon.clear()
+                    listComingSoon.addAll(list)
+                    comingSoonAdapter?.submitData(list)
                 }
             }
         }
     }
 
-    private fun goToWatchMovie(movie: TVSeriesUiModel) {
+    private fun goToWatchMovie(movie: DramaWithGenresUIModel) {
         activity?.let { act ->
             IntersInApp.getInstance().showAds(act) {
                 val intent = Intent(act, PlayMovieActivity::class.java)

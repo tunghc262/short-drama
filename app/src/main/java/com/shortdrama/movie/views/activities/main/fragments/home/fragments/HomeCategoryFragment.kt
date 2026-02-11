@@ -5,8 +5,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.admob.inters.IntersInApp
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeCategoryBinding
@@ -28,14 +28,14 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
     private var tabCategoryAdapter: TabCategoryAdapter? = null
     private var categoryAdapter: HomeCategoryAdapter? = null
 
-    private var listMovie = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart1 = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart2 = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart3 = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart4 = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart5 = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart6 = mutableListOf<TVSeriesUiModel>()
-    private var listMoviePart7 = mutableListOf<TVSeriesUiModel>()
+    private var listMovie = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart1 = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart2 = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart3 = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart4 = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart5 = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart6 = mutableListOf<DramaWithGenresUIModel>()
+    private var listMoviePart7 = mutableListOf<DramaWithGenresUIModel>()
 
     private var currentIndexTab = 0
 
@@ -46,7 +46,7 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
         super.initViews()
         initListCate()
         initTabCate()
-        viewModel.loadCategory(45)
+        viewModel.loadCategory()
     }
 
     private fun initListCate() {

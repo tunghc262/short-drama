@@ -219,7 +219,7 @@ class OnboardActivity : BaseActivity<ActivityOnboardBinding>() {
         countTimer2?.start()
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressedCallback() {}
 
     override fun onDestroy() {
         NativeOnboard1.getInstance().destroyNativeAd()

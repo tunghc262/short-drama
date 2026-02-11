@@ -16,6 +16,6 @@ interface MovieFavoriteDao {
     @Query("SELECT * FROM ${AppConstants.TABLE_NAME_MOVIE_FAVORITE}")
     fun getAllMovieFavorites(): Flow<List<MovieFavoriteEntity>>
 
-    @Query("DELETE FROM ${AppConstants.TABLE_NAME_MOVIE_FAVORITE} WHERE id = :movieId")
-    suspend fun deleteMovieFavoriteById(movieId: Int)
+    @Query("DELETE FROM ${AppConstants.TABLE_NAME_MOVIE_FAVORITE} WHERE drama_id = :dramaId")
+    suspend fun deleteMovieFavoriteById(dramaId: String)
 }

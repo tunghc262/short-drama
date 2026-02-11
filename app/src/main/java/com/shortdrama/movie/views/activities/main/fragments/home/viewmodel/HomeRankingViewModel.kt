@@ -1,12 +1,10 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core_api.model.ui.TVSeriesUiModel
-import com.example.core_api.repository.MoviesRepository
-import com.shortdrama.movie.utils.DataUtils
-import com.shortdrama.movie.views.bases.ext.toMonthDayOrdinal
+import com.module.core_api_storage.common.toUIModel
+import com.module.core_api_storage.database.DramaRepository
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,14 +13,17 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeRankingViewModel @Inject constructor(
-    private val moviesRepository: MoviesRepository
+    private val dramaRepository: DramaRepository
 ) : ViewModel() {
-    private val _ranking = MutableStateFlow<List<TVSeriesUiModel>>(emptyList())
+    private val _ranking = MutableStateFlow<List<DramaWithGenresUIModel>>(emptyList())
     val ranking = _ranking.asStateFlow()
-
-    fun loadRanking(genresId: Int) {
+    fun loadRanking() {
         viewModelScope.launch {
-            _ranking.value = moviesRepository.getTVSeriesByGenreID(genresId)
+            dramaRepository.getAllDramaByCategoryWithGenres("category3")
+                .collect { list ->
+                    val uiList = list.map { it.toUIModel() }
+                    _ranking.value = uiList
+                }
         }
     }
 }

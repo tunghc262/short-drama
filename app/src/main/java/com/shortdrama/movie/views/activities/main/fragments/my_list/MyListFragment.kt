@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.main.fragments.my_list
 
+import android.content.Intent
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.shortdrama.movie.R
@@ -7,6 +8,7 @@ import com.shortdrama.movie.databinding.FragmentMyListBinding
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.HomeViewPager
 import com.shortdrama.movie.views.activities.main.fragments.my_list.fragments.FavoriteFragment
 import com.shortdrama.movie.views.activities.main.fragments.my_list.fragments.HistoryFragment
+import com.shortdrama.movie.views.activities.search.SearchActivity
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setTextColorById
@@ -97,6 +99,13 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>() {
             mBinding.vpMainForYou.currentItem = 1
             resetTab()
             setUpTabHistory()
+        }
+
+        mBinding.llSearch.onClickAlpha {
+            activity?.let { act ->
+                val intent = Intent(act, SearchActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

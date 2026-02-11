@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core_api.model.core.GenreTVSeriesModel
+import com.module.core_api_storage.model_ui.DramaGenresUIModel
 import com.shortdrama.movie.databinding.ItemGenreFavoriteBinding
 
 class GenreFavoriteAdapter() : RecyclerView.Adapter<GenreFavoriteAdapter.ItemViewHolder>() {
-    private val listData = mutableListOf<GenreTVSeriesModel>()
+    private val listData = mutableListOf<DramaGenresUIModel>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitData(newData: List<GenreTVSeriesModel>) {
+    fun submitData(newData: List<DramaGenresUIModel>) {
         listData.clear()
         listData.addAll(newData)
         notifyDataSetChanged()
@@ -41,8 +41,8 @@ class GenreFavoriteAdapter() : RecyclerView.Adapter<GenreFavoriteAdapter.ItemVie
 
     inner class ItemViewHolder(private val binding: ItemGenreFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindData(obj: GenreTVSeriesModel) {
-            binding.tvTitle.text = obj.name
+        fun bindData(obj: DramaGenresUIModel) {
+            binding.tvTitle.text = obj.genresName
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.shortdrama.movie.views.activities.play_movie
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -15,15 +16,15 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.core_api.model.core.EpisodeModel
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.google.gson.Gson
 import com.module.ads.remote.FirebaseQuery
+import com.module.core_api_storage.model_ui.DramaEpisodeUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.data.entity.HistoryWatchEntity
@@ -37,7 +38,6 @@ import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.Hi
 import com.shortdrama.movie.views.activities.premium.PremiumActivity
 import com.shortdrama.movie.views.bases.BaseActivity
 import com.shortdrama.movie.views.bases.ext.goneView
-import com.shortdrama.movie.views.bases.ext.isNetwork
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.showToastByString
 import com.shortdrama.movie.views.bases.ext.visibleView
@@ -56,10 +56,12 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private val viewModel: PlayMovieViewModel by viewModels()
     private val favouriteViewModel: FavoriteViewModel by viewModels()
     private val historyViewModel: HistoryViewModel by viewModels()
-    private var movieModel: TVSeriesUiModel? = null
-    private var episodesList: List<EpisodeModel> = listOf()
+
+    private var uriPoster: String? = null
+    private var movieModel: DramaWithGenresUIModel? = null
+    private var episodesList: MutableList<DramaEpisodeUIModel> = mutableListOf()
     private var currentEpisodeIndex: Int = 0
-    private var currentEpisode: EpisodeModel? = null
+    private var currentEpisode: DramaEpisodeUIModel? = null
     private var currentResolutionIndex: Int = 0
     private var player: ExoPlayer? = null
     private lateinit var trackSelector: DefaultTrackSelector
@@ -82,20 +84,23 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
     override fun initViews() {
         super.initViews()
+        Log.e("MOVIEEE", "initViews: 1")
         genreMovieAdapter = GenreMovieAdapter()
         trackSelector = DefaultTrackSelector(this)
         intent?.let {
             if (it.hasExtra(AppConstants.OBJ_MOVIE)) {
+                Log.e("MOVIEEE", "initViews: 2")
                 movieModel = it.getParcelableExtra(AppConstants.OBJ_MOVIE)
-                Log.e("MOVIE", "initViews: ${movieModel?.id}")
-            }
-        }
-
-        if (isNetwork()) {
-            movieModel?.let { obj ->
-                obj.numberOfSeasons?.let { season ->
-                    viewModel.loadEpisodes(obj.id, season)
+                if (movieModel != null) {
+                    Log.e("MOVIEEE", "initViews: 3")
+                    movieModel?.dramaUIModel?.dramaId?.let { dramaId ->
+                        Log.e("MOVIEEE", "initViews: 4")
+                        viewModel.loadEpisodes(
+                            dramaId
+                        )
+                    }
                 }
+                Log.e("MOVIEEE", "initViews: ${movieModel?.dramaUIModel?.dramaId}")
             }
         }
         setupPlayer()
@@ -104,7 +109,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
             layoutManager =
                 LinearLayoutManager(this@PlayMovieActivity, LinearLayoutManager.HORIZONTAL, false)
         }
-        genreMovieAdapter?.submitData(movieModel?.genres ?: emptyList())
+        genreMovieAdapter?.submitData(movieModel?.dramaGenresUIModel ?: emptyList())
     }
 
     override fun onClickViews() {
@@ -178,24 +183,23 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         mBinding.llButtonFavourite.onClickAlpha {
             movieModel?.let { obj ->
                 val favouriteMovieEntity = MovieFavoriteEntity(
-                    id = obj.id,
-                    name = obj.name,
-                    originalName = obj.originalName,
-                    overview = obj.overview,
-                    numberOfSeasons = obj.numberOfSeasons,
-                    numberOfEpisodes = obj.numberOfEpisodes,
-                    posterPath = obj.posterPath,
-                    genres = obj.genres
+                    dramaId = obj.dramaUIModel.dramaId,
+                    name = obj.dramaUIModel.dramaName,
+                    description = obj.dramaUIModel.dramaDescription,
+                    thumb = obj.dramaUIModel.dramaThumb,
+                    totalEpisode = obj.dramaUIModel.totalEpisode,
+                    dramaTrailer = obj.dramaUIModel.dramaTrailer,
+                    genresJson = Gson().toJson(obj.dramaGenresUIModel),
                 )
-                if (SharePrefUtils.getBoolean(obj.id.toString(), false)) {
+                if (SharePrefUtils.getBoolean(obj.dramaUIModel.dramaId, false)) {
                     RemoveFavouriteDialog(this) {
                         mBinding.ivFavourite.setImageResource(R.drawable.ic_mark)
-                        SharePrefUtils.putBoolean(obj.id.toString(), false)
-                        favouriteViewModel.removeFromFavourite(favouriteMovieEntity.id)
+                        SharePrefUtils.putBoolean(obj.dramaUIModel.dramaId, false)
+                        favouriteViewModel.removeFromFavourite(favouriteMovieEntity.dramaId)
                     }.show()
                 } else {
                     mBinding.ivFavourite.setImageResource(R.drawable.ic_mark_selected)
-                    SharePrefUtils.putBoolean(obj.id.toString(), true)
+                    SharePrefUtils.putBoolean(obj.dramaUIModel.dramaId, true)
                     favouriteViewModel.addToFavourite(favouriteMovieEntity)
                 }
             }
@@ -205,7 +209,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                 EpisodesMovieDialog(
                     this@PlayMovieActivity,
                     listEpisodes = episodesList,
-                    tvSeriesUiModel = it,
+                    dramaWithGenresUIModel = it,
                     onClickItemEpisode = { episodeIndex ->
                         currentEpisodeIndex = episodeIndex
                         currentEpisode = episodesList[episodeIndex]
@@ -216,7 +220,8 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                     onClickUpgrade = {
                         val intent = Intent(this, PremiumActivity::class.java)
                         startActivity(intent)
-                    }
+                    },
+                    uriPoster = uriPoster
                 ).show()
             }
         }
@@ -233,13 +238,15 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     override fun observerData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.listEpisodes.collectLatest { response ->
-                    response?.episodes?.let { list ->
-                        episodesList = list
+                viewModel.listEpisodes.collectLatest { list ->
+                    Log.e("MOVIEEE", "observerData list episode ${list.size}: ")
+                    if (list.isNotEmpty()) {
+                        episodesList.clear()
+                        episodesList.addAll(list)
                         val startEpisodeId =
-                            intent.getIntExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, -1)
+                            intent.getStringExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID)
                         currentEpisodeIndex =
-                            list.indexOfFirst { it.id == startEpisodeId }.coerceAtLeast(0)
+                            list.indexOfFirst { it.episodeId == startEpisodeId }.coerceAtLeast(0)
                         currentEpisode = list[currentEpisodeIndex]
                         playEpisode(currentEpisodeIndex)
                     }
@@ -260,6 +267,15 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
     private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(state: Int) {
+            Log.d(
+                "StorageSuccess", when (state) {
+                    Player.STATE_IDLE -> "IDLE"
+                    Player.STATE_BUFFERING -> "BUFFERING"
+                    Player.STATE_READY -> "READY"
+                    Player.STATE_ENDED -> "ENDED"
+                    else -> "UNKNOWN"
+                }
+            )
             mBinding.pbLoading.visibility =
                 if (state == Player.STATE_BUFFERING) View.VISIBLE else View.GONE
             if (state == Player.STATE_READY) {
@@ -290,43 +306,54 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     }
 
     private fun playEpisode(index: Int) {
+        Log.e("MOVIEEE", "playEpisode: 1")
         if (index !in episodesList.indices) return
+        Log.e("MOVIEEE", "playEpisode: 2")
         currentEpisodeIndex = index
         val episode = episodesList[index]
-        // 1. Check Unlock
-        val key = "${movieModel?.id}_${episode.id}"
-        val numberLockMovie = FirebaseQuery.getNumberLockMovie()
-        if (episode.episodeNumber >= numberLockMovie && !SharePrefUtils.getBoolean(key, false)) {
-            player?.pause()
-//            showUnlockDialog(episode, key)
-            return
-        }
-        // 2. Update UI
         updateUI(episode)
-        // 3. Prepare Media
-        val dataSourceFactory = DefaultHttpDataSource.Factory()
-        val mediaSource = HlsMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(MediaItem.fromUri(episode.link))
-
-        player?.apply {
-            setMediaSource(mediaSource)
-            prepare()
-            playWhenReady = true
-            // Reset history tracking
-            isSavedHistory = false
-            watchTime = 0L
-            lastPosition = 0L
-        }
-        startSeekBarUpdate()
+        StorageSource.getStorageDownloadUrl(
+            episode.urlStream,
+            onSuccess = { downloadUrl ->
+                Log.d("MOVIEEE", "URL video: $downloadUrl")
+                val uri = Uri.parse(downloadUrl)
+                val mediaItem = MediaItem.fromUri(uri)
+                player?.apply {
+                    setMediaItem(mediaItem)
+                    prepare()
+                    playWhenReady = true
+                    play()
+                }
+                // Reset history
+                isSavedHistory = false
+                watchTime = 0L
+                lastPosition = 0L
+                startSeekBarUpdate()
+            },
+            onError = { error ->
+                showToastByString("Không tải được video")
+                Log.e("MOVIEEE", "Path: ${episode.urlStream}", error)
+            }
+        )
     }
 
-    private fun updateUI(episode: EpisodeModel) {
-        mBinding.tvTitle.text = "EP.${episode.episodeNumber} - ${movieModel?.name}"
-        mBinding.tvMovieName.text = movieModel?.name
-        Glide.with(this).load(movieModel?.posterPath).into(mBinding.ivBannerMovie)
-        Glide.with(this).load(episode.stillPath).into(mBinding.ivStillLoad)
+    private fun updateUI(episode: DramaEpisodeUIModel) {
+        mBinding.tvTitle.text = "EP.${episode.serialNo} - ${movieModel?.dramaUIModel?.dramaName}"
+        mBinding.tvMovieName.text = movieModel?.dramaUIModel?.dramaName
+        movieModel?.dramaUIModel?.dramaThumb?.let {
+            StorageSource.getStorageDownloadUrl(
+                it,
+                onSuccess = { uri ->
+                    Log.d("MOVIEEE", "URL thumb: $uri")
+                    uriPoster = uri
+                    Glide.with(this).load(uri).into(mBinding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("MOVIEEE", "bindData: onError")
+                })
+        }
         mBinding.ivStillLoad.visibleView()
-        val isFav = SharePrefUtils.getBoolean(movieModel?.id.toString(), false)
+        val isFav = SharePrefUtils.getBoolean(movieModel?.dramaUIModel?.dramaId.toString(), false)
         mBinding.ivFavourite.setImageResource(if (isFav) R.drawable.ic_mark_selected else R.drawable.ic_mark)
     }
 
@@ -344,8 +371,9 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
                             if (lastPosition > 0) watchTime += (position - lastPosition)
                             lastPosition = position
                         }
-                        if (!isSavedHistory && watchTime >= 10_000L) {
+                        if (!isSavedHistory && watchTime >= 5_000L) {
                             saveToHistory()
+                            isSavedHistory = true
                         }
                     }
                 }
@@ -358,20 +386,18 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private fun saveToHistory() {
         isSavedHistory = true
         movieModel?.let {
-            Log.e("MOVIE", "saveToHistory: ${it.name}")
+            Log.e("MOVIE", "saveToHistory: ${it.dramaUIModel.dramaId}")
             val currentEp = episodesList[currentEpisodeIndex]
             val history = HistoryWatchEntity(
-                it.id,
-                it.name,
-                it.originalName,
-                it.overview,
-                it.numberOfSeasons,
-                it.numberOfEpisodes,
-                it.posterPath,
-                it.genres,
-                currentEp.id,
-                currentEp.episodeNumber,
-                System.currentTimeMillis()
+                dramaId = it.dramaUIModel.dramaId,
+                name = it.dramaUIModel.dramaName,
+                description = it.dramaUIModel.dramaDescription,
+                thumb = it.dramaUIModel.dramaThumb,
+                totalEpisode = it.dramaUIModel.totalEpisode,
+                dramaTrailer = it.dramaUIModel.dramaTrailer,
+                genresJson = Gson().toJson(it.dramaGenresUIModel),
+                episodeId = currentEp.episodeId,
+                episodeNo = currentEp.serialNo,
             )
             historyViewModel.addToWatchHistory(history)
         }
@@ -397,7 +423,8 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
             mBinding.clInfo,
             mBinding.sbVideo,
             mBinding.tvSpeed,
-            mBinding.tvQuality
+            mBinding.tvQuality,
+            mBinding.viewOverlay
         )
         views.forEach { view ->
             view.visibility = View.VISIBLE
@@ -415,7 +442,8 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
             mBinding.clInfo,
             mBinding.sbVideo,
             mBinding.tvSpeed,
-            mBinding.tvQuality
+            mBinding.tvQuality,
+            mBinding.viewOverlay
         )
         views.forEach { view ->
             view.animate().alpha(0f).setDuration(300).withEndAction {
@@ -438,6 +466,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         super.onDestroy()
         updateSeekBar?.let { handler.removeCallbacks(it) }
         hideHandler.removeCallbacks(hideControlsRunnable)
+        Log.e("MOVIEE", "onDestroy: ")
         player?.release()
         player = null
     }

@@ -33,7 +33,7 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun removeFromFavourite(movieId: Int) {
+    fun removeFromFavourite(movieId: String) {
         viewModelScope.launch {
             movieFavoriteRepository.deleteFavouriteMovie(movieId)
         }

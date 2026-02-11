@@ -18,6 +18,7 @@ import com.module.ads.admob.inters.IntersSplashAll
 import com.module.ads.callback.CallbackBanner
 import com.module.ads.remote.FirebaseQuery
 import com.module.ads.utils.PurchaseUtils
+import com.module.core_api_storage.remote_config.RemoteConfigSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.ActivitySplashBinding
@@ -35,6 +36,8 @@ import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.isNetwork
 import com.shortdrama.movie.views.bases.ext.onCheckActivityIsFinished
 import com.shortdrama.movie.views.dialogs.NoInternetDialog
+import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -42,6 +45,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.concurrent.atomic.AtomicBoolean
 
+@AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
@@ -56,6 +60,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private var fromNotification = false
     private var fromNotificationFullScreen = false
     private var alarmManager: AlarmManager? = null
+
+    @Inject
+    lateinit var remoteConfigSource: RemoteConfigSource
 
     private val requestNotificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -208,8 +215,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         val isChooseLanguage = SharePrefUtils.getBoolean(AppConstants.KEY_SELECT_LANGUAGE, false)
         FirebaseQuery.isChooseLanguage = isChooseLanguage
         FirebaseQuery.isFromNotification = fromNotification
-
         FirebaseQuery.getConfigController().initFirebase(this@SplashActivity) {
+            remoteConfigSource.initRemoteConfigDatabase()
             nextActivity()
         }
         FirebaseQuery.getConfigController().setCallbackTimeout {
@@ -239,7 +246,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 SharePrefUtils.getBoolean(AppConstants.KEY_SELECT_LANGUAGE, false)
             if (isChooseLanguage) {
                 if (FirebaseQuery.getIsShowLanguageReopen()) {
-                    val intent = Intent(this, LanguageActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 } else {
                     if (FirebaseQuery.getEnableIap() && PurchaseUtils.isNoAds(this) && FirebaseQuery.getEnableAds()) {
@@ -252,7 +259,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     }
                 }
             } else {
-                val intent = Intent(this, LanguageActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
         }

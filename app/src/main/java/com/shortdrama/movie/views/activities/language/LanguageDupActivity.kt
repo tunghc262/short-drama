@@ -175,7 +175,7 @@ class LanguageDupActivity : BaseActivity<ActivityLanguageBinding>() {
         }
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressedCallback() {}
 
     override fun onDestroy() {
         NativeLanguageDupAll.getInstance().destroyAd()

@@ -1,18 +1,18 @@
 package com.shortdrama.movie.views.dialogs
 
 import android.app.Activity
-import android.content.Intent
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core_api.model.core.EpisodeModel
-import com.example.core_api.model.ui.TVSeriesUiModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.module.core_api_storage.model_ui.DramaEpisodeUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.DialogEpisodesMovieBinding
 import com.shortdrama.movie.views.activities.play_movie.adapter.EpisodesMovieAdapter
@@ -28,10 +28,11 @@ class EpisodesMovieDialog(
     val activity: Activity,
     val numberLockMovie: Int,
     val currentEpisodeIndex: Int,
-    val listEpisodes: List<EpisodeModel>,
-    val tvSeriesUiModel: TVSeriesUiModel,
+    val listEpisodes: List<DramaEpisodeUIModel>,
+    val dramaWithGenresUIModel: DramaWithGenresUIModel,
     val onClickItemEpisode: (Int) -> Unit,
     val onClickUpgrade: () -> Unit,
+    val uriPoster: String? = null,
 ) : BaseBottomSheetDialog<DialogEpisodesMovieBinding>(activity) {
 
     private var episodesMovieAdapter: EpisodesMovieAdapter? = null
@@ -62,16 +63,16 @@ class EpisodesMovieDialog(
     }
 
     private fun initData() {
-        Glide.with(activity).load(tvSeriesUiModel.posterPath).into(mBinding.ivBannerMovie)
-        mBinding.tvMovieName.text = tvSeriesUiModel.name
-        mBinding.tvDes.text = tvSeriesUiModel.overview
+        Glide.with(activity).load(uriPoster?.toUri()).into(mBinding.ivBannerMovie)
+        mBinding.tvMovieName.text = dramaWithGenresUIModel.dramaUIModel.dramaDescription
+        mBinding.tvDes.text = dramaWithGenresUIModel.dramaUIModel.dramaDescription
 
         val genreAdapter = GenreEpisodesAdapter()
         mBinding.rvGenre.apply {
             adapter = genreAdapter
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         }
-        tvSeriesUiModel.genres?.let {
+        dramaWithGenresUIModel.dramaGenresUIModel.let {
             Log.e("MOVIE", "LIST genre ${it.size}: ")
             genreAdapter.submitData(it)
         }
@@ -110,7 +111,11 @@ class EpisodesMovieDialog(
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
             }
         });
-        episodesMovieAdapter?.submitListData(listEpisodes, currentEpisodeIndex, tvSeriesUiModel)
+        episodesMovieAdapter?.submitListData(
+            listEpisodes,
+            currentEpisodeIndex,
+            dramaWithGenresUIModel
+        )
     }
 
     override fun onClickViews() {

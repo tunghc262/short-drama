@@ -15,7 +15,7 @@ import com.shortdrama.movie.data.entity.UserEntity
 
 @Database(
     entities = [UserEntity::class, MovieFavoriteEntity::class, HistoryWatchEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(AppConverter::class)

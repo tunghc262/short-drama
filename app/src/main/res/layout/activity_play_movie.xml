@@ -42,6 +42,7 @@
                 android:textColor="@color/color_65636B"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -210,6 +211,21 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <View
+                android:id="@+id/view_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/bg_overlay_ob"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guideline" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_info"
                 android:layout_width="0dp"
@@ -373,5 +389,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

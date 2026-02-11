@@ -8,8 +8,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import com.module.ads.admob.inters.IntersInApp
+import com.module.core_api_storage.model_ui.DramaGenresUIModel
+import com.module.core_api_storage.model_ui.DramaUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHistotyBinding
@@ -31,25 +35,27 @@ class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
     @OptIn(UnstableApi::class)
     override fun initViews() {
         super.initViews()
-        historyAdapter = HistoryMovieAdapter { obj ->
+        historyAdapter = HistoryMovieAdapter {
+            val movies = DramaWithGenresUIModel(
+                dramaUIModel = DramaUIModel(
+                    dramaId = it.dramaId,
+                    dramaName = it.name,
+                    dramaDescription = it.description,
+                    dramaThumb = it.thumb,
+                    dramaTrailer = it.dramaTrailer,
+                    totalEpisode = it.totalEpisode
+                ),
+                dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
+                    it.genresJson,
+                    object : TypeToken<List<DramaGenresUIModel>>() {}.type
+                ) ?: emptyList(),
+            )
             activity?.let { act ->
-                val movies = TVSeriesUiModel(
-                    id = obj.id,
-                    name = obj.name,
-                    originalName = obj.originalName,
-                    overview = obj.overview,
-                    numberOfSeasons = obj.numberOfSeasons,
-                    numberOfEpisodes = obj.numberOfEpisodes,
-                    posterPath = obj.posterPath,
-                    genres = obj.genres
-                )
-                activity?.let { act ->
-                    IntersInApp.getInstance().showAds(act) {
-                        val intent = Intent(act, PlayMovieActivity::class.java)
-                        intent.putExtra(AppConstants.OBJ_MOVIE, movies)
-                        intent.putExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, obj.episodeCurrentId)
-                        startActivity(intent)
-                    }
+                IntersInApp.getInstance().showAds(act) {
+                    val intent = Intent(act, PlayMovieActivity::class.java)
+                    intent.putExtra(AppConstants.OBJ_MOVIE, movies)
+                    intent.putExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, it.episodeId)
+                    startActivity(intent)
                 }
             }
         }

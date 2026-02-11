@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.core_api.model.core.GenreTVSeriesModel
 import com.shortdrama.movie.app.AppConstants
 import kotlinx.parcelize.Parcelize
 
@@ -12,27 +11,27 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = AppConstants.TABLE_NAME_MOVIE_FAVORITE)
 data class MovieFavoriteEntity(
     @PrimaryKey
-    @ColumnInfo(name = "id")
-    var id: Int,
+    @ColumnInfo(name = "drama_id")
+    val dramaId: String,
 
     @ColumnInfo(name = "name")
-    var name: String?,
+    val name: String,
 
-    @ColumnInfo(name = "originalName")
-    var originalName: String?,
+    @ColumnInfo(name = "description")
+    val description: String,
 
-    @ColumnInfo(name = "overview")
-    var overview: String?,
+    @ColumnInfo(name = "thumb")
+    val thumb: String,
 
-    @ColumnInfo(name = "numberOfSeasons")
-    var numberOfSeasons: Int?,
+    @ColumnInfo(name = "total_episode")
+    val totalEpisode: String,
 
-    @ColumnInfo(name = "numberOfEpisodes")
-    var numberOfEpisodes: Int?,
+    @ColumnInfo(name = "drama_trailer")
+    val dramaTrailer: String,
 
-    @ColumnInfo(name = "posterPath")
-    var posterPath: String?,
+    @ColumnInfo(name = "genres_json")
+    val genresJson: String,
 
-    @ColumnInfo(name = "genres")
-    val genres: List<GenreTVSeriesModel>?,
+    @ColumnInfo(name = "timestamp")
+    val timestamp: Long = System.currentTimeMillis()
 ) : Parcelable

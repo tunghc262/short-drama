@@ -16,6 +16,7 @@
             android:id="@+id/iv_close"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
+            android:tint="@color/white_40"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_close" />
 
@@ -28,7 +29,7 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:gravity="center"
             android:text="@string/text_feedback"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/_14ssp" />
 
         <TextView
@@ -40,7 +41,7 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:gravity="center"
             android:text="@string/text_feedback_content"
-            android:textColor="@color/black"
+            android:textColor="@color/white_60"
             android:textSize="@dimen/_10ssp" />
 
         <EditText
@@ -55,7 +56,7 @@
             android:hint="Enter content here..."
             android:padding="@dimen/_12sdp"
             android:textColor="@color/black"
-            android:textColorHint="@color/color_black_50"
+            android:textColorHint="@color/white_60"
             android:textSize="@dimen/_12ssp" />
 
         <TextView

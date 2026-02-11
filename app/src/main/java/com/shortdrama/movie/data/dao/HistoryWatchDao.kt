@@ -16,6 +16,6 @@ interface HistoryWatchDao {
     @Query("SELECT * FROM ${AppConstants.TABLE_NAME_HISTORY_WATCH}")
     fun getAllHistoryMovie(): Flow<List<HistoryWatchEntity>>
 
-    @Query("DELETE FROM ${AppConstants.TABLE_NAME_HISTORY_WATCH} WHERE id = :movieId")
+    @Query("DELETE FROM ${AppConstants.TABLE_NAME_HISTORY_WATCH} WHERE drama_id = :movieId")
     suspend fun deleteHistoryMovieById(movieId: String)
 }

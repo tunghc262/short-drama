@@ -18,7 +18,7 @@ class MovieFavoriteRepository @Inject constructor(
         return movieFavoriteDao.getAllMovieFavorites()
     }
 
-    suspend fun deleteFavouriteMovie(movieId: Int) {
+    suspend fun deleteFavouriteMovie(movieId: String) {
         movieFavoriteDao.deleteMovieFavoriteById(movieId)
     }
 }

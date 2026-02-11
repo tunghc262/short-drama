@@ -9,11 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.admob.inters.IntersInApp
 import com.module.ads.admob.natives.NativeInAppAll
 import com.module.ads.callback.CallbackNative
 import com.module.ads.remote.FirebaseQuery
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AdPlaceName
 import com.shortdrama.movie.app.AppConstants
@@ -41,7 +41,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
 
     private var movieTopChartAdapter: MovieTopChartAdapter? = null
 
-    private var listPopular: MutableList<TVSeriesUiModel> = mutableListOf()
+    private var listPopular: MutableList<DramaWithGenresUIModel> = mutableListOf()
 
     private var newReleaseAdapter: MovieNewReleaseAdapter? = null
     private val viewModel: HomeTrendingViewModel by activityViewModels()
@@ -71,11 +71,10 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
         Log.e("TAG", "init HomeTrendingFragment")
         setUpBannerTrending()
         setUpRecyclerView()
-        viewModel.loadMovieBanner(68)
-        viewModel.loadMoviePopular(60)
-        viewModel.loadMovieNewRelease(61)
-        viewModel.loadMovieTopChart(63)
-
+        viewModel.loadMovieBanner()
+        viewModel.loadMoviePopular()
+        viewModel.loadMovieNewRelease()
+        viewModel.loadMovieTopChart()
     }
 
     private fun setUpRecyclerView() {
@@ -135,18 +134,12 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
 
     override fun observerData() {
         super.observerData()
-
         //banner
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.banner.collect { list ->
                     if (list.isNotEmpty()) {
-                        if (list.size >= 6) {
-                            val randomList = list.shuffled().take(6)
-                            homeTrendingBannerAdapter?.submitData(randomList)
-                        } else {
-                            homeTrendingBannerAdapter?.submitData(list)
-                        }
+                        homeTrendingBannerAdapter?.submitData(list)
                     }
                 }
             }
@@ -157,10 +150,9 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.popular.collect { list ->
                     if (list.isNotEmpty()) {
-                        val randomList = list.shuffled().take(6)
                         listPopular.clear()
-                        listPopular.addAll(randomList)
-                        moviePopularAdapter?.submitData(randomList)
+                        listPopular.addAll(list)
+                        moviePopularAdapter?.submitData(list)
                     }
                 }
             }
@@ -180,8 +172,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.topChart.collect { list ->
                     if (list.isNotEmpty()) {
-                        val randomList = list.shuffled().take(6)
-                        movieTopChartAdapter?.submitData(randomList)
+                        movieTopChartAdapter?.submitData(list)
                     }
                 }
             }
@@ -189,7 +180,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
     }
 
     @OptIn(UnstableApi::class)
-    private fun goToWatchMovie(movie: TVSeriesUiModel) {
+    private fun goToWatchMovie(movie: DramaWithGenresUIModel) {
         activity?.let { act ->
             IntersInApp.getInstance().showAds(act) {
                 val intent = Intent(act, PlayMovieActivity::class.java)

@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.main.fragments.home
 
+import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.shortdrama.movie.R
@@ -10,6 +11,7 @@ import com.shortdrama.movie.views.activities.main.fragments.home.fragments.HomeC
 import com.shortdrama.movie.views.activities.main.fragments.home.fragments.HomeNewFragment
 import com.shortdrama.movie.views.activities.main.fragments.home.fragments.HomeRankingFragment
 import com.shortdrama.movie.views.activities.main.fragments.home.fragments.HomeTrendingFragment
+import com.shortdrama.movie.views.activities.search.SearchActivity
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.customs.ViewCommon
@@ -66,8 +68,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onClickViews()
         activity?.let { act ->
             mBinding.llSearch.onClickAlpha {
-//                val intent = Intent(act, MovieSearchActivity::class.java)
-//                startActivity(intent)
+                val intent = Intent(act, SearchActivity::class.java)
+                startActivity(intent)
             }
         }
     }

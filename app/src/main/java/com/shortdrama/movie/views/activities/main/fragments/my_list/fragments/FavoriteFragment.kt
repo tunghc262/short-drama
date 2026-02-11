@@ -6,8 +6,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import com.module.ads.admob.inters.IntersInApp
+import com.module.core_api_storage.model_ui.DramaGenresUIModel
+import com.module.core_api_storage.model_ui.DramaUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentFavoriteBinding
@@ -42,8 +46,8 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
                 },
                 onClickRemoveItem = {
                     RemoveFavouriteDialog(act) {
-                        viewModel.removeFromFavourite(it.id)
-                        SharePrefUtils.putBoolean(it.id.toString(), false)
+                        viewModel.removeFromFavourite(it.dramaUIModel.dramaId)
+                        SharePrefUtils.putBoolean(it.dramaUIModel.dramaId, false)
                     }.show()
                 }
             )
@@ -65,15 +69,19 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
                         mBinding.rvMyFavourite.visibleView()
                         mBinding.llEmpty.goneView()
                         val movies = list.map {
-                            TVSeriesUiModel(
-                                id = it.id,
-                                name = it.name,
-                                originalName = it.originalName,
-                                overview = it.overview,
-                                numberOfSeasons = it.numberOfSeasons,
-                                numberOfEpisodes = it.numberOfEpisodes,
-                                posterPath = it.posterPath,
-                                genres = it.genres
+                            DramaWithGenresUIModel(
+                                dramaUIModel = DramaUIModel(
+                                    dramaId = it.dramaId,
+                                    dramaName = it.name,
+                                    dramaDescription = it.description,
+                                    dramaThumb = it.thumb,
+                                    dramaTrailer = it.dramaTrailer,
+                                    totalEpisode = it.totalEpisode
+                                ),
+                                dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
+                                    it.genresJson,
+                                    object : TypeToken<List<DramaGenresUIModel>>() {}.type
+                                ) ?: emptyList(),
                             )
                         }
                         favouriteAdapter?.submitData(movies)

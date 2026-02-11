@@ -6,5 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class DramaWithGenresUIModel(
     val dramaUIModel: DramaUIModel,
-    val dramaGenresUIModel: List<DramaGenresUIModel>
+    val dramaGenresUIModel: List<DramaGenresUIModel>,
+    val dateComingSoon: Long = 0L,
+    val isAds: Boolean = false,
 ) : Parcelable

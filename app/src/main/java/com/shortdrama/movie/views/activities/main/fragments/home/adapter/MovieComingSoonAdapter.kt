@@ -3,7 +3,8 @@ package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemMovieComingSoonBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
@@ -15,11 +16,11 @@ import com.shortdrama.movie.views.bases.ext.visibleView
 class MovieComingSoonAdapter(
     val isShowDateOriginal: Boolean = true,
     val iShowDateNumeric: Boolean = false,
-    val onClickItem: (TVSeriesUiModel) -> Unit
-) : BaseRecyclerView<TVSeriesUiModel>() {
+    val onClickItem: (DramaWithGenresUIModel) -> Unit
+) : BaseRecyclerView<DramaWithGenresUIModel>() {
     override fun getItemLayout(): Int = R.layout.item_movie_coming_soon
 
-    override fun submitData(newData: List<TVSeriesUiModel>) {
+    override fun submitData(newData: List<DramaWithGenresUIModel>) {
         list.clear()
         list.addAll(newData)
         notifyDataSetChanged()
@@ -27,33 +28,43 @@ class MovieComingSoonAdapter(
 
     override fun setData(
         binding: ViewDataBinding,
-        item: TVSeriesUiModel,
+        item: DramaWithGenresUIModel,
         layoutPosition: Int
     ) {
         if (binding is ItemMovieComingSoonBinding) {
-            binding.tvDateNumeric.text = item.dateComingSoon?.toDayMonthNumeric()
-            binding.tvDateOriginal.text = item.dateComingSoon?.toMonthDayOrdinal()
+            binding.tvDateNumeric.text = item.dateComingSoon.toDayMonthNumeric()
+            binding.tvDateOriginal.text = item.dateComingSoon.toMonthDayOrdinal()
             if (!isShowDateOriginal) {
                 binding.llDateOriginal.goneView()
-            }else{
+            } else {
                 binding.llDateOriginal.visibleView()
             }
             if (!iShowDateNumeric) {
                 binding.tvDateNumeric.goneView()
-            }else{
+            } else {
                 binding.tvDateNumeric.visibleView()
             }
-            Glide.with(binding.ivBannerMovie.context).load(item.posterPath)
-                .into(binding.ivBannerMovie)
-            binding.tvMovieName.text = item.name
-            if (item.genres?.isNotEmpty() == true){
-                binding.tvMovieStyle.text = item.genres?.get(0)?.name
+            StorageSource.getStorageDownloadUrl(
+                item.dramaUIModel.dramaThumb,
+                onSuccess = { uri ->
+                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("TAG", "bindData: ")
+                })
+            binding.tvMovieName.text = item.dramaUIModel.dramaName
+            if (item.dramaGenresUIModel.isNotEmpty()) {
+                binding.tvMovieStyle.text = item.dramaGenresUIModel[0].genresName
             }
-            Log.e("DATE_TEST", item.dateComingSoon?.toMonthDayOrdinal() ?: "null")
+            Log.e("DATE_TEST", item.dateComingSoon.toMonthDayOrdinal() )
         }
     }
 
-    override fun onClickViews(binding: ViewDataBinding, obj: TVSeriesUiModel, layoutPosition: Int) {
+    override fun onClickViews(
+        binding: ViewDataBinding,
+        obj: DramaWithGenresUIModel,
+        layoutPosition: Int
+    ) {
         super.onClickViews(binding, obj, layoutPosition)
         if (binding is ItemMovieComingSoonBinding) {
             binding.root.setOnClickListener {

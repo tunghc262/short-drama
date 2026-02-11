@@ -29,7 +29,7 @@ class HomeRankingFragment : BaseFragment<FragmentHomeRankingBinding>() {
     override fun initViews() {
         super.initViews()
         activity?.let { act ->
-            homeRankingAdapter = HomeRankingAdapter(act) { movie ->
+            homeRankingAdapter = HomeRankingAdapter(act, false) { movie ->
                 activity?.let { act ->
                     IntersInApp.getInstance().showAds(act) {
                         val intent = Intent(act, PlayMovieActivity::class.java)
@@ -40,7 +40,7 @@ class HomeRankingFragment : BaseFragment<FragmentHomeRankingBinding>() {
             }
             mBinding.rcvRanking.adapter = homeRankingAdapter
         }
-        viewModel.loadRanking(65)
+        viewModel.loadRanking()
     }
 
     override fun onClickViews() {

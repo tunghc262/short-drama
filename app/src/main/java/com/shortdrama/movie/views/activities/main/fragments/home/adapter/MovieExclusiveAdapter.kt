@@ -1,18 +1,20 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemMovieExclusiveBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
 
 class MovieExclusiveAdapter(
-    val onClickItem: (TVSeriesUiModel) -> Unit
-) : BaseRecyclerView<TVSeriesUiModel>() {
+    val onClickItem: (DramaWithGenresUIModel) -> Unit
+) : BaseRecyclerView<DramaWithGenresUIModel>() {
     override fun getItemLayout(): Int = R.layout.item_movie_exclusive
 
-    override fun submitData(newData: List<TVSeriesUiModel>) {
+    override fun submitData(newData: List<DramaWithGenresUIModel>) {
         list.clear()
         list.addAll(newData)
         notifyDataSetChanged()
@@ -20,18 +22,30 @@ class MovieExclusiveAdapter(
 
     override fun setData(
         binding: ViewDataBinding,
-        item: TVSeriesUiModel,
+        item: DramaWithGenresUIModel,
         layoutPosition: Int
     ) {
         if (binding is ItemMovieExclusiveBinding) {
-            Glide.with(binding.ivBannerMovie.context).load(item.posterPath)
-                .into(binding.ivBannerMovie)
-            binding.tvMovieName.text = item.name
-            binding.tvMovieStyle.text = item.genres?.get(0)?.name
+            StorageSource.getStorageDownloadUrl(
+                item.dramaUIModel.dramaThumb,
+                onSuccess = { uri ->
+                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("TAG", "bindData: ")
+                })
+            binding.tvMovieName.text = item.dramaUIModel.dramaName
+            if (item.dramaGenresUIModel.isNotEmpty()) {
+                binding.tvMovieStyle.text = item.dramaGenresUIModel[0].genresName
+            }
         }
     }
 
-    override fun onClickViews(binding: ViewDataBinding, obj: TVSeriesUiModel, layoutPosition: Int) {
+    override fun onClickViews(
+        binding: ViewDataBinding,
+        obj: DramaWithGenresUIModel,
+        layoutPosition: Int
+    ) {
         super.onClickViews(binding, obj, layoutPosition)
         if (binding is ItemMovieExclusiveBinding) {
             binding.root.setOnClickListener {

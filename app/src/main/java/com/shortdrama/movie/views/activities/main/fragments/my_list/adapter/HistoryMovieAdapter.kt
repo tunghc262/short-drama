@@ -1,7 +1,12 @@
 package com.shortdrama.movie.views.activities.main.fragments.my_list.adapter
 
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
+import com.module.core_api_storage.model_ui.DramaGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.data.entity.HistoryWatchEntity
 import com.shortdrama.movie.databinding.ItemMovieNewReleaseBinding
@@ -24,11 +29,20 @@ class HistoryMovieAdapter(
         layoutPosition: Int
     ) {
         if (binding is ItemMovieNewReleaseBinding) {
-            Glide.with(binding.ivBannerMovie.context).load(item.posterPath)
-                .into(binding.ivBannerMovie)
+            StorageSource.getStorageDownloadUrl(
+                item.thumb,
+                onSuccess = { uri ->
+                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("TAG_drama_thumb", "bindData: ")
+                })
+            val list = Gson().fromJson<List<DramaGenresUIModel>>(
+                item.genresJson,
+                object : TypeToken<List<DramaGenresUIModel>>() {}.type
+            ) ?: emptyList()
             binding.tvMovieName.text = item.name
-            binding.tvMovieStyle.text = item.genres?.get(0)?.name
-
+            binding.tvMovieStyle.text = list[0].genresName
         }
     }
 

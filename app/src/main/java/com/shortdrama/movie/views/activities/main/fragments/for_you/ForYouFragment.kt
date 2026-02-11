@@ -3,7 +3,6 @@ package com.shortdrama.movie.views.activities.main.fragments.for_you
 import androidx.fragment.app.viewModels
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.FragmentForyouBinding
-import com.shortdrama.movie.views.activities.main.fragments.home.adapter.ForYouViewPager
 import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.FavoriteViewModel
 import com.shortdrama.movie.views.bases.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -11,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ForYouFragment : BaseFragment<FragmentForyouBinding>() {
-    private var mainForYouAdapter: ForYouViewPager? = null
+    //    private var mainForYouAdapter: ForYouViewPager? = null
     private val favoriteViewModel: FavoriteViewModel by viewModels()
 
     //    private val forYouViewModel: ForYouViewModel by activityViewModels()

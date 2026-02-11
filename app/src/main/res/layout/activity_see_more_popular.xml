@@ -41,11 +41,12 @@
                 android:textSize="@dimen/_16ssp" />
 
             <ImageView
+                android:id="@+id/btn_search"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:src="@drawable/icon_search"
-                android:visibility="gone" />
+                />
 
         </LinearLayout>
 

@@ -127,7 +127,8 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         }
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressedCallback() {
+    }
 
     override fun onDestroy() {
         NativeLanguageAll.getInstance().destroyAd()

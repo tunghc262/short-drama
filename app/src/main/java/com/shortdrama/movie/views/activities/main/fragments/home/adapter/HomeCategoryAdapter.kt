@@ -1,24 +1,25 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
-import com.shortdrama.movie.databinding.ItemHomeTredingBannerBinding
 import com.shortdrama.movie.databinding.ItemMovieCategoryBinding
 import com.shortdrama.movie.views.bases.BaseViewHolder
 
 class HomeCategoryAdapter(
-    val onClickItem: (TVSeriesUiModel) -> Unit
+    val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.DataViewHolder>() {
     private var mContext: Context? = null
-    private val listItems = arrayListOf<TVSeriesUiModel>()
+    private val listItems = arrayListOf<DramaWithGenresUIModel>()
 
-    fun submitData(listPhotoSlide: List<TVSeriesUiModel>) {
+    fun submitData(listPhotoSlide: List<DramaWithGenresUIModel>) {
         listItems.clear()
         listItems.addAll(listPhotoSlide)
         notifyDataSetChanged()
@@ -48,11 +49,20 @@ class HomeCategoryAdapter(
     }
 
     inner class DataViewHolder(var binding: ItemMovieCategoryBinding) :
-        BaseViewHolder<TVSeriesUiModel>(binding) {
-        override fun bindData(obj: TVSeriesUiModel) {
-            Glide.with(binding.ivBannerMovie.context).load(obj.posterPath).into(binding.ivBannerMovie)
-            binding.tvMovieName.text = obj.originalName
-            binding.tvMovieStyle.text = obj.genres?.get(0)?.name
+        BaseViewHolder<DramaWithGenresUIModel>(binding) {
+        override fun bindData(obj: DramaWithGenresUIModel) {
+            StorageSource.getStorageDownloadUrl(
+                obj.dramaUIModel.dramaThumb,
+                onSuccess = { uri ->
+                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("TAG", "bindData: ")
+                })
+            binding.tvMovieName.text = obj.dramaUIModel.dramaName
+            if (obj.dramaGenresUIModel.isNotEmpty()) {
+                binding.tvMovieStyle.text = obj.dramaGenresUIModel[0].genresName
+            }
             binding.root.setOnClickListener {
                 onClickItem(obj)
             }

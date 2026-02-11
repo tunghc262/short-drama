@@ -1,18 +1,20 @@
-package com.shortdrama.movie.views.activities.main.fragments.home.adapter
+package com.shortdrama.movie.views.activities.search.adapter
 
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.module.core_api_storage.storage.StorageSource
+import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemMoviePopularBinding
+import com.shortdrama.movie.databinding.ItemSearchTrendingBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
 import com.shortdrama.movie.views.bases.ext.visibleView
 
-class MoviePopularAdapter(
+class TrendingSearchAdapter(
     val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : BaseRecyclerView<DramaWithGenresUIModel>() {
-    override fun getItemLayout(): Int = com.shortdrama.movie.R.layout.item_movie_popular
+    override fun getItemLayout(): Int = R.layout.item_search_trending
 
     override fun submitData(newData: List<DramaWithGenresUIModel>) {
         list.clear()
@@ -25,7 +27,7 @@ class MoviePopularAdapter(
         item: DramaWithGenresUIModel,
         layoutPosition: Int
     ) {
-        if (binding is ItemMoviePopularBinding) {
+        if (binding is ItemSearchTrendingBinding) {
             StorageSource.getStorageDownloadUrl(
                 item.dramaUIModel.dramaThumb,
                 onSuccess = { uri ->
@@ -50,7 +52,7 @@ class MoviePopularAdapter(
         layoutPosition: Int
     ) {
         super.onClickViews(binding, obj, layoutPosition)
-        if (binding is ItemMoviePopularBinding) {
+        if (binding is ItemSearchTrendingBinding) {
             binding.root.setOnClickListener {
                 onClickItem(obj)
             }

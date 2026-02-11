@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "65410611941",
-    "project_id": "test-ads-tung",
-    "storage_bucket": "test-ads-tung.firebasestorage.app"
+    "project_number": "59038418695",
+    "project_id": "movietest-674bd",
+    "storage_bucket": "movietest-674bd.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:65410611941:android:45b4ebf73bb21b4d50720c",
+        "mobilesdk_app_id": "1:59038418695:android:05a5e0052f4583f583e7a2",
         "android_client_info": {
-          "package_name": "com.module.config"
+          "package_name": "com.movie.test"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA-9G42TUxF7xr6wW7YwHjh02s72fC0zAw"
+          "current_key": "AIzaSyDjgs87YRR0OWCMhpbwWqvBwCXHihk5gtE"
         }
       ],
       "services": {

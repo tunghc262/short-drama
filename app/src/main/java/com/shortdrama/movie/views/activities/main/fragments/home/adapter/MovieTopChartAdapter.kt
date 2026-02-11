@@ -1,10 +1,12 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
 import android.app.Activity
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemMovieTopChartBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
@@ -12,11 +14,11 @@ import com.shortdrama.movie.views.bases.ext.setTextColorById
 
 class MovieTopChartAdapter(
     val activity: Activity,
-    val onClickItem: (TVSeriesUiModel) -> Unit
-) : BaseRecyclerView<TVSeriesUiModel>() {
+    val onClickItem: (DramaWithGenresUIModel) -> Unit
+) : BaseRecyclerView<DramaWithGenresUIModel>() {
     override fun getItemLayout(): Int = R.layout.item_movie_top_chart
 
-    override fun submitData(newData: List<TVSeriesUiModel>) {
+    override fun submitData(newData: List<DramaWithGenresUIModel>) {
         list.clear()
         list.addAll(newData)
         notifyDataSetChanged()
@@ -24,7 +26,7 @@ class MovieTopChartAdapter(
 
     override fun setData(
         binding: ViewDataBinding,
-        item: TVSeriesUiModel,
+        item: DramaWithGenresUIModel,
         layoutPosition: Int
     ) {
         if (binding is ItemMovieTopChartBinding) {
@@ -85,24 +87,25 @@ class MovieTopChartAdapter(
                     )
                 }
             }
-            Glide.with(binding.ivBannerMovie.context).load(item.posterPath)
-                .into(binding.ivBannerMovie)
-            binding.tvMovieName.text = item.name
-            if (item.overview.isNullOrEmpty()) {
-                binding.tvDescription.text =
-                    "Discover a world of mystery and passion in this spectacular series."
-            } else {
-                binding.tvDescription.text = item.overview
-            }
-            item.genres?.let { list ->
+            StorageSource.getStorageDownloadUrl(
+                item.dramaUIModel.dramaThumb,
+                onSuccess = { uri ->
+                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                },
+                onError = {
+                    Log.e("TAG", "bindData: ")
+                })
+            binding.tvMovieName.text = item.dramaUIModel.dramaName
+            binding.tvDescription.text = item.dramaUIModel.dramaDescription
+            item.dramaGenresUIModel.let { list ->
                 if (list.isNotEmpty()) {
                     if (list.size > 2) {
-                        binding.tvGenre2.text = list[1].name
-                        binding.tvGenre3.text = list[2].name
+                        binding.tvGenre2.text = list[1].genresName
+                        binding.tvGenre3.text = list[2].genresName
                     } else if (list.size > 1) {
-                        binding.tvGenre2.text = list[1].name
+                        binding.tvGenre2.text = list[1].genresName
                     } else {
-                        binding.tvGenre1.text = list[0].name
+                        binding.tvGenre1.text = list[0].genresName
                     }
                 }
             }
@@ -113,7 +116,11 @@ class MovieTopChartAdapter(
         }
     }
 
-    override fun onClickViews(binding: ViewDataBinding, obj: TVSeriesUiModel, layoutPosition: Int) {
+    override fun onClickViews(
+        binding: ViewDataBinding,
+        obj: DramaWithGenresUIModel,
+        layoutPosition: Int
+    ) {
         super.onClickViews(binding, obj, layoutPosition)
         if (binding is ItemMovieTopChartBinding) {
             binding.root.setOnClickListener {

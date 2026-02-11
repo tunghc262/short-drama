@@ -1,174 +1,174 @@
-package com.shortdrama.movie.views.dialogs
-
-import android.app.Activity
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.core_api.model.core.EpisodeModel
-import com.example.core_api.model.ui.TVSeriesUiModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.module.ads.utils.NetworkUtils.isNetwork
-import com.shortdrama.movie.R
-import com.shortdrama.movie.databinding.DialogEpisodesMovieBinding
-import com.shortdrama.movie.views.activities.play_movie.PlayMovieViewModel
-import com.shortdrama.movie.views.activities.play_movie.adapter.EpisodesMovieAdapter
-import com.shortdrama.movie.views.activities.play_movie.adapter.GenreEpisodesAdapter
-import com.shortdrama.movie.views.bases.BaseBottomSheetDialogFragment
-import com.shortdrama.movie.views.bases.ext.goneView
-import com.shortdrama.movie.views.bases.ext.onClickAlpha
-import com.shortdrama.movie.views.bases.ext.setTextColorById
-import com.shortdrama.movie.views.bases.ext.visibleView
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-
-@AndroidEntryPoint
-class EpisodesForYouDialog(
-    val activity: Activity,
-    val numberLockMovie: Int,
-    val currentEpisodeIndex: Int,
-    val tvSeriesUiModel: TVSeriesUiModel,
-    val onClickItemEpisode: (Int) -> Unit,
-) : BaseBottomSheetDialogFragment<DialogEpisodesMovieBinding>() {
-    private val viewModel: PlayMovieViewModel by activityViewModels()
-    private var episodesMovieAdapter: EpisodesMovieAdapter? = null
-    private var currentEpisode: Int = -1
-    override fun getLayoutFragment(): Int = R.layout.dialog_episodes_movie
-    private var episodesList: List<EpisodeModel> = listOf()
-    override fun initViews() {
-        super.initViews()
-        val bottomSheet = mBinding.root.parent as? View
-        bottomSheet?.let { view ->
-            val behavior = BottomSheetBehavior.from(view)
-
-            val displayMetrics = activity.resources.displayMetrics
-            val screenHeight = displayMetrics.heightPixels
-            val maxHeight = (screenHeight * 0.85).toInt()
-            val peekHeight = (screenHeight * 0.45).toInt()
-
-            val layoutParams = view.layoutParams
-            layoutParams.height = maxHeight
-            view.layoutParams = layoutParams
-
-            behavior.maxHeight = maxHeight
-            behavior.peekHeight = peekHeight
-            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-        initData()
-        if (isNetwork(activity)) {
-            tvSeriesUiModel.numberOfSeasons?.let { seasonNo ->
-                viewModel.loadEpisodes(
-                    tvSeriesUiModel.id,
-                    seasonNo
-                )
-            }
-        }
-
-    }
-
-    override fun observerData() {
-        lifecycleScope.launch {
-            viewModel.listEpisodes.collectLatest { episodes ->
-                Log.e("TAG_EPISODE_API", "loadEpisodes2: ${episodes?.id}")
-                episodes?.episodes?.let {
-                    episodesMovieAdapter?.submitListData(
-                        it,
-                        currentEpisode,
-                        tvSeriesUiModel
-                    )
-                    episodesList = it
-                }
-            }
-        }
-    }
-
-    private fun initData() {
-        Glide.with(activity).load(tvSeriesUiModel.posterPath).into(mBinding.ivBannerMovie)
-        mBinding.tvMovieName.text = tvSeriesUiModel.name
-        mBinding.tvDes.text = tvSeriesUiModel.overview
-
-        val genreAdapter = GenreEpisodesAdapter()
-        mBinding.rvGenre.apply {
-            adapter = genreAdapter
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        }
-        tvSeriesUiModel.genres?.let {
-            Log.e("MOVIE", "LIST genre ${it.size}: ")
-            genreAdapter.submitData(it)
-        }
-
-//        episodesMovieAdapter = EpisodesMovieAdapter(activity, numberLockMovie) { episodeIndex ->
-//            val item = episodesList[episodeIndex]
-//            onClickItemEpisode(item.id)
-//            Log.e("MOVIE", "EpisodesMovieAdapter: ${item.name} - ${item.id}")
-//            dismiss()
+//package com.shortdrama.movie.views.dialogs
+//
+//import android.app.Activity
+//import android.util.Log
+//import android.view.MotionEvent
+//import android.view.View
+//import androidx.core.content.res.ResourcesCompat
+//import androidx.fragment.app.activityViewModels
+//import androidx.lifecycle.lifecycleScope
+//import androidx.recyclerview.widget.GridLayoutManager
+//import androidx.recyclerview.widget.LinearLayoutManager
+//import androidx.recyclerview.widget.RecyclerView
+//import com.bumptech.glide.Glide
+//import com.example.core_api.model.core.EpisodeModel
+//import com.example.core_api.model.ui.TVSeriesUiModel
+//import com.google.android.material.bottomsheet.BottomSheetBehavior
+//import com.module.ads.utils.NetworkUtils.isNetwork
+//import com.shortdrama.movie.R
+//import com.shortdrama.movie.databinding.DialogEpisodesMovieBinding
+//import com.shortdrama.movie.views.activities.play_movie.PlayMovieViewModel
+//import com.shortdrama.movie.views.activities.play_movie.adapter.EpisodesMovieAdapter
+//import com.shortdrama.movie.views.activities.play_movie.adapter.GenreEpisodesAdapter
+//import com.shortdrama.movie.views.bases.BaseBottomSheetDialogFragment
+//import com.shortdrama.movie.views.bases.ext.goneView
+//import com.shortdrama.movie.views.bases.ext.onClickAlpha
+//import com.shortdrama.movie.views.bases.ext.setTextColorById
+//import com.shortdrama.movie.views.bases.ext.visibleView
+//import dagger.hilt.android.AndroidEntryPoint
+//import kotlinx.coroutines.flow.collectLatest
+//import kotlinx.coroutines.launch
+//
+//@AndroidEntryPoint
+//class EpisodesForYouDialog(
+//    val activity: Activity,
+//    val numberLockMovie: Int,
+//    val currentEpisodeIndex: Int,
+//    val tvSeriesUiModel: TVSeriesUiModel,
+//    val onClickItemEpisode: (Int) -> Unit,
+//) : BaseBottomSheetDialogFragment<DialogEpisodesMovieBinding>() {
+//    private val viewModel: PlayMovieViewModel by activityViewModels()
+//    private var episodesMovieAdapter: EpisodesMovieAdapter? = null
+//    private var currentEpisode: Int = -1
+//    override fun getLayoutFragment(): Int = R.layout.dialog_episodes_movie
+//    private var episodesList: List<EpisodeModel> = listOf()
+//    override fun initViews() {
+//        super.initViews()
+//        val bottomSheet = mBinding.root.parent as? View
+//        bottomSheet?.let { view ->
+//            val behavior = BottomSheetBehavior.from(view)
+//
+//            val displayMetrics = activity.resources.displayMetrics
+//            val screenHeight = displayMetrics.heightPixels
+//            val maxHeight = (screenHeight * 0.85).toInt()
+//            val peekHeight = (screenHeight * 0.45).toInt()
+//
+//            val layoutParams = view.layoutParams
+//            layoutParams.height = maxHeight
+//            view.layoutParams = layoutParams
+//
+//            behavior.maxHeight = maxHeight
+//            behavior.peekHeight = peekHeight
+//            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
 //        }
-        mBinding.rvEpisode.apply {
-            setHasFixedSize(true)
-            adapter = episodesMovieAdapter
-            layoutManager = GridLayoutManager(activity, 5)
-        }
-        mBinding.rvEpisode.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-            override fun onInterceptTouchEvent(
-                rv: RecyclerView,
-                e: MotionEvent
-            ): Boolean {
-                rv.parent.requestDisallowInterceptTouchEvent(true)
-                return false
-            }
-
-            override fun onTouchEvent(
-                rv: RecyclerView,
-                e: MotionEvent
-            ) {
-            }
-
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-            }
-        });
-    }
-
-    override fun onClickViews() {
-        super.onClickViews()
-        mBinding.llSummary.onClickAlpha {
-            unSelectedTab()
-            mBinding.apply {
-                nsSummaryHand.visibleView()
-                ivLineBottomSummary.visibleView()
-                mBinding.tvSummary.setTextColorById(R.color.white)
-                mBinding.tvSummary.typeface = ResourcesCompat.getFont(activity, R.font.poppins_bold)
-            }
-        }
-        mBinding.llEpisodes.onClickAlpha {
-            unSelectedTab()
-            mBinding.apply {
-                rvEpisode.visibleView()
-                ivLineBottomEpisodes.visibleView()
-                mBinding.tvEpisodes.setTextColorById(R.color.white)
-                mBinding.tvEpisodes.typeface =
-                    ResourcesCompat.getFont(activity, R.font.poppins_bold)
-            }
-        }
-    }
-
-    private fun unSelectedTab() {
-        mBinding.apply {
-            nsSummaryHand.goneView()
-            rvEpisode.goneView()
-            ivLineBottomEpisodes.goneView()
-            ivLineBottomSummary.goneView()
-            mBinding.tvSummary.setTextColorById(R.color.white_60)
-            mBinding.tvEpisodes.setTextColorById(R.color.white_60)
-            mBinding.tvEpisodes.typeface = ResourcesCompat.getFont(activity, R.font.poppins_regular)
-            mBinding.tvSummary.typeface = ResourcesCompat.getFont(activity, R.font.poppins_regular)
-        }
-    }
-
-}
+//        initData()
+////        if (isNetwork(activity)) {
+////            tvSeriesUiModel.numberOfSeasons?.let { seasonNo ->
+////                viewModel.loadEpisodes(
+////                    tvSeriesUiModel.id,
+////                    seasonNo
+////                )
+////            }
+////        }
+//
+//    }
+//
+//    override fun observerData() {
+////        lifecycleScope.launch {
+////            viewModel.listEpisodes.collectLatest { episodes ->
+////                Log.e("TAG_EPISODE_API", "loadEpisodes2: ${episodes?.id}")
+////                episodes?.episodes?.let {
+////                    episodesMovieAdapter?.submitListData(
+////                        it,
+////                        currentEpisode,
+////                        tvSeriesUiModel
+////                    )
+////                    episodesList = it
+////                }
+////            }
+////        }
+//    }
+//
+//    private fun initData() {
+//        Glide.with(activity).load(tvSeriesUiModel.posterPath).into(mBinding.ivBannerMovie)
+//        mBinding.tvMovieName.text = tvSeriesUiModel.name
+//        mBinding.tvDes.text = tvSeriesUiModel.overview
+//
+//        val genreAdapter = GenreEpisodesAdapter()
+//        mBinding.rvGenre.apply {
+//            adapter = genreAdapter
+//            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+//        }
+//        tvSeriesUiModel.genres?.let {
+//            Log.e("MOVIE", "LIST genre ${it.size}: ")
+////            genreAdapter.submitData(it)
+//        }
+//
+////        episodesMovieAdapter = EpisodesMovieAdapter(activity, numberLockMovie) { episodeIndex ->
+////            val item = episodesList[episodeIndex]
+////            onClickItemEpisode(item.id)
+////            Log.e("MOVIE", "EpisodesMovieAdapter: ${item.name} - ${item.id}")
+////            dismiss()
+////        }
+//        mBinding.rvEpisode.apply {
+//            setHasFixedSize(true)
+//            adapter = episodesMovieAdapter
+//            layoutManager = GridLayoutManager(activity, 5)
+//        }
+//        mBinding.rvEpisode.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+//            override fun onInterceptTouchEvent(
+//                rv: RecyclerView,
+//                e: MotionEvent
+//            ): Boolean {
+//                rv.parent.requestDisallowInterceptTouchEvent(true)
+//                return false
+//            }
+//
+//            override fun onTouchEvent(
+//                rv: RecyclerView,
+//                e: MotionEvent
+//            ) {
+//            }
+//
+//            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+//            }
+//        });
+//    }
+//
+//    override fun onClickViews() {
+//        super.onClickViews()
+//        mBinding.llSummary.onClickAlpha {
+//            unSelectedTab()
+//            mBinding.apply {
+//                nsSummaryHand.visibleView()
+//                ivLineBottomSummary.visibleView()
+//                mBinding.tvSummary.setTextColorById(R.color.white)
+//                mBinding.tvSummary.typeface = ResourcesCompat.getFont(activity, R.font.poppins_bold)
+//            }
+//        }
+//        mBinding.llEpisodes.onClickAlpha {
+//            unSelectedTab()
+//            mBinding.apply {
+//                rvEpisode.visibleView()
+//                ivLineBottomEpisodes.visibleView()
+//                mBinding.tvEpisodes.setTextColorById(R.color.white)
+//                mBinding.tvEpisodes.typeface =
+//                    ResourcesCompat.getFont(activity, R.font.poppins_bold)
+//            }
+//        }
+//    }
+//
+//    private fun unSelectedTab() {
+//        mBinding.apply {
+//            nsSummaryHand.goneView()
+//            rvEpisode.goneView()
+//            ivLineBottomEpisodes.goneView()
+//            ivLineBottomSummary.goneView()
+//            mBinding.tvSummary.setTextColorById(R.color.white_60)
+//            mBinding.tvEpisodes.setTextColorById(R.color.white_60)
+//            mBinding.tvEpisodes.typeface = ResourcesCompat.getFont(activity, R.font.poppins_regular)
+//            mBinding.tvSummary.typeface = ResourcesCompat.getFont(activity, R.font.poppins_regular)
+//        }
+//    }
+//
+//}

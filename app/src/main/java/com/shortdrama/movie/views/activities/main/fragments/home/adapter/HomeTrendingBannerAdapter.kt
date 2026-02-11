@@ -1,23 +1,27 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core_api.model.ui.TVSeriesUiModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemHomeTredingBannerBinding
 import com.shortdrama.movie.views.bases.BaseViewHolder
 
 class HomeTrendingBannerAdapter(
-    val onClickItem: (TVSeriesUiModel) -> Unit
+    val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : RecyclerView.Adapter<HomeTrendingBannerAdapter.DataViewHolder>() {
     private var mContext: Context? = null
-    private val listItems = arrayListOf<TVSeriesUiModel>()
+    private val listItems = arrayListOf<DramaWithGenresUIModel>()
 
-    fun submitData(listPhotoSlide: List<TVSeriesUiModel>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitData(listPhotoSlide: List<DramaWithGenresUIModel>) {
         listItems.clear()
         listItems.addAll(listPhotoSlide)
         notifyDataSetChanged()
@@ -47,10 +51,15 @@ class HomeTrendingBannerAdapter(
     }
 
     inner class DataViewHolder(var binding: ItemHomeTredingBannerBinding) :
-        BaseViewHolder<TVSeriesUiModel>(binding) {
-        override fun bindData(obj: TVSeriesUiModel) {
-            Glide.with(binding.imgPlay.context).load(obj.posterPath).into(binding.ivBanner)
-            binding.tvNameVideo.text = obj.originalName
+        BaseViewHolder<DramaWithGenresUIModel>(binding) {
+        override fun bindData(obj: DramaWithGenresUIModel) {
+            StorageSource.getStorageDownloadUrl(
+                obj.dramaUIModel.dramaThumb,
+                onSuccess = { uri ->Glide.with(binding.imgPlay.context).load(uri).into(binding.ivBanner) },
+                onError = {
+                    Log.e("TAG", "bindData: ")
+                })
+            binding.tvNameVideo.text = obj.dramaUIModel.dramaName
             binding.root.setOnClickListener {
                 onClickItem(obj)
             }

@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.core_api.model.core.GenreTVSeriesModel
 import com.shortdrama.movie.app.AppConstants
 import kotlinx.parcelize.Parcelize
 
@@ -12,36 +11,33 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = AppConstants.TABLE_NAME_HISTORY_WATCH)
 data class HistoryWatchEntity(
     @PrimaryKey
-    @ColumnInfo(name = "id")
-    var id: Int,
+    @ColumnInfo(name = "drama_id")
+    val dramaId: String,
 
     @ColumnInfo(name = "name")
-    var name: String?,
+    val name: String,
 
-    @ColumnInfo(name = "originalName")
-    var originalName: String?,
+    @ColumnInfo(name = "description")
+    val description: String,
 
-    @ColumnInfo(name = "overview")
-    var overview: String?,
+    @ColumnInfo(name = "thumb")
+    val thumb: String,
 
-    @ColumnInfo(name = "numberOfSeasons")
-    var numberOfSeasons: Int?,
+    @ColumnInfo(name = "total_episode")
+    val totalEpisode: String,
 
-    @ColumnInfo(name = "numberOfEpisodes")
-    var numberOfEpisodes: Int?,
+    @ColumnInfo(name = "drama_trailer")
+    val dramaTrailer: String,
 
-    @ColumnInfo(name = "posterPath")
-    var posterPath: String?,
+    @ColumnInfo(name = "genres_json")
+    val genresJson: String,
 
-    @ColumnInfo(name = "genres")
-    val genres: List<GenreTVSeriesModel>?,
+    @ColumnInfo(name = "episode_id")
+    val episodeId: String,
 
-    @ColumnInfo(name = "episodeCurrentId")
-    var episodeCurrentId: Int? = 0,
+    @ColumnInfo(name = "episode_no")
+    val episodeNo: String,
 
-    @ColumnInfo(name = "episodeCurrentNo")
-    var episodeCurrentNo: Int? = 0,
-
-    @ColumnInfo(name = "movie_timestamp ")
+    @ColumnInfo(name = "movie_timestamp")
     var timestamp: Long = 0L,
 ) : Parcelable

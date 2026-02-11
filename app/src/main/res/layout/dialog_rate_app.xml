@@ -32,6 +32,7 @@
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
+                    android:tint="@color/white_40"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_close" />
 
@@ -43,7 +44,7 @@
                     android:layout_below="@id/view_logo"
                     android:layout_centerHorizontal="true"
                     android:text="@string/text_rate_us"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white_40"
                     android:textSize="@dimen/_14ssp" />
 
                 <TextView
@@ -56,7 +57,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:gravity="center"
                     android:text="@string/text_rate_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white_60"
                     android:textSize="@dimen/_10ssp" />
 
                 <com.willy.ratingbar.ScaleRatingBar

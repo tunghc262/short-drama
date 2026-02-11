@@ -5,11 +5,11 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.ViewDataBinding
-import com.example.core_api.model.core.EpisodeModel
-import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.admob.reward.RewardInApp
 import com.module.ads.remote.FirebaseQuery
 import com.module.ads.utils.PurchaseUtils
+import com.module.core_api_storage.model_ui.DramaEpisodeUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemContainerEpisodeBinding
 import com.shortdrama.movie.utils.SharePrefUtils
@@ -27,20 +27,20 @@ class EpisodesMovieAdapter(
     val numberLockMovie: Int,
     val onClickItem: (Int) -> Unit,
     val onClickUpgrade: () -> Unit
-) : BaseRecyclerView<EpisodeModel>() {
+) : BaseRecyclerView<DramaEpisodeUIModel>() {
 
     private var currentSelected = 0
-    private var tvSeriesUiModel: TVSeriesUiModel? = null
+    private var tvSeriesUiModel: DramaWithGenresUIModel? = null
 
     private var maxUnlockedEpisode: Int = 0
     override fun getItemLayout(): Int = R.layout.item_container_episode
 
-    override fun submitData(newData: List<EpisodeModel>) {}
+    override fun submitData(newData: List<DramaEpisodeUIModel>) {}
 
     fun submitListData(
-        newData: List<EpisodeModel>,
+        newData: List<DramaEpisodeUIModel>,
         currentSelect: Int,
-        tvSeriesUi: TVSeriesUiModel
+        tvSeriesUi: DramaWithGenresUIModel
     ) {
         list.clear()
         list.addAll(newData)
@@ -51,11 +51,11 @@ class EpisodesMovieAdapter(
 
     override fun setData(
         binding: ViewDataBinding,
-        item: EpisodeModel,
+        item: DramaEpisodeUIModel,
         layoutPosition: Int
     ) {
         if (binding is ItemContainerEpisodeBinding) {
-            binding.tvEpisode.text = item.episodeNumber.toString()
+            binding.tvEpisode.text = item.serialNo
             if (layoutPosition == currentSelected) {
                 binding.tvEpisode.setTextColorById(R.color.white)
                 binding.tvEpisode.typeface =
@@ -71,15 +71,20 @@ class EpisodesMovieAdapter(
                 binding.ivPlayEpisode.goneView()
                 binding.root.setBackgroundResource(R.drawable.bg_btn_2a2a2a)
             }
-            val key = "${tvSeriesUiModel?.id}_${item.id}"
-            val isLocked = item.episodeNumber > numberLockMovie && !SharePrefUtils.getBoolean(
+            val key = item.episodeId
+            Log.e("MOVIEEE", "numberLockMovie: $numberLockMovie")
+            Log.e(
+                "MOVIEEE", "key: ${
+                    !SharePrefUtils.getBoolean(
+                        key,
+                        false
+                    )
+                }"
+            )
+            val isLocked = item.serialNo.toInt() > numberLockMovie && !SharePrefUtils.getBoolean(
                 key,
                 false
             ) && FirebaseQuery.getEnableAds() && !PurchaseUtils.isNoAds(activity)
-            val prevEpisodeNumber = item.episodeNumber - 1
-            val prevKey =
-                "${tvSeriesUiModel?.id}_${prevEpisodeNumber}"  // Giả sử id episode là episodeNumber, nếu không thì cần map đúng id
-            val prevUnlocked = prevEpisodeNumber < 1 || SharePrefUtils.getBoolean(prevKey, false)
             if (isLocked) {
                 binding.ivLock.visibleView()
             } else {
@@ -89,7 +94,7 @@ class EpisodesMovieAdapter(
             binding.root.onClickAlpha {
                 if (isLocked) {
                     if ((layoutPosition - 1 == maxUnlockedEpisode)) {
-                        Log.e("MOVIE", "show : unlockEpisodesDialog")
+                        Log.e("MOVIEEE", "show : unlockEpisodesDialog")
                         val unlockEpisodesDialog = UnlockEpisodeDialog(
                             activity,
                             onClickWatchAds = {
