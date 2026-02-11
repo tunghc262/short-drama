@@ -24,7 +24,7 @@ import com.shortdrama.movie.views.activities.main.fragments.home.adapter.MoviePo
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.MovieTopChartAdapter
 import com.shortdrama.movie.views.activities.main.fragments.home.viewmodel.HomeTrendingViewModel
 import com.shortdrama.movie.views.activities.play_movie.PlayMovieActivity
-import com.shortdrama.movie.views.activities.see_more.SeeMorePopularActivity
+import com.shortdrama.movie.views.activities.see_more.popular.SeeMorePopularActivity
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha

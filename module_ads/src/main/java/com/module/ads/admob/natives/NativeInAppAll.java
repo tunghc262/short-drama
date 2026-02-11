@@ -10,16 +10,13 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdValue;
-import com.google.android.gms.ads.AdapterResponseInfo;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
+import com.module.ads.R;
 import com.module.ads.callback.CallbackNative;
-import com.module.ads.mmp.AdjustTracking;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
 import com.module.ads.utils.FBTracking;
@@ -47,8 +44,8 @@ public class NativeInAppAll {
                         Log.e("TAG", "onNativeAdLoaded: loadAndShow native in app");
                         NativeInAppAll.nativeAd = nativeAd;
                         AdUtils.onPaidEvent(activity, nativeAd);
-                        NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNative(namePlace), null);
-                        NativeUtils.populateNativeAdView(nativeAd, nativeAdView, namePlace);
+                        NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_popular, null);
+                        NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                         lnNative.setVisibility(View.VISIBLE);
                         lnNative.removeAllViews();
                         lnNative.addView(nativeAdView);
@@ -98,8 +95,8 @@ public class NativeInAppAll {
         try {
             if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && nativeAd != null) {
                 lnNative.setVisibility(View.VISIBLE);
-                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNative(namePlace), null);
-                NativeUtils.populateNativeAdView(nativeAd, nativeAdView, namePlace);
+                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_popular, null);
+                NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                 lnNative.removeAllViews();
                 lnNative.addView(nativeAdView);
             } else {

@@ -13,9 +13,9 @@ import com.shortdrama.movie.databinding.FragmentHomeNewBinding
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.HomeCategoryAdapter
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.MovieComingSoonAdapter
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.MovieExclusiveAdapter
-import com.shortdrama.movie.views.activities.main.fragments.home.adapter.MovieNewReleaseAdapter
 import com.shortdrama.movie.views.activities.main.fragments.home.viewmodel.HomeNewViewModel
 import com.shortdrama.movie.views.activities.play_movie.PlayMovieActivity
+import com.shortdrama.movie.views.activities.see_more.coming_soon.SeeMoreComingSoonActivity
 import com.shortdrama.movie.views.bases.BaseFragment
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setHorizontalNestedScrollFix
@@ -29,7 +29,7 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
     private val viewModel: HomeNewViewModel by activityViewModels()
     private var exclusiveAdapter: MovieExclusiveAdapter? = null
     private var newReleaseAdapter: HomeCategoryAdapter? = null
-
+    private var listComingSoon: MutableList<TVSeriesUiModel> = mutableListOf()
     private var comingSoonAdapter: MovieComingSoonAdapter? = null
     override fun getLayoutFragment(): Int = R.layout.fragment_home_new
     override fun initViews() {
@@ -60,8 +60,12 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
 
     override fun onClickViews() {
         super.onClickViews()
-        mBinding.llTryNow.onClickAlpha {
-
+        mBinding.btnNextComingSoon.onClickAlpha {
+            activity?.let { act ->
+                val intent = Intent(act, SeeMoreComingSoonActivity::class.java)
+                intent.putParcelableArrayListExtra("POPULAR_LIST", ArrayList(listComingSoon))
+                startActivity(intent)
+            }
         }
     }
 
@@ -93,6 +97,8 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
                 viewModel.comingSoon.collect { list ->
                     if (list.isNotEmpty()) {
                         val randomList = list.shuffled().take(4)
+                        listComingSoon.clear()
+                        listComingSoon.addAll(randomList)
                         comingSoonAdapter?.submitData(randomList)
                     }
                 }

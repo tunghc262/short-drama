@@ -1,4 +1,4 @@
-package com.shortdrama.movie.views.activities.see_more
+package com.shortdrama.movie.views.activities.see_more.popular
 
 import android.app.Activity
 import android.util.Log
