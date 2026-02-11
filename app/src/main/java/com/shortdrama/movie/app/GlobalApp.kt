@@ -5,11 +5,15 @@ import android.app.ActivityManager
 import android.os.Build
 import android.os.StrictMode
 import android.webkit.WebView
+import com.google.android.gms.ads.AdActivity
 import com.module.ads.app.ModuleApplication
 import com.shortdrama.movie.BuildConfig
 import com.shortdrama.movie.notification.ServiceNotificationManager
 import com.shortdrama.movie.utils.SharePrefUtils
+import com.shortdrama.movie.views.activities.language.LanguageActivity
+import com.shortdrama.movie.views.activities.language.LanguageDupActivity
 import com.shortdrama.movie.views.activities.notification.NotificationFullscreenActivity
+import com.shortdrama.movie.views.activities.onboard.OnboardActivity
 import com.shortdrama.movie.views.activities.premium.PremiumActivity
 import com.shortdrama.movie.views.activities.splash.SplashActivity
 import dagger.hilt.android.HiltAndroidApp
@@ -57,6 +61,10 @@ class GlobalApp : ModuleApplication() {
         SharePrefUtils.init(this)
 
         addExcludedActivity(SplashActivity::class.java)
+        addExcludedActivity(LanguageActivity::class.java)
+        addExcludedActivity(LanguageDupActivity::class.java)
+        addExcludedActivity(OnboardActivity::class.java)
+        addExcludedActivity(AdActivity::class.java)
         addExcludedActivity(PremiumActivity::class.java)
         addExcludedActivity(NotificationFullscreenActivity::class.java)
 

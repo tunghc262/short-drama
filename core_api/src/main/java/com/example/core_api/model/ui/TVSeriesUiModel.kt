@@ -61,6 +61,8 @@ data class TVSeriesUiModel(
     val videos: List<VideoListTVSeriesModel>? = emptyList(),
 
     val dateComingSoon: Long? = 0L,
-    val isAds : Boolean= false
 
+    val isAds: Boolean = false,
+
+    val isRemind: Boolean = false
 ) : Parcelable

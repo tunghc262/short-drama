@@ -10,6 +10,7 @@ import com.shortdrama.movie.views.bases.BaseRecyclerView
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.toDayMonthNumeric
 import com.shortdrama.movie.views.bases.ext.toMonthDayOrdinal
+import com.shortdrama.movie.views.bases.ext.visibleView
 
 class MovieComingSoonAdapter(
     val isShowDateOriginal: Boolean = true,
@@ -34,14 +35,20 @@ class MovieComingSoonAdapter(
             binding.tvDateOriginal.text = item.dateComingSoon?.toMonthDayOrdinal()
             if (!isShowDateOriginal) {
                 binding.llDateOriginal.goneView()
+            }else{
+                binding.llDateOriginal.visibleView()
             }
             if (!iShowDateNumeric) {
                 binding.tvDateNumeric.goneView()
+            }else{
+                binding.tvDateNumeric.visibleView()
             }
             Glide.with(binding.ivBannerMovie.context).load(item.posterPath)
                 .into(binding.ivBannerMovie)
             binding.tvMovieName.text = item.name
-            binding.tvMovieStyle.text = item.genres?.get(0)?.name
+            if (item.genres?.isNotEmpty() == true){
+                binding.tvMovieStyle.text = item.genres?.get(0)?.name
+            }
             Log.e("DATE_TEST", item.dateComingSoon?.toMonthDayOrdinal() ?: "null")
         }
     }

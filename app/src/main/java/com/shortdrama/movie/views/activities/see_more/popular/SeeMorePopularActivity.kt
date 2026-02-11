@@ -1,6 +1,8 @@
 package com.shortdrama.movie.views.activities.see_more.popular
 
 import android.content.Intent
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import com.example.core_api.model.ui.TVSeriesUiModel
 import com.module.ads.admob.inters.IntersInApp
 import com.module.ads.remote.FirebaseQuery
@@ -31,6 +33,7 @@ class SeeMorePopularActivity : BaseActivity<ActivitySeeMorePopularBinding>() {
         initAdapter()
     }
 
+    @OptIn(UnstableApi::class)
     private fun initAdapter() {
         seeMorePopularAdapter = SeeMorePopularAdapter(this) { movie ->
             IntersInApp.getInstance().showAds(this) {

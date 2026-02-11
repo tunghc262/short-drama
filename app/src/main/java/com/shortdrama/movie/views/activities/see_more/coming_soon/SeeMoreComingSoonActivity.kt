@@ -36,16 +36,6 @@ class SeeMoreComingSoonActivity : BaseActivity<ActivitySeeMoreComingSoonBinding>
 
         }
         mBinding.rvItemCate.adapter = seeMoreComingSoonAdapter
-        if (FirebaseQuery.getEnableAds() && !PurchaseUtils.isNoAds(this) && NetworkUtils.isNetwork(
-                this
-            )
-        ) {
-            listPopular.add(
-                1, TVSeriesUiModel(
-                    isAds = true
-                )
-            )
-        }
         seeMoreComingSoonAdapter?.submitData(listPopular)
     }
 
