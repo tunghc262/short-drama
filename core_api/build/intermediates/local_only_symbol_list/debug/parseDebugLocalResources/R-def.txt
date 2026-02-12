@@ -1,0 +1,15 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable bg_top_image
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable icon_new_release
+drawable icon_popular
+drawable icon_top_chart
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.ShortDrama
+style Theme.ShortDrama

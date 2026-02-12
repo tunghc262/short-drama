@@ -1,13 +1,19 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.fragments
 
 import android.content.Intent
+import androidx.annotation.OptIn
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.common.util.UnstableApi
 import com.module.ads.admob.inters.IntersInApp
+import com.module.ads.admob.natives.NativeInAppAll
+import com.module.ads.callback.CallbackNative
+import com.module.ads.remote.FirebaseQuery
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
+import com.shortdrama.movie.app.AdPlaceName
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeNewBinding
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.HomeCategoryAdapter
@@ -17,8 +23,10 @@ import com.shortdrama.movie.views.activities.main.fragments.home.viewmodel.HomeN
 import com.shortdrama.movie.views.activities.play_movie.PlayMovieActivity
 import com.shortdrama.movie.views.activities.see_more.coming_soon.SeeMoreComingSoonActivity
 import com.shortdrama.movie.views.bases.BaseFragment
+import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setHorizontalNestedScrollFix
+import com.shortdrama.movie.views.bases.ext.visibleView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,6 +39,7 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
     private var newReleaseAdapter: HomeCategoryAdapter? = null
     private var listComingSoon: MutableList<DramaWithGenresUIModel> = mutableListOf()
     private var comingSoonAdapter: MovieComingSoonAdapter? = null
+    private var isFirstResume = true
     override fun getLayoutFragment(): Int = R.layout.fragment_home_new
     override fun initViews() {
         super.initViews()
@@ -51,8 +60,7 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
         mBinding.rvNewRelease.apply {
             adapter = newReleaseAdapter
         }
-        comingSoonAdapter = MovieComingSoonAdapter {
-
+        comingSoonAdapter = MovieComingSoonAdapter { item ->
         }
         mBinding.rcvComingSoon.adapter = comingSoonAdapter
     }
@@ -80,7 +88,6 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.newRelease.collect { list ->
-
                     newReleaseAdapter?.submitData(list)
                 }
             }
@@ -97,6 +104,35 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isFirstResume) {
+            activity?.let {
+                NativeInAppAll.getInstance().loadAndShow(
+                    it,
+                    mBinding.lnNative,
+                    FirebaseQuery.getIdNativeInApp(),
+                    object : CallbackNative {
+                        override fun onAdImpression() {
+
+                        }
+
+                        override fun onLoaded() {
+                            mBinding.lnNative.visibleView()
+                        }
+
+                        override fun onFailed() {
+                            mBinding.lnNative.goneView()
+                        }
+                    },
+                    AdPlaceName.NATIVE_MAIN.name.lowercase()
+                )
+                isFirstResume = false
+            }
+        }
+    }
+
+    @OptIn(UnstableApi::class)
     private fun goToWatchMovie(movie: DramaWithGenresUIModel) {
         activity?.let { act ->
             IntersInApp.getInstance().showAds(act) {

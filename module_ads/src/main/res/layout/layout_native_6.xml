@@ -6,29 +6,46 @@
     <RelativeLayout
         android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_130sdp"
         android:background="@drawable/bg_ad_native">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:paddingVertical="@dimen/_12sdp">
+            android:orientation="horizontal">
 
-            <com.google.android.gms.ads.nativead.MediaView
-                android:id="@+id/ad_media"
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_height="@dimen/_130sdp"
+                android:layout_weight="0.4">
+
+                <com.google.android.gms.ads.nativead.MediaView
+                    android:id="@+id/ad_media"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ad"
+                    style="@style/TextViewSemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_ads_rank"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:text="AD"
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_weight="0.6"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <LinearLayout
                     android:id="@+id/ll_top"
@@ -41,18 +58,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_ad"
-                            style="@style/TextViewSemiBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_ads"
-                            android:paddingHorizontal="@dimen/_6sdp"
-                            android:paddingVertical="@dimen/_2sdp"
-                            android:text="Ad"
-                            android:textColor="@color/black"
-                            android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/ad_headline"
@@ -70,9 +75,9 @@
                             style="@style/TextViewRegular"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:ellipsize="end"
-                            android:maxLines="1"
+                            android:maxLines="2"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
@@ -81,6 +86,7 @@
                             style="@style/TextViewRegular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textColor="@color/black"
@@ -142,14 +148,16 @@
                 <TextView
                     android:id="@+id/ad_call_to_action"
                     style="@style/TextViewBold"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll_top"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/bg_btn_ad_native"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:lines="1"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_4sdp"
                     android:text="Install"
                     android:textAllCaps="true"
                     android:textColor="@color/white"

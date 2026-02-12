@@ -7,6 +7,7 @@ import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.ItemMovieComingSoonBinding
+import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.views.bases.BaseRecyclerView
 import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.toDayMonthNumeric
@@ -32,6 +33,14 @@ class MovieComingSoonAdapter(
         layoutPosition: Int
     ) {
         if (binding is ItemMovieComingSoonBinding) {
+            val key = "coming_soon_${item.dramaUIModel.dramaId}"
+            if (SharePrefUtils.getBoolean(key, false)) {
+                binding.ivRemind.setImageResource(R.drawable.ic_reminded)
+                binding.tvRemind.text = "Reminded"
+            }else{
+                binding.ivRemind.setImageResource(R.drawable.ic_remind)
+                binding.tvRemind.text = "Remind"
+            }
             binding.tvDateNumeric.text = item.dateComingSoon.toDayMonthNumeric()
             binding.tvDateOriginal.text = item.dateComingSoon.toMonthDayOrdinal()
             if (!isShowDateOriginal) {
@@ -56,7 +65,7 @@ class MovieComingSoonAdapter(
             if (item.dramaGenresUIModel.isNotEmpty()) {
                 binding.tvMovieStyle.text = item.dramaGenresUIModel[0].genresName
             }
-            Log.e("DATE_TEST", item.dateComingSoon.toMonthDayOrdinal() )
+            Log.e("DATE_TEST", item.dateComingSoon.toMonthDayOrdinal())
         }
     }
 
@@ -69,6 +78,9 @@ class MovieComingSoonAdapter(
         if (binding is ItemMovieComingSoonBinding) {
             binding.root.setOnClickListener {
                 onClickItem(obj)
+                val key = "coming_soon_${obj.dramaUIModel.dramaId}"
+                SharePrefUtils.putBoolean(key, true)
+                notifyItemChanged(layoutPosition)
             }
         }
     }

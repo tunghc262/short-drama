@@ -52,6 +52,8 @@ public class FirebaseQuery {
     public static final String ID_NATIVE_FULL_ONBOARD_2 = "native_full_scr_2";
     public static final String ID_NATIVE_FULL_ONBOARD_1_HIGH = "native_full_scr_1_high";
     public static final String ID_NATIVE_FULL_ONBOARD_2_HIGH = "native_full_scr_2_high";
+    public static final String ID_INTERS_ONBOARD = "inter_onboard";
+    public static final String ID_INTERS_ONBOARD_HIGH = "inter_onboard_high";
 
     public static final String ID_NATIVE_IN_APP = "native_in_app";
     public static final String ID_NATIVE_MAIN = "native_main";
@@ -99,6 +101,8 @@ public class FirebaseQuery {
     public static final String ENABLE_NATIVE_FULL_SCR_2 = "enable_native_full_scr_2";
     public static final String ENABLE_NATIVE_FULL_SCR_1_HIGH = "enable_native_full_scr_1_high";
     public static final String ENABLE_NATIVE_FULL_SCR_2_HIGH = "enable_native_full_scr_2_high";
+    public static final String ENABLE_INTERS_ONBOARD = "enable_inters_onboard";
+    public static final String ENABLE_INTERS_ONBOARD_HIGH = "enable_inters_onboard_high";
 
     public static final String ENABLE_NATIVE_IN_APP = "enable_native_in_app";
 
@@ -308,6 +312,12 @@ public class FirebaseQuery {
         String idNativeFullOnboard2High = firebaseRemoteConfig.getString(ID_NATIVE_FULL_ONBOARD_2_HIGH);
         setIdNativeFullOnboard2High(idNativeFullOnboard2High);
 
+        String idInterOnboard = firebaseRemoteConfig.getString(ID_INTERS_ONBOARD);
+        setIdIntersOnboard(idInterOnboard);
+
+        String idInterOnboardHigh = firebaseRemoteConfig.getString(ID_INTERS_ONBOARD_HIGH);
+        setIdIntersOnboardHigh(idInterOnboardHigh);
+
         String idNativeInApp = firebaseRemoteConfig.getString(ID_NATIVE_IN_APP);
         setIdNativeInApp(idNativeInApp);
 
@@ -373,6 +383,12 @@ public class FirebaseQuery {
 
         boolean enableNativeFullScr2High = firebaseRemoteConfig.getBoolean(ENABLE_NATIVE_FULL_SCR_2_HIGH);
         setEnableNativeFullScr2High(enableNativeFullScr2High);
+
+        boolean enableIntersOnboard = firebaseRemoteConfig.getBoolean(ENABLE_INTERS_ONBOARD);
+        setEnableIntersOnboard(enableIntersOnboard);
+
+        boolean enableIntersOnboardHigh = firebaseRemoteConfig.getBoolean(ENABLE_INTERS_ONBOARD_HIGH);
+        setEnableIntersOnboardHigh(enableIntersOnboardHigh);
 
         boolean enableIntersInApp = firebaseRemoteConfig.getBoolean(ENABLE_INTERS_IN_APP);
         setEnableIntersInApp(enableIntersInApp);
@@ -696,6 +712,22 @@ public class FirebaseQuery {
         return SharePreferUtils.getString(ID_NATIVE_FULL_ONBOARD_2_HIGH, "");
     }
 
+    public static void setIdIntersOnboard(String idAds) {
+        SharePreferUtils.putString(ID_INTERS_ONBOARD, idAds);
+    }
+
+    public static String getIdIntersOnboard() {
+        return SharePreferUtils.getString(ID_INTERS_ONBOARD, "");
+    }
+
+    public static void setIdIntersOnboardHigh(String idAds) {
+        SharePreferUtils.putString(ID_INTERS_ONBOARD_HIGH, idAds);
+    }
+
+    public static String getIdIntersOnboardHigh() {
+        return SharePreferUtils.getString(ID_INTERS_ONBOARD_HIGH, "");
+    }
+
     public static void setIdNativeInApp(String idAds) {
         SharePreferUtils.putString(ID_NATIVE_IN_APP, idAds);
     }
@@ -902,6 +934,22 @@ public class FirebaseQuery {
 
     public static boolean getEnableIntersInApp() {
         return SharePreferUtils.getBoolean(ENABLE_INTERS_IN_APP, true);
+    }
+
+    public static void setEnableIntersOnboard(boolean enable) {
+        SharePreferUtils.putBoolean(ENABLE_INTERS_ONBOARD, enable);
+    }
+
+    public static boolean getEnableIntersOnboard() {
+        return SharePreferUtils.getBoolean(ENABLE_INTERS_ONBOARD, true);
+    }
+
+    public static void setEnableIntersOnboardHigh(boolean enable) {
+        SharePreferUtils.putBoolean(ENABLE_INTERS_ONBOARD_HIGH, enable);
+    }
+
+    public static boolean getEnableIntersOnboardHigh() {
+        return SharePreferUtils.getBoolean(ENABLE_INTERS_ONBOARD_HIGH, true);
     }
 
     public static void setEnableIntersInAppHigh(boolean enable) {
