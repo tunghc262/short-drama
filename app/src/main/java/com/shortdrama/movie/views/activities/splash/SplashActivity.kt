@@ -90,8 +90,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 logEvent("splash_noti_lock_view")
             }
         }
-
-        //connectionLiveData.updateConnection()
+        connectionLiveData.updateConnection()
         if (FirebaseQuery.getIsShowOpenStart()) {
             OpenAdsManager.getOpenAds().showAdsOpenStart(this)
         } else {
@@ -101,16 +100,22 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun initViews() {
         startProgressBar()
-        initPermission()
-        initNotification()
-        initIAP()
-        initAds()
-
+        initDialogInternet()
+        if (isNetwork()) {
+            actionInit()
+        }
         if (AppUtils.isSession2()) {
             logEvent("splash_ss_view")
         } else {
             logEvent("splash_view")
         }
+    }
+
+    private fun actionInit() {
+        initPermission()
+        initNotification()
+        initIAP()
+        initAds()
     }
 
     private fun startProgressBar() {
@@ -198,7 +203,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             if (hasConnection) {
                 if (!onCheckActivityIsFinished() && noInternetDialog.isShowing) {
                     noInternetDialog.dismiss()
-                    initAds()
+                    actionInit()
                 }
             } else {
                 noInternetDialog.show()
@@ -246,7 +251,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 SharePrefUtils.getBoolean(AppConstants.KEY_SELECT_LANGUAGE, false)
             if (isChooseLanguage) {
                 if (FirebaseQuery.getIsShowLanguageReopen()) {
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, LanguageActivity::class.java)
                     startActivity(intent)
                 } else {
                     if (FirebaseQuery.getEnableIap() && PurchaseUtils.isNoAds(this) && FirebaseQuery.getEnableAds()) {
@@ -259,7 +264,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     }
                 }
             } else {
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, LanguageActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -347,9 +352,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         bp?.release()
         countDownTimer?.cancel()
         jobTimeout?.cancel()
-        //if (noInternetDialog != null && noInternetDialog.isShowing) {
-        //    noInternetDialog.dismiss()
-        //}
+        if (noInternetDialog.isShowing) {
+            noInternetDialog.dismiss()
+        }
         super.onDestroy()
     }
 }

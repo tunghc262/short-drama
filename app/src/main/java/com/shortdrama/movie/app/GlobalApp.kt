@@ -27,6 +27,9 @@ class GlobalApp : ModuleApplication() {
 
         var isShowDialogFullIntent = false
         var isShowDialogNotification = false
+
+        var isShowRecommendDialog = false
+
     }
 
     init {

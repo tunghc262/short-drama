@@ -34,7 +34,7 @@ public class NativeInAppAll {
         return nativeInApp;
     }
 
-    public void loadAndShow(Activity activity, LinearLayout lnNative, String idAds, CallbackNative callbackNative, String namePlace) {
+    public void loadAndShow(Activity activity, LinearLayout lnNative, String idAds, CallbackNative callbackNative, int pos) {
         try {
             if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableNative() && FirebaseQuery.getEnableNativeInApp()) {
                 AdLoader.Builder builder = new AdLoader.Builder(activity, idAds);
@@ -44,7 +44,7 @@ public class NativeInAppAll {
                         Log.e("TAG", "onNativeAdLoaded: loadAndShow native in app");
                         NativeInAppAll.nativeAd = nativeAd;
                         AdUtils.onPaidEvent(activity, nativeAd);
-                        NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_popular, null);
+                        NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNativeCustom(pos), null);
                         NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                         lnNative.setVisibility(View.VISIBLE);
                         lnNative.removeAllViews();

@@ -203,7 +203,7 @@ public class NativeOnboard3 {
             }
             if (nativeAd != null) {
                 lnNative.setVisibility(View.VISIBLE);
-                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_1, null);
+                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNativeOnboard(), null);
                 NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                 lnNative.removeAllViews();
                 lnNative.addView(nativeAdView);

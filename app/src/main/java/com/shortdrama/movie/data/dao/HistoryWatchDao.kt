@@ -13,7 +13,7 @@ interface HistoryWatchDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addHistoryMovie(watchHistoryEntity: HistoryWatchEntity)
 
-    @Query("SELECT * FROM ${AppConstants.TABLE_NAME_HISTORY_WATCH}")
+    @Query("SELECT * FROM ${AppConstants.TABLE_NAME_HISTORY_WATCH} ORDER BY movie_timestamp DESC")
     fun getAllHistoryMovie(): Flow<List<HistoryWatchEntity>>
 
     @Query("DELETE FROM ${AppConstants.TABLE_NAME_HISTORY_WATCH} WHERE drama_id = :movieId")

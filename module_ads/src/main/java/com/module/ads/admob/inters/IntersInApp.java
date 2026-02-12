@@ -29,7 +29,7 @@ public class IntersInApp {
     public static InterstitialAd interstitialAdHigh;
     public static InterstitialAd interstitialAdNormal;
     public boolean isShowing = false;
-    private long timeLoad = 0;
+    public long timeLoad = 0;
     private boolean isLoadingHigh = false;
     private boolean isLoadingNormal = false;
 
@@ -46,6 +46,7 @@ public class IntersInApp {
         if (interstitialAdHigh != null || isLoadingHigh) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableInters()) {
             if (FirebaseQuery.getEnableIntersInAppHigh()) {
+                Log.e("TamBT", "loadAdsHigh: inters spl");
                 isLoadingHigh = true;
                 AdRequest adRequest = new AdRequest.Builder().build();
                 InterstitialAd.load(activity, FirebaseQuery.getIdIntersInAppHigh(), adRequest,
@@ -107,6 +108,7 @@ public class IntersInApp {
         if (interstitialAdNormal != null || isLoadingNormal) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableInters() && FirebaseQuery.getEnableIntersInApp()) {
             isLoadingNormal = true;
+            Log.e("TamBT", "loadAdsNormal: inters spl");
             AdRequest adRequest = new AdRequest.Builder().build();
             InterstitialAd.load(activity, FirebaseQuery.getIdIntersInApp(), adRequest,
                     new InterstitialAdLoadCallback() {
@@ -127,6 +129,7 @@ public class IntersInApp {
                             interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
+                                    isShowing = false;
                                     isLoadingHigh = false;
                                     isLoadingNormal = false;
                                     interstitialAdHigh = null;

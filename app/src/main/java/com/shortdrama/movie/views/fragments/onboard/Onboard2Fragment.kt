@@ -2,6 +2,7 @@ package com.shortdrama.movie.views.fragments.onboard
 
 import android.util.Log
 import com.bumptech.glide.Glide
+import com.module.ads.admob.inters.IntersOnboard
 import com.module.ads.admob.natives.NativeOnboard3
 import com.module.ads.admob.natives.NativeOnboardFullscreen2
 import com.shortdrama.movie.R
@@ -79,6 +80,7 @@ class Onboard2Fragment : BaseFragment<FragmentOnboardBinding>() {
         activity?.let { act ->
             NativeOnboard3.getInstance().loadAdsAll(act)
             NativeOnboardFullscreen2.getInstance().loadAdsAll(act)
+            IntersOnboard.getInstance().loadAdsAll(act)
         }
     }
 }

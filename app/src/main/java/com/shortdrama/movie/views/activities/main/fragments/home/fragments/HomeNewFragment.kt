@@ -125,7 +125,7 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
                             mBinding.lnNative.goneView()
                         }
                     },
-                    AdPlaceName.NATIVE_MAIN.name.lowercase()
+                    2
                 )
                 isFirstResume = false
             }

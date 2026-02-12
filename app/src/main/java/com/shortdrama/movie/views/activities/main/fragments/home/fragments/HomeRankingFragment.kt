@@ -6,6 +6,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.module.ads.admob.inters.IntersInApp
+import com.module.ads.remote.FirebaseQuery
+import com.module.ads.utils.NetworkUtils
+import com.module.ads.utils.PurchaseUtils
+import com.module.core_api_storage.model_ui.DramaUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeRankingBinding
@@ -52,10 +57,32 @@ class HomeRankingFragment : BaseFragment<FragmentHomeRankingBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.ranking.collect { list ->
-                    if (list.isNotEmpty()) {
+                    val listMovie = list.toMutableList()
+                    if (listMovie.isNotEmpty()) {
                         mBinding.llEmpty.goneView()
                         mBinding.rcvRanking.visibleView()
-                        homeRankingAdapter?.submitData(list)
+                        activity?.let { act ->
+                            if (FirebaseQuery.getEnableAds() && !PurchaseUtils.isNoAds(act) && NetworkUtils.isNetwork(
+                                    act
+                                ) && listMovie.size >= 2
+                            ) {
+                                listMovie.add(
+                                    2, DramaWithGenresUIModel(
+                                        isAds = true,
+                                        dramaUIModel = DramaUIModel(
+                                            dramaId = "",
+                                            dramaName = "",
+                                            dramaDescription = "",
+                                            dramaThumb = "",
+                                            dramaTrailer = "",
+                                            totalEpisode = ""
+                                        ),
+                                        dramaGenresUIModel = emptyList(),
+                                    )
+                                )
+                            }
+                        }
+                        homeRankingAdapter?.submitData(listMovie)
                     } else {
                         mBinding.llEmpty.visibleView()
                         mBinding.rcvRanking.goneView()

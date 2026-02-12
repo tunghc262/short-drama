@@ -3,6 +3,7 @@ package com.shortdrama.movie.views.fragments.onboard
 import android.content.Intent
 import com.bumptech.glide.Glide
 import com.module.ads.admob.aoa.ResumeAdsManager
+import com.module.ads.admob.inters.IntersOnboard
 import com.module.ads.admob.natives.NativeOnboard3
 import com.module.ads.callback.CallbackNative
 import com.module.ads.remote.FirebaseQuery
@@ -130,14 +131,18 @@ class Onboard3Fragment : BaseFragment<FragmentOnboardBinding>() {
     private fun onNextActivity() {
         activity?.let { act ->
             if (FirebaseQuery.getEnableIap() && !PurchaseUtils.isNoAds(context) && FirebaseQuery.getEnableAds()) {
-                val intent = Intent(act, PremiumActivity::class.java)
-                intent.putExtra(AppConstants.IS_FROM_ONBOARDING, true)
-                startActivity(intent)
-                act.finish()
+                IntersOnboard.getInstance().showAds(act) {
+                    val intent = Intent(act, PremiumActivity::class.java)
+                    intent.putExtra(AppConstants.IS_FROM_ONBOARDING, true)
+                    startActivity(intent)
+                    act.finish()
+                }
             } else {
-                val intent = Intent(act, MainActivity::class.java)
-                startActivity(intent)
-                act.finish()
+                IntersOnboard.getInstance().showAds(act) {
+                    val intent = Intent(act, MainActivity::class.java)
+                    startActivity(intent)
+                    act.finish()
+                }
             }
         }
     }

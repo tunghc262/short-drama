@@ -57,11 +57,12 @@ public class ResumeAdsManager {
     }
 
     public void loadAd(Context context, AppOpenListener listener) {
+        Log.e("ResumeAdsManager", "loadAd: 1");
         if (isLoadingAd || isAdAvailable() || PurchaseUtils.isNoAds(context) || !FirebaseQuery.getEnableAds() || !FirebaseQuery.getEnableOpenResume()) {
             return;
         }
         isLoadingAd = true;
-
+        Log.e("ResumeAdsManager", "loadAd: 2");
         AdManagerAdRequest request = new AdManagerAdRequest.Builder().build();
         AppOpenAd.load(
                 context,
@@ -70,7 +71,7 @@ public class ResumeAdsManager {
                 new AppOpenAd.AppOpenAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull AppOpenAd ad) {
-                        Log.e("TAG", "onAdLoaded: open resume");
+                        Log.e("ResumeAdsManager", "onAdLoaded: open resume");
                         appOpenAd = ad;
                         isLoadingAd = false;
                         loadTime = new Date().getTime();

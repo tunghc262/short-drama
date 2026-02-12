@@ -2,36 +2,100 @@ package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
 import android.app.Activity
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.ViewDataBinding
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.module.ads.admob.natives.NativeInAppAll
+import com.module.ads.callback.CallbackNative
+import com.module.ads.remote.FirebaseQuery
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
+import com.shortdrama.movie.databinding.ItemAdsRankingBinding
 import com.shortdrama.movie.databinding.ItemMovieRankingBinding
-import com.shortdrama.movie.views.bases.BaseRecyclerView
+import com.shortdrama.movie.views.activities.see_more.popular.TYPE_ADS
+import com.shortdrama.movie.views.activities.see_more.popular.TYPE_NORMAL
+import com.shortdrama.movie.views.bases.BaseViewHolder
 import com.shortdrama.movie.views.bases.ext.setTextColorById
+import com.shortdrama.movie.views.bases.ext.visibleView
 
 class HomeRankingAdapter(
     val activity: Activity,
     val isChangeWidth: Boolean = true,
     val onClickItem: (DramaWithGenresUIModel) -> Unit,
-) : BaseRecyclerView<DramaWithGenresUIModel>() {
-    override fun getItemLayout(): Int = R.layout.item_movie_ranking
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    internal var list = arrayListOf<DramaWithGenresUIModel>()
 
-    override fun submitData(newData: List<DramaWithGenresUIModel>) {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_ADS -> {
+                val view: ItemAdsRankingBinding = DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_ads_ranking,
+                    parent,
+                    false
+                )
+                ItemAdsViewHolder(view)
+            }
+
+            else -> {
+                val view: ItemMovieRankingBinding = DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_movie_ranking,
+                    parent,
+                    false
+                )
+                MovieViewHolder(view)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (list[position].isAds) {
+            TYPE_ADS
+        } else {
+            TYPE_NORMAL
+        }
+    }
+
+
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int
+    ) {
+        val item = list[position]
+        when (holder.itemViewType) {
+            TYPE_NORMAL -> {
+                (holder as MovieViewHolder).bindData(item)
+            }
+
+            TYPE_ADS -> {
+                (holder as ItemAdsViewHolder).bindData(item)
+            }
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
+    fun submitData(newData: List<DramaWithGenresUIModel>) {
         list.clear()
         list.addAll(newData)
         notifyDataSetChanged()
     }
 
-    override fun setData(
-        binding: ViewDataBinding,
-        item: DramaWithGenresUIModel,
-        layoutPosition: Int
-    ) {
-        if (binding is ItemMovieRankingBinding) {
-            if (isChangeWidth){
+    inner class MovieViewHolder(private var binding: ItemMovieRankingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bindData(item: DramaWithGenresUIModel) {
+            onClickView(item)
+            if (isChangeWidth) {
                 val displayMetrics = binding.root.context.resources.displayMetrics
                 val screenWidth = displayMetrics.widthPixels
                 val params = binding.root.layoutParams
@@ -116,18 +180,50 @@ class HomeRankingAdapter(
                 false
             }
         }
+
+        private fun onClickView(item: DramaWithGenresUIModel) {
+            binding.root.setOnClickListener {
+                onClickItem(item)
+            }
+        }
     }
 
-    override fun onClickViews(
-        binding: ViewDataBinding,
-        obj: DramaWithGenresUIModel,
-        layoutPosition: Int
-    ) {
-        super.onClickViews(binding, obj, layoutPosition)
-        if (binding is ItemMovieRankingBinding) {
-            binding.root.setOnClickListener {
-                onClickItem(obj)
-            }
+    inner class ItemAdsViewHolder(val mBinding: ItemAdsRankingBinding) :
+        BaseViewHolder<DramaWithGenresUIModel>(mBinding) {
+        override fun bindData(obj: DramaWithGenresUIModel) {
+            initAds()
+        }
+
+        fun initAds() {
+            NativeInAppAll.getInstance().loadAndShow(
+                activity,
+                mBinding.lnNative,
+                FirebaseQuery.getIdNativeInApp(),
+                object : CallbackNative {
+                    override fun onLoaded() {
+                        mBinding.lnNative.visibleView()
+                        Log.e("TAG", "onLoaded all: TemplateAdapter item")
+                    }
+
+                    override fun onFailed() {
+                        Log.e("TAG", "onFailed all: TemplateAdapter item")
+                        removeAdsIfFailed()
+                    }
+
+                    override fun onAdImpression() {
+
+                    }
+                },
+                2,
+            )
+            mBinding.lnNative.visibleView()
+        }
+    }
+
+    fun removeAdsIfFailed() {
+        if (list.isNotEmpty() && list[2].isAds) {
+            list.removeAt(2)
+            notifyItemRemoved(2)
         }
     }
 }

@@ -52,7 +52,7 @@ public class IntersOnboard {
                         new InterstitialAdLoadCallback() {
                             @Override
                             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                                Log.e("TAG", "onAdLoaded: inter onboard high");
+                                Log.e("TamBT", "onAdLoaded: inter onboard high");
                                 isLoadingHigh = false;
                                 interstitialAdHigh = interstitialAd;
                                 interstitialAd.setOnPaidEventListener(adValue -> {
@@ -70,7 +70,7 @@ public class IntersOnboard {
                                         isLoadingNormal = false;
                                         interstitialAdHigh = null;
                                         loadAdsAll(activity);
-                                        timeLoad = System.currentTimeMillis();
+                                        IntersInApp.getInstance().timeLoad = System.currentTimeMillis();
                                         DialogUtils.dismissDialogLoading();
                                         if (mCallbackAd != null) {
                                             mCallbackAd.onNextAction();
@@ -92,7 +92,7 @@ public class IntersOnboard {
 
                             @Override
                             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                Log.e("TAG", "onAdFailedToLoad: inter onboard high");
+                                Log.e("TamBT", "onAdFailedToLoad: inter onboard high" + loadAdError.getMessage());
                                 isLoadingHigh = false;
                                 interstitialAdHigh = null;
                                 if (FirebaseQuery.getEnableIntersOnboard()) {
@@ -118,7 +118,7 @@ public class IntersOnboard {
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                            Log.e("TAG", "onAdLoaded: inter onboard normal");
+                            Log.e("TamBT", "onAdLoaded: inter onboard normal");
                             isLoadingNormal = false;
                             interstitialAdNormal = interstitialAd;
                             interstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
@@ -138,7 +138,7 @@ public class IntersOnboard {
                                     interstitialAdHigh = null;
                                     interstitialAdNormal = null;
                                     loadAdsAll(activity);
-                                    timeLoad = System.currentTimeMillis();
+                                    IntersInApp.getInstance().timeLoad = System.currentTimeMillis();
                                     DialogUtils.dismissDialogLoading();
                                     if (mCallbackAd != null) {
                                         mCallbackAd.onNextAction();
@@ -160,7 +160,7 @@ public class IntersOnboard {
 
                         @Override
                         public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            Log.e("TAG", "onAdFailedToLoad: inter onboard normal");
+                            Log.e("TamBT", "onAdFailedToLoad: inter onboard normal" + loadAdError.getMessage());
                             isLoadingHigh = false;
                             isLoadingNormal = false;
                             interstitialAdHigh = null;
@@ -191,9 +191,6 @@ public class IntersOnboard {
                 interstitialAd = null;
             }
             if (interstitialAd != null) {
-                long timeQuery = Long.parseLong(FirebaseQuery.getTimeShowInters());
-                long currentTime = System.currentTimeMillis();
-                long elapsedTime = currentTime - timeLoad;
                 DialogUtils.showDialogLoading(activity);
                 new Handler().postDelayed(new Runnable() {
                     @Override

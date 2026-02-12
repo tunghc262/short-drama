@@ -61,15 +61,15 @@
 
         <TextView
             android:id="@+id/tv_pro"
-            android:layout_width="@dimen/_53sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_16sdp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:background="@drawable/bg_pro"
             android:fontFamily="@font/good_times_rg"
             android:gravity="center"
             android:text="PRO"
             android:textColor="#671C0D"
-            android:textSize="@dimen/_12ssp" />
+            android:textSize="@dimen/_10ssp" />
     </RelativeLayout>
 </layout>

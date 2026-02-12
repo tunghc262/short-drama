@@ -27,25 +27,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_play_episode"
-            android:layout_width="@dimen/_12sdp"
-            android:layout_height="@dimen/_12sdp"
-            android:padding="@dimen/_1sdp"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/ivPlayEpisode"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_marginStart="@dimen/_4sdp"
-            android:layout_marginBottom="@dimen/_4sdp"
-            android:src="@drawable/ic_playing_episode"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/play_music" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_lock"
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
             android:background="@drawable/bg_icon_lock"
-            android:src="@drawable/icon_lock"
             android:padding="@dimen/_2sdp"
+            android:src="@drawable/icon_lock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

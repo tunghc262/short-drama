@@ -1,16 +1,17 @@
 package com.shortdrama.movie.views.activities.play_movie
 
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.PlaybackParameters
@@ -27,6 +28,7 @@ import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
+import com.shortdrama.movie.app.GlobalApp
 import com.shortdrama.movie.data.entity.HistoryWatchEntity
 import com.shortdrama.movie.data.entity.MovieFavoriteEntity
 import com.shortdrama.movie.databinding.ActivityPlayMovieBinding
@@ -45,9 +47,16 @@ import com.shortdrama.movie.views.dialogs.EpisodesMovieDialog
 import com.shortdrama.movie.views.dialogs.PlaySpeedMovieDialog
 import com.shortdrama.movie.views.dialogs.RemoveFavouriteDialog
 import com.shortdrama.movie.views.dialogs.ResolutionMovieDialog
+import com.shortdrama.movie.views.dialogs.VideoLoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.File
+import java.io.FileOutputStream
 
 @UnstableApi
 @AndroidEntryPoint
@@ -69,6 +78,10 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private var updateSeekBar: Runnable? = null
     private var genreMovieAdapter: GenreMovieAdapter? = null
 
+    private var currentLinkVideo: String = ""
+
+    private var downloadingVideo: VideoLoadingDialog? = null
+
     // History & State
     private var lastPosition = 0L
     private var watchTime = 0L
@@ -84,23 +97,19 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
     override fun initViews() {
         super.initViews()
-        Log.e("MOVIEEE", "initViews: 1")
+        downloadingVideo = VideoLoadingDialog(this)
         genreMovieAdapter = GenreMovieAdapter()
         trackSelector = DefaultTrackSelector(this)
         intent?.let {
             if (it.hasExtra(AppConstants.OBJ_MOVIE)) {
-                Log.e("MOVIEEE", "initViews: 2")
                 movieModel = it.getParcelableExtra(AppConstants.OBJ_MOVIE)
                 if (movieModel != null) {
-                    Log.e("MOVIEEE", "initViews: 3")
                     movieModel?.dramaUIModel?.dramaId?.let { dramaId ->
-                        Log.e("MOVIEEE", "initViews: 4")
                         viewModel.loadEpisodes(
                             dramaId
                         )
                     }
                 }
-                Log.e("MOVIEEE", "initViews: ${movieModel?.dramaUIModel?.dramaId}")
             }
         }
         setupPlayer()
@@ -114,7 +123,7 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
 
     override fun onClickViews() {
         super.onClickViews()
-        mBinding.ivBack.onClickAlpha { finish() }
+        mBinding.ivBack.onClickAlpha { onBackPressedCallback() }
 
         mBinding.playerMovie.onClickAlpha {
             player?.let {
@@ -230,26 +239,24 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         }
 
         mBinding.llButtonDownloadMovie.onClickAlpha {
-            showToastByString("Download success")
+            downloadVideo(currentLinkVideo)
         }
 
     }
 
     override fun observerData() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.listEpisodes.collectLatest { list ->
-                    Log.e("MOVIEEE", "observerData list episode ${list.size}: ")
-                    if (list.isNotEmpty()) {
-                        episodesList.clear()
-                        episodesList.addAll(list)
-                        val startEpisodeId =
-                            intent.getStringExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID)
-                        currentEpisodeIndex =
-                            list.indexOfFirst { it.episodeId == startEpisodeId }.coerceAtLeast(0)
-                        currentEpisode = list[currentEpisodeIndex]
-                        playEpisode(currentEpisodeIndex)
-                    }
+            viewModel.listEpisodes.collectLatest { list ->
+                Log.e("MOVIEEE", "observerData list episode ${list.size}: ")
+                if (list.isNotEmpty()) {
+                    episodesList.clear()
+                    episodesList.addAll(list)
+                    val startEpisodeId =
+                        intent.getStringExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID)
+                    currentEpisodeIndex =
+                        list.indexOfFirst { it.episodeId == startEpisodeId }.coerceAtLeast(0)
+                    currentEpisode = list[currentEpisodeIndex]
+                    playEpisode(currentEpisodeIndex)
                 }
             }
         }
@@ -312,9 +319,11 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         currentEpisodeIndex = index
         val episode = episodesList[index]
         updateUI(episode)
+//        val path = "${episode.dramaOwnerId}/${episode.urlStream}"
         StorageSource.getStorageDownloadUrl(
             episode.urlStream,
             onSuccess = { downloadUrl ->
+                currentLinkVideo = downloadUrl
                 Log.d("MOVIEEE", "URL video: $downloadUrl")
                 val uri = Uri.parse(downloadUrl)
                 val mediaItem = MediaItem.fromUri(uri)
@@ -344,6 +353,9 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
             StorageSource.getStorageDownloadUrl(
                 it,
                 onSuccess = { uri ->
+                    if (isFinishing || isDestroyed) {
+                        return@getStorageDownloadUrl
+                    }
                     Log.d("MOVIEEE", "URL thumb: $uri")
                     uriPoster = uri
                     Glide.with(this).load(uri).into(mBinding.ivBannerMovie)
@@ -471,4 +483,71 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         player = null
     }
 
+    override fun onBackPressedCallback() {
+        super.onBackPressedCallback()
+        GlobalApp.isShowRecommendDialog = true
+    }
+
+    private fun downloadVideo(videoUrl: String) {
+        val fileName = "Drama_Video_${System.currentTimeMillis()}.mp4"
+        downloadingVideo?.show()
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val client = OkHttpClient.Builder().build()
+                val request = Request.Builder().url(videoUrl).build()
+                val response = client.newCall(request).execute()
+
+                if (!response.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        downloadingVideo?.dismiss()
+                        Toast.makeText(
+                            this@PlayMovieActivity,
+                            "Download Failure!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    return@launch
+                }
+
+                // Tạo thư mục
+                val picturesDir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
+                val customFolder = File(picturesDir, "Downloaded Videos").also { it.mkdirs() }
+                val destinationFile = File(customFolder, fileName)
+
+                // Ghi file
+                response.body?.byteStream()?.use { input ->
+                    FileOutputStream(destinationFile).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                // Scan media để xuất hiện trong Gallery
+                MediaScannerConnection.scanFile(
+                    this@PlayMovieActivity,
+                    arrayOf(destinationFile.absolutePath),
+                    arrayOf("video/mp4"),
+                    null
+                )
+                withContext(Dispatchers.Main) {
+                    downloadingVideo?.dismiss()
+                    Toast.makeText(
+                        this@PlayMovieActivity,
+                        "Download video successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    downloadingVideo?.dismiss()
+                    Toast.makeText(
+                        this@PlayMovieActivity,
+                        "Download Error: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                Log.e("DownloadDirect", "Lỗi: ${e.message}", e)
+            }
+        }
+    }
 }

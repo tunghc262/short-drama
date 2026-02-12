@@ -5,16 +5,28 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import com.module.ads.admob.banner.BannerInApp
 import com.module.ads.admob.inters.IntersInApp
 import com.module.ads.remote.FirebaseQuery
 import com.module.ads.views.UpdateAppDialog
+import com.module.core_api_storage.model_ui.DramaGenresUIModel
+import com.module.core_api_storage.model_ui.DramaUIModel
+import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
+import com.module.core_api_storage.storage.StorageSource
 import com.shortdrama.movie.R
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.app.GlobalApp
+import com.shortdrama.movie.data.entity.HistoryWatchEntity
 import com.shortdrama.movie.databinding.ActivityMainBinding
 import com.shortdrama.movie.notification.DailyWorkReceiver
 import com.shortdrama.movie.utils.AppUtils
@@ -22,15 +34,23 @@ import com.shortdrama.movie.utils.PermissionUtils
 import com.shortdrama.movie.views.activities.main.fragments.for_you.ForYouFragment
 import com.shortdrama.movie.views.activities.main.fragments.home.HomeFragment
 import com.shortdrama.movie.views.activities.main.fragments.my_list.MyListFragment
+import com.shortdrama.movie.views.activities.main.fragments.my_list.viewmodel.HistoryViewModel
 import com.shortdrama.movie.views.activities.main.fragments.profile.ProfileFragment
+import com.shortdrama.movie.views.activities.play_movie.PlayMovieActivity
+import com.shortdrama.movie.views.activities.recomend.RecommendDialog
 import com.shortdrama.movie.views.bases.BaseActivity
+import com.shortdrama.movie.views.bases.ext.animateGoneView
+import com.shortdrama.movie.views.bases.ext.animateVisibleView
 import com.shortdrama.movie.views.bases.ext.goneView
+import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.showToastByString
 import com.shortdrama.movie.views.bases.ext.visibleView
 import com.shortdrama.movie.views.dialogs.ExitAppDialog
 import com.shortdrama.movie.views.dialogs.NotificationFullscreenPermissionDialog
 import com.shortdrama.movie.views.dialogs.NotificationPermissionDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import kotlin.system.exitProcess
 
@@ -43,6 +63,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private var ivNavCurrent: ImageView? = null
     private var imgNavCurrent: Int = R.drawable.ic_home
     private var tvNavCurrent: TextView? = null
+    private var movieModel: DramaWithGenresUIModel? = null
+    private var currentEpisodeId: String = ""
+    private var listHistory: MutableList<HistoryWatchEntity> = mutableListOf()
+    private val historyViewModel: HistoryViewModel by viewModels()
     override fun getLayoutActivity(): Int {
         return R.layout.activity_main
     }
@@ -64,13 +88,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onClickViews() {
         super.onClickViews()
-    }
-
-    override fun observerData() {
-        super.observerData()
         mBinding.llNavHome.setOnClickListener {
             if (mBinding.vpMain.currentItem == 0) return@setOnClickListener
-            if (isShowLastMovie) mBinding.clMovieLast.visibleView()
             setOnClickBottomNav(
                 mBinding.ivMainHome,
                 R.drawable.ic_home,
@@ -114,13 +133,71 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             mBinding.vpMain.setCurrentItem(3, false)
         }
         mBinding.clMovieLast.setOnClickListener {
+            val intent = Intent(this, PlayMovieActivity::class.java)
+            intent.putExtra(AppConstants.OBJ_MOVIE, movieModel)
+            intent.putExtra(AppConstants.CURRENT_EPISODE_MOVIE_ID, currentEpisodeId)
+            startActivity(intent)
+        }
+        mBinding.ivClose.onClickAlpha {
+            mBinding.clMovieLast.animateGoneView()
+        }
+    }
 
+    override fun observerData() {
+        super.observerData()
+        lifecycleScope.launch {
+            historyViewModel.watchHistory.collectLatest { listWatchHistory ->
+                listHistory.clear()
+                listHistory.addAll(listWatchHistory)
+                if (listWatchHistory.isNotEmpty()) {
+                    isShowLastMovie = true
+                    if (mBinding.vpMain.currentItem == 0) {
+                        mBinding.clMovieLast.animateVisibleView()
+                    } else {
+                        mBinding.clMovieLast.goneView()
+                    }
+                    val watchHistoryEntity = listWatchHistory[listWatchHistory.size - 1]
+                    StorageSource.getStorageDownloadUrl(
+                        watchHistoryEntity.thumb,
+                        onSuccess = { uri ->
+                            Glide.with(mBinding.ivBannerMovie.context).load(uri)
+                                .into(mBinding.ivBannerMovie)
+                        },
+                        onError = {
+                            Log.e("TAG", "bindData: ")
+                        })
+                    mBinding.tvEpisode.text =
+                        "EP.${watchHistoryEntity.episodeNo}"
+                    currentEpisodeId = watchHistoryEntity.episodeId
+                    movieModel = DramaWithGenresUIModel(
+                        dramaUIModel = DramaUIModel(
+                            dramaId = watchHistoryEntity.dramaId,
+                            dramaName = watchHistoryEntity.name,
+                            dramaDescription = watchHistoryEntity.description,
+                            dramaThumb = watchHistoryEntity.thumb,
+                            dramaTrailer = watchHistoryEntity.dramaTrailer,
+                            totalEpisode = watchHistoryEntity.totalEpisode
+                        ),
+                        dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
+                            watchHistoryEntity.genresJson,
+                            object : TypeToken<List<DramaGenresUIModel>>() {}.type
+                        ) ?: emptyList(),
+                    )
+                } else {
+                    isShowLastMovie = false
+                    mBinding.clMovieLast.goneView()
+                }
+            }
         }
     }
 
 
     override fun onResume() {
         super.onResume()
+        if (GlobalApp.isShowRecommendDialog) {
+            RecommendDialog().show(supportFragmentManager, "RecommendDialog")
+            GlobalApp.isShowRecommendDialog = false
+        }
     }
 
     private fun setUpViewPager() {
@@ -138,6 +215,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             isUserInputEnabled = false
             offscreenPageLimit = 3
         }
+        mBinding.vpMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (position == 0) {
+                    if (listHistory.isNotEmpty()) {
+                        mBinding.clMovieLast.animateVisibleView()
+                    }
+                } else {
+                    mBinding.clMovieLast.goneView()
+                }
+            }
+        })
     }
 
     private fun setOnClickBottomNav(

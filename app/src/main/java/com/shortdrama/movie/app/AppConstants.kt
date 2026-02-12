@@ -3,9 +3,8 @@ package com.shortdrama.movie.app
 object AppConstants {
     internal const val BASE_GOOGLE_PLAY = "https://play.google.com/store/apps/details?id="
     internal const val EMAIL_FEEDBACK = ""
-    internal const val PRIVACY_POLICY_URL = ""
+    internal const val PRIVACY_POLICY_URL = "https://sites.google.com/view/bz193-privacypolicy/trang-ch%E1%BB%A7"
     internal const val TERM_OF_USE_URL = ""
-
     // Language
     internal const val KEY_LANGUAGE_CODE = "KEY_LANGUAGE_CODE"
     internal const val KEY_SELECT_LANGUAGE = "KEY_SELECT_LANGUAGE"

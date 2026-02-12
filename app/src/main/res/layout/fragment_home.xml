@@ -75,13 +75,13 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:id="@+id/rl_cate_home"
             android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_toolbar">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:id="@+id/rv_cate_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

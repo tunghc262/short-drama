@@ -115,10 +115,9 @@ public class FirebaseQuery {
     public static final String NUMBER_OF_2FLOOR = "number_of_2floor";
 
     public static final String NUMBER_LOCK_MOVIE = "number_lock_movie";
-
-    public static final String KEY_API_TOKEN = "api_key_token";
-    public static final String KEY_API = "api_key";
     public static final String SHOW_IAP = "show_iap";
+
+    public static final String LAYOUT_BUTTON_ADS = "layout_button_ads";
 
     private FirebaseRemoteConfig remoteConfig;
     private GoogleMobileAdsConsentManager googleMobileAdsConsentManager;
@@ -417,13 +416,8 @@ public class FirebaseQuery {
         long numberLockMovie = firebaseRemoteConfig.getLong(NUMBER_LOCK_MOVIE);
         setNumberLockMovie(numberLockMovie);
 
-        String keyApiToken = firebaseRemoteConfig.getString(KEY_API_TOKEN);
-        setKeyApiToken(keyApiToken);
-
-        String keyApi = firebaseRemoteConfig.getString(KEY_API);
-        setKeyApi(keyApi);
-
-
+        String layoutButtonAds = firebaseRemoteConfig.getString(LAYOUT_BUTTON_ADS);
+        setLayoutButtonAds(layoutButtonAds);
         if (enableAds && enableBannerSplash) {
             BannerSplash.getInstance().loadAds(activity, callbackBannerSplash);
         } else {
@@ -1015,20 +1009,12 @@ public class FirebaseQuery {
     public static long getNumberLockMovie() {
         return SharePreferUtils.getLong(NUMBER_LOCK_MOVIE, 5);
     }
-
-    public static void setKeyApiToken(String keyApiToken) {
-        SharePreferUtils.putString(KEY_API_TOKEN, keyApiToken);
+    public static void setLayoutButtonAds(String layout) {
+        SharePreferUtils.putString(LAYOUT_BUTTON_ADS, layout);
     }
 
-    public static String getKeyApiToken() {
-        return SharePreferUtils.getString(KEY_API_TOKEN, "");
+    public static String getLayoutButtonAds() {
+        return SharePreferUtils.getString(LAYOUT_BUTTON_ADS, "");
     }
 
-    public static void setKeyApi(String keyApiToken) {
-        SharePreferUtils.putString(KEY_API, keyApiToken);
-    }
-
-    public static String getKeyApi() {
-        return SharePreferUtils.getString(KEY_API, "");
-    }
 }

@@ -179,3 +179,26 @@ fun RecyclerView.setHorizontalNestedScrollFix() {
         override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
     })
 }
+fun View.animateVisibleView(duration: Long = 400L) {
+    if (isVisible()) return
+    alpha = 0f
+    visibility = View.VISIBLE
+
+    animate()
+        .alpha(1f)
+        .setDuration(duration)
+        .start()
+}
+
+fun View.animateGoneView(duration: Long = 300L) {
+    if (!isVisible()) return
+
+    animate()
+        .alpha(0f)
+        .setDuration(duration)
+        .withEndAction {
+            visibility = View.GONE
+            alpha = 1f
+        }
+        .start()
+}

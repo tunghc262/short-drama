@@ -2,8 +2,8 @@ package com.module.ads.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -76,6 +76,7 @@ public class ModuleApplication extends Application implements Application.Activi
         ) {
             return;
         }
+        Log.e("ResumeAdsManager", "onStart: showAdIfAvailable");
         ResumeAdsManager.getOpenAds().showAdIfAvailable(currentActivity);
     }
 
@@ -85,25 +86,30 @@ public class ModuleApplication extends Application implements Application.Activi
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
+        Log.e("ResumeAdsManager", "onActivityStarted: 1");
         if (!ResumeAdsManager.getOpenAds().isShowingAd) {
             currentActivity = activity;
         }
         if (isAdsActivity(currentActivity)) return;
         if (!isActivityExcluded(currentActivity)) {
+            Log.e("ResumeAdsManager", "onActivityStarted: 2");
             ResumeAdsManager.getOpenAds().loadAd(currentActivity);
         }
     }
 
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
+        Log.e("ResumeAdsManager", "onActivityResumed: 1");
         if (currentActivity != null) {
             if (isActivityExcluded(currentActivity)) {
+                Log.e("ResumeAdsManager", "onActivityResumed: 2");
                 return;
             }
             if (ResumeAdsManager.getOpenAds().appOpenAd == null &&
                     !ResumeAdsManager.getOpenAds().isShowingAd &&
                     !ResumeAdsManager.getOpenAds().isLoadingAd
             ) {
+                Log.e("ResumeAdsManager", "onActivityResumed: 3");
                 ResumeAdsManager.getOpenAds().loadAd(activity);
             }
         }

@@ -76,8 +76,8 @@
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="@dimen/_12sdp"
-                            android:layout_height="@dimen/_12sdp"
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/icon_view" />
 
@@ -92,7 +92,7 @@
                             android:gravity="center_vertical"
                             android:text="33.8K"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_10ssp" />
+                            android:textSize="@dimen/_9ssp" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

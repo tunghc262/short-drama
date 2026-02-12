@@ -22,6 +22,7 @@ import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setTextColorById
 import com.shortdrama.movie.views.bases.ext.visibleView
+import dagger.hilt.android.AndroidEntryPoint
 
 
 class EpisodesMovieDialog(

@@ -382,6 +382,39 @@ public class NativeUtils {
         return R.layout.layout_native_fullscreen_3;
     }
 
+    public static int getLayoutNativeOnboard() {
+        try {
+            String layoutButtonAds = FirebaseQuery.getLayoutButtonAds();
+            if (layoutButtonAds.equals("cta_up")) {
+                return R.layout.layout_native_1;
+            } else {
+                return R.layout.layout_native_2;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return R.layout.layout_native_1;
+    }
+
+    public static int getLayoutNativeCustom(int pos) {
+        try {
+            int idLayout = R.layout.layout_native_popular;
+            switch (pos) {
+                case 1:
+                    idLayout = R.layout.layout_native_popular;
+                    break;
+                case 2:
+                    idLayout = R.layout.layout_native_6;
+                    break;
+            }
+            return idLayout;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return R.layout.layout_native_popular;
+    }
+
+
     public static void startImageTimer(String namePlace, Runnable onFinish) {
         cancelTimer(namePlace);
 

@@ -15,7 +15,6 @@ import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
-import com.module.ads.R;
 import com.module.ads.callback.CallbackNative;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
@@ -203,7 +202,7 @@ public class NativeOnboard1 {
             }
             if (nativeAd != null) {
                 lnNative.setVisibility(View.VISIBLE);
-                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(R.layout.layout_native_1, null);
+                NativeAdView nativeAdView = (NativeAdView) activity.getLayoutInflater().inflate(NativeUtils.getLayoutNativeOnboard(), null);
                 NativeUtils.populateNativeAdView2(nativeAd, nativeAdView);
                 lnNative.removeAllViews();
                 lnNative.addView(nativeAdView);

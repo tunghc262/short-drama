@@ -117,7 +117,7 @@ class SeeMorePopularAdapter(
 
                     }
                 },
-                AdPlaceName.NATIVE_POPULAR.name.lowercase(),
+                1,
             )
             mBinding.lnNative.visibleView()
         }

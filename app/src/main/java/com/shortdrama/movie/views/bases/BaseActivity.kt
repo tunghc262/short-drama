@@ -1,8 +1,10 @@
 package com.shortdrama.movie.views.bases
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +16,17 @@ import androidx.databinding.ViewDataBinding
 import com.module.ads.utils.FBTracking
 import com.shortdrama.movie.app.GlobalApp
 import com.shortdrama.movie.notification.ServiceNotificationManager
+import com.shortdrama.movie.utils.ConnectionLiveData
 import com.shortdrama.movie.utils.LanguageUtils
+import com.shortdrama.movie.views.bases.ext.canTouch
+import com.shortdrama.movie.views.bases.ext.onCheckActivityIsFinished
+import com.shortdrama.movie.views.dialogs.NoInternetDialog
 
 abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
     lateinit var mBinding: VB
     var serviceNotificationManager: ServiceNotificationManager? = null
+    private lateinit var connectionLiveData: ConnectionLiveData
+    private lateinit var noInternetDialog: NoInternetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +37,10 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
             mBinding = DataBindingUtil.setContentView(this, layoutView)
         }
         mBinding.lifecycleOwner = this
-
         serviceNotificationManager = (application as? GlobalApp)?.serviceNotificationManager
-
         initViews()
         onClickViews()
+        initDialogInternet()
         observerData()
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -55,6 +62,20 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
 
     open fun observerData() {}
 
+    private fun initDialogInternet() {
+        noInternetDialog = NoInternetDialog(this)
+        connectionLiveData = ConnectionLiveData(this)
+        connectionLiveData.observe(this) { hasConnection ->
+            if (hasConnection) {
+                if (!onCheckActivityIsFinished() && noInternetDialog.isShowing) {
+                    noInternetDialog.dismiss()
+                    recreate()
+                }
+            } else {
+                noInternetDialog.show()
+            }
+        }
+    }
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         hideNavigationBar()
@@ -71,6 +92,12 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
         } else {
             hideSystemUIBelowR()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        connectionLiveData.updateConnection()
+        serviceNotificationManager?.cancelAllNotification()
     }
 
     private fun hideSystemUIBelowR() {

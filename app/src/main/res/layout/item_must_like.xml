@@ -41,22 +41,22 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_27sdp"
-                    android:background="@drawable/bg_overlay_item"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/bg_overlay_must_like"
                     app:layout_constraintBottom_toBottomOf="@id/iv_banner_movie"
                     app:layout_constraintEnd_toEndOf="@id/iv_banner_movie"
                     app:layout_constraintStart_toStartOf="@id/iv_banner_movie" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_check_box"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:src="@drawable/ic_checkbox"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="@dimen/_8ssp"
+                    android:text="NEW RELEASE"
+                    android:background="@drawable/bg_btn_fill_8" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

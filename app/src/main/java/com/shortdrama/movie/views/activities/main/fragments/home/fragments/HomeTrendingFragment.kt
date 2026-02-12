@@ -15,7 +15,6 @@ import com.module.ads.callback.CallbackNative
 import com.module.ads.remote.FirebaseQuery
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
-import com.shortdrama.movie.app.AdPlaceName
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeTrendingBinding
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.HomeTrendingBannerAdapter
@@ -65,7 +64,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
                     override fun onAdImpression() {
                     }
                 },
-                AdPlaceName.NATIVE_MAIN.name.lowercase()
+                1
             )
         }
         Log.e("TAG", "init HomeTrendingFragment")
