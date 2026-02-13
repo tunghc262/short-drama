@@ -38,8 +38,9 @@ class RecommendAdapter(val activity: Activity) :
     class ItemViewHolder(val binding: ItemRecommendMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(obj: DramaWithGenresUIModel, activity: Activity) {
+            val path = "${obj.dramaUIModel.dramaName}/${obj.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                obj.dramaUIModel.dramaThumb,
+                path,
                 onSuccess = { uri ->
                     Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
                 },

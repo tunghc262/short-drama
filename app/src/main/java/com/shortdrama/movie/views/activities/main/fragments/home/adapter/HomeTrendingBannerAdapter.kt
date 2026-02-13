@@ -53,8 +53,9 @@ class HomeTrendingBannerAdapter(
     inner class DataViewHolder(var binding: ItemHomeTredingBannerBinding) :
         BaseViewHolder<DramaWithGenresUIModel>(binding) {
         override fun bindData(obj: DramaWithGenresUIModel) {
+            val path = "${obj.dramaUIModel.dramaName}/${obj.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                obj.dramaUIModel.dramaThumb,
+                path,
                 onSuccess = { uri ->Glide.with(binding.imgPlay.context).load(uri).into(binding.ivBanner) },
                 onError = {
                     Log.e("TAG", "bindData: ")

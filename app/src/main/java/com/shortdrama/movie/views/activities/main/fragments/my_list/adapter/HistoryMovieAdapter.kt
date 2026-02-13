@@ -29,8 +29,9 @@ class HistoryMovieAdapter(
         layoutPosition: Int
     ) {
         if (binding is ItemMovieNewReleaseBinding) {
+            val path = "${item.name}/${item.thumb}"
             StorageSource.getStorageDownloadUrl(
-                item.thumb,
+                path,
                 onSuccess = { uri ->
                     Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
                 },

@@ -51,8 +51,9 @@ class HomeCategoryAdapter(
     inner class DataViewHolder(var binding: ItemMovieCategoryBinding) :
         BaseViewHolder<DramaWithGenresUIModel>(binding) {
         override fun bindData(obj: DramaWithGenresUIModel) {
+            val path = "${obj.dramaUIModel.dramaName}/${obj.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                obj.dramaUIModel.dramaThumb,
+                path,
                 onSuccess = { uri ->
                     Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
                 },

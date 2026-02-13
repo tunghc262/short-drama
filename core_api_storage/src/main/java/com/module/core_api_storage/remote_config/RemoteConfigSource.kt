@@ -41,10 +41,11 @@ class RemoteConfigSource @Inject constructor(private val dramaRepository: DramaR
         if (auth.currentUser == null) {
             auth.signInAnonymously()
                 .addOnSuccessListener {
+                    Log.e("TAG_test_all_data", "initRemoteConfigDatabase: 1", )
                     initRemoteConfig()
                 }
                 .addOnFailureListener { e ->
-
+                    Log.e("TAG_test_all_data", "initRemoteConfigDatabase: 2" + e.localizedMessage+ "----" + e.message )
                 }
         } else {
             initRemoteConfig()

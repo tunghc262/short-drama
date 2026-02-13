@@ -1,28 +1,29 @@
 {
   "project_info": {
-    "project_number": "59038418695",
-    "project_id": "movietest-674bd",
-    "storage_bucket": "movietest-674bd.firebasestorage.app"
+    "project_number": "252197068237",
+    "project_id": "fa825-short-tv---drama-reels",
+    "storage_bucket": "fa825-short-tv---drama-reels.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:59038418695:android:05a5e0052f4583f583e7a2",
+        "mobilesdk_app_id": "1:252197068237:android:3c07b8c97ae16ad1267884",
         "android_client_info": {
-          "package_name": "com.movie.test"
+          "package_name": "com.shorttv.boxdrama.quick.short"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDjgs87YRR0OWCMhpbwWqvBwCXHihk5gtE"
+          "current_key": "AIzaSyA9J1HcR-2wHiE1vLw6S5_SbpXpt0_2dbw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": []
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-1939315010587936~7552893519"
     }
   ],
   "configuration_version": "1"

@@ -319,9 +319,9 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
         currentEpisodeIndex = index
         val episode = episodesList[index]
         updateUI(episode)
-//        val path = "${episode.dramaOwnerId}/${episode.urlStream}"
+        val path = "${movieModel?.dramaUIModel?.dramaName}/${episode.urlStream}"
         StorageSource.getStorageDownloadUrl(
-            episode.urlStream,
+            path,
             onSuccess = { downloadUrl ->
                 currentLinkVideo = downloadUrl
                 Log.d("MOVIEEE", "URL video: $downloadUrl")
@@ -349,9 +349,10 @@ class PlayMovieActivity : BaseActivity<ActivityPlayMovieBinding>() {
     private fun updateUI(episode: DramaEpisodeUIModel) {
         mBinding.tvTitle.text = "EP.${episode.serialNo} - ${movieModel?.dramaUIModel?.dramaName}"
         mBinding.tvMovieName.text = movieModel?.dramaUIModel?.dramaName
-        movieModel?.dramaUIModel?.dramaThumb?.let {
+        movieModel?.dramaUIModel?.let {
+            val path = "${it.dramaName}/${it.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                it,
+                path,
                 onSuccess = { uri ->
                     if (isFinishing || isDestroyed) {
                         return@getStorageDownloadUrl

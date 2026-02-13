@@ -13,7 +13,7 @@ android {
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.movie.test"
+        applicationId "com.shorttv.boxdrama.quick.short"
         minSdk 24
         targetSdk 36
         versionCode 1

@@ -37,8 +37,9 @@ class FavouriteAdapter(
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             }
             item.dramaGenresUIModel.let { genreAdapter.submitData(it) }
+            val path = "${item.dramaUIModel.dramaName}/${item.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                item.dramaUIModel.dramaThumb,
+                path,
                 onSuccess = { uri ->
                     Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
                 },

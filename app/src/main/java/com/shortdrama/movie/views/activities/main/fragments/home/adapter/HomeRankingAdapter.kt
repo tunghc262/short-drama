@@ -153,8 +153,9 @@ class HomeRankingAdapter(
                     )
                 }
             }
+            val path = "${item.dramaUIModel.dramaName}/${item.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                item.dramaUIModel.dramaThumb,
+                path,
                 onSuccess = { uri ->
                     Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
                 },

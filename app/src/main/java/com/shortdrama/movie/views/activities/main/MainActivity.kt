@@ -157,8 +157,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         mBinding.clMovieLast.goneView()
                     }
                     val watchHistoryEntity = listWatchHistory[listWatchHistory.size - 1]
+                    val path = "${watchHistoryEntity.name}/${watchHistoryEntity.thumb}"
                     StorageSource.getStorageDownloadUrl(
-                        watchHistoryEntity.thumb,
+                        path,
                         onSuccess = { uri ->
                             Glide.with(mBinding.ivBannerMovie.context).load(uri)
                                 .into(mBinding.ivBannerMovie)
