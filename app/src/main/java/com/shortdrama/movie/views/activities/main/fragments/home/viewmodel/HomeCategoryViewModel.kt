@@ -19,7 +19,7 @@ class HomeCategoryViewModel @Inject constructor(
     val category = _category.asStateFlow()
     fun loadCategory() {
         viewModelScope.launch {
-            dramaRepository.getAllDramaByCategoryWithGenres("category3")
+            dramaRepository.getAllDramaByCategoryWithGenres("category6")
                 .collect { list ->
                     val uiList = list.map { it.toUIModel() }
                     _category.value = uiList

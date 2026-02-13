@@ -1,6 +1,7 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.shortdrama.movie.databinding.ItemHomeTredingBannerBinding
 import com.shortdrama.movie.views.bases.BaseViewHolder
 
 class HomeTrendingBannerAdapter(
+    val activity: Activity,
     val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : RecyclerView.Adapter<HomeTrendingBannerAdapter.DataViewHolder>() {
     private var mContext: Context? = null
@@ -56,7 +58,10 @@ class HomeTrendingBannerAdapter(
             val path = "${obj.dramaUIModel.dramaName}/${obj.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
                 path,
-                onSuccess = { uri ->Glide.with(binding.imgPlay.context).load(uri).into(binding.ivBanner) },
+                onSuccess = { uri ->
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(binding.imgPlay.context).load(uri).into(binding.ivBanner)
+                },
                 onError = {
                     Log.e("TAG", "bindData: ")
                 })

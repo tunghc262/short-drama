@@ -85,12 +85,12 @@ dependencies {
 
 //    // Mediation
     implementation 'com.google.ads.mediation:applovin:13.5.1.0'
-//    implementation 'com.google.ads.mediation:facebook:6.21.0.0'
-//    implementation 'com.google.ads.mediation:mintegral:17.0.31.0'
-//    implementation 'com.google.ads.mediation:pangle:7.8.0.7.0'
-//    implementation 'com.unity3d.ads:unity-ads:4.16.5'
-//    implementation 'com.google.ads.mediation:unity:4.16.4.0'
-//    implementation 'com.google.ads.mediation:vungle:7.6.1.0'
+    implementation 'com.google.ads.mediation:facebook:6.21.0.0'
+    implementation 'com.google.ads.mediation:mintegral:17.0.31.0'
+    implementation 'com.google.ads.mediation:pangle:7.8.0.7.0'
+    implementation 'com.unity3d.ads:unity-ads:4.16.5'
+    implementation 'com.google.ads.mediation:unity:4.16.4.0'
+    implementation 'com.google.ads.mediation:vungle:7.6.1.0'
 
     // GDPR
     implementation 'com.google.android.ump:user-messaging-platform:4.0.0'

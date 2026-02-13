@@ -1,6 +1,7 @@
 package com.shortdrama.movie.views.activities.premium
 
 import android.content.Intent
+import android.graphics.Paint
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.PurchaseInfo
 import com.anjlab.android.iab.v3.SkuDetails
@@ -31,13 +32,13 @@ class PremiumActivity : BaseActivity<ActivityPremiumBinding>() {
         logEvent("sub_ob_view")
         isOnboarding = intent.getBooleanExtra(AppConstants.IS_FROM_ONBOARDING, false)
         initPurchase()
+        mBinding.tvPriceOriginYearly.paintFlags = mBinding.tvPriceWeekly.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
     }
 
     override fun onClickViews() {
         super.onClickViews()
         mBinding.ivClose.setOnClickListener {
             if (isOnboarding) {
-//                SharePrefUtils.putBoolean(AppConstants.KEY_SELECT_LANGUAGE, true)
                 startActivity(Intent(this, MainActivity::class.java))
             }
             finish()
@@ -199,7 +200,7 @@ class PremiumActivity : BaseActivity<ActivityPremiumBinding>() {
 
                                             PurchaseUtils.getIdYear() -> {
                                                 mBinding.tvPriceYearly.text =
-                                                    "${sku.priceLong / 12}/weekly"
+                                                    "${sku.priceLong / 52}/weekly"
                                             }
                                         }
                                     }

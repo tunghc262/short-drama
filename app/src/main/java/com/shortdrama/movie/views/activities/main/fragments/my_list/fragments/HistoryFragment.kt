@@ -4,9 +4,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
@@ -35,22 +33,22 @@ class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
     @OptIn(UnstableApi::class)
     override fun initViews() {
         super.initViews()
-        historyAdapter = HistoryMovieAdapter {
-            val movies = DramaWithGenresUIModel(
-                dramaUIModel = DramaUIModel(
-                    dramaId = it.dramaId,
-                    dramaName = it.name,
-                    dramaDescription = it.description,
-                    dramaThumb = it.thumb,
-                    dramaTrailer = it.dramaTrailer,
-                    totalEpisode = it.totalEpisode
-                ),
-                dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
-                    it.genresJson,
-                    object : TypeToken<List<DramaGenresUIModel>>() {}.type
-                ) ?: emptyList(),
-            )
-            activity?.let { act ->
+        activity?.let { act ->
+            historyAdapter = HistoryMovieAdapter(act) {
+                val movies = DramaWithGenresUIModel(
+                    dramaUIModel = DramaUIModel(
+                        dramaId = it.dramaId,
+                        dramaName = it.name,
+                        dramaDescription = it.description,
+                        dramaThumb = it.thumb,
+                        dramaTrailer = it.dramaTrailer,
+                        totalEpisode = it.totalEpisode
+                    ),
+                    dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
+                        it.genresJson,
+                        object : TypeToken<List<DramaGenresUIModel>>() {}.type
+                    ) ?: emptyList(),
+                )
                 IntersInApp.getInstance().showAds(act) {
                     val intent = Intent(act, PlayMovieActivity::class.java)
                     intent.putExtra(AppConstants.OBJ_MOVIE, movies)
@@ -58,8 +56,8 @@ class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
                     startActivity(intent)
                 }
             }
+            mBinding.rvMyHistory.adapter = historyAdapter
         }
-        mBinding.rvMyHistory.adapter = historyAdapter
     }
 
     override fun onClickViews() {
@@ -69,17 +67,15 @@ class HistoryFragment : BaseFragment<FragmentHistotyBinding>() {
     override fun observerData() {
         super.observerData()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.watchHistory.collect { list ->
-                    Log.e("MOVIE", "observerData: history: ${list.size}")
-                    if (list.isNotEmpty()) {
-                        mBinding.rvMyHistory.visibleView()
-                        mBinding.llEmpty.goneView()
-                        historyAdapter?.submitData(list)
-                    } else {
-                        mBinding.rvMyHistory.goneView()
-                        mBinding.llEmpty.visibleView()
-                    }
+            viewModel.watchHistory.collect { list ->
+                Log.e("MOVIE", "observerData: history: ${list.size}")
+                if (list.isNotEmpty()) {
+                    mBinding.rvMyHistory.visibleView()
+                    mBinding.llEmpty.goneView()
+                    historyAdapter?.submitData(list)
+                } else {
+                    mBinding.rvMyHistory.goneView()
+                    mBinding.llEmpty.visibleView()
                 }
             }
         }

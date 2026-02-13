@@ -60,7 +60,7 @@ public class IntersSplashAll {
         if (interstitialAdHigh != null || isLoadingHigh) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableInters()) {
             if (FirebaseQuery.getEnableIntersSplashHigh()) {
-                Log.e("TAG", "loadAdsHigh: inter splash high");
+                Log.e("TamBT", "loadAdsHigh: inter splash high");
                 isLoadingHigh = true;
                 AdRequest adRequest = new AdRequest.Builder().build();
                 InterstitialAd.load(activity, FirebaseQuery.getIdIntersSplashHigh(), adRequest,
@@ -163,7 +163,7 @@ public class IntersSplashAll {
         if (interstitialAdHigh2 != null || isLoadingHigh2) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableInters()) {
             if (FirebaseQuery.getEnableIntersSplashHigh()) {
-                Log.e("TAG", "loadAdsHigh: inter splash 2 high");
+                Log.e("TamBT", "loadAdsHigh: inter splash 2 high");
                 isLoadingHigh2 = true;
                 AdRequest adRequest = new AdRequest.Builder().build();
                 InterstitialAd.load(activity, FirebaseQuery.getIdIntersSplash2High(), adRequest,
@@ -232,7 +232,7 @@ public class IntersSplashAll {
 
                             @Override
                             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                Log.e("TAG", "onAdFailedToLoad: inter splash 2 high");
+                                Log.e("TamBT", "onAdFailedToLoad: inter splash 2 high"  + loadAdError.getMessage());
                                 isLoadingHigh2 = false;
                                 interstitialAdHigh2 = null;
                                 int numberOf2Floor = (int) FirebaseQuery.getNumberOf2Floor();
@@ -266,14 +266,14 @@ public class IntersSplashAll {
         if (interstitialAdHigh3 != null || isLoadingHigh3) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableInters()) {
             if (FirebaseQuery.getEnableIntersSplashHigh()) {
-                Log.e("TAG", "loadAdsHigh: inter splash 3 high");
+                Log.e("TamBT", "loadAdsHigh: inter splash 3 high");
                 isLoadingHigh3 = true;
                 AdRequest adRequest = new AdRequest.Builder().build();
                 InterstitialAd.load(activity, FirebaseQuery.getIdIntersSplash3High(), adRequest,
                         new InterstitialAdLoadCallback() {
                             @Override
                             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                                Log.e("TAG", "onAdLoaded: inter splash 3 high");
+                                Log.e("TamBT", "onAdLoaded: inter splash 3 high");
                                 isLoadingHigh3 = false;
                                 interstitialAdHigh3 = interstitialAd;
                                 isTimeOut = true;
@@ -281,7 +281,7 @@ public class IntersSplashAll {
                                 interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                     @Override
                                     public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                        Log.e("TAG", "onAdFailedToShowFullScreenContent: inter splash 3 high");
+                                        Log.e("TamBT", "onAdFailedToShowFullScreenContent: inter splash 3 high");
                                     }
 
                                     @Override
@@ -337,7 +337,7 @@ public class IntersSplashAll {
 
                             @Override
                             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                Log.e("TAG", "onAdFailedToLoad: inter splash 3 high");
+                                Log.e("TamBT", "onAdFailedToLoad: inter splash 3 high" + loadAdError.getMessage());
                                 isLoadingHigh3 = false;
                                 interstitialAdHigh3 = null;
                                 if (FirebaseQuery.getEnableIntersSplash()) {
@@ -365,7 +365,7 @@ public class IntersSplashAll {
     private void loadAdsNormal(Activity activity, CallbackAd mCallBack) {
         if (interstitialAdNormal != null || isLoadingNormal) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableInters() && FirebaseQuery.getEnableIntersSplash()) {
-            Log.e("TAG", "loadAdsNormal: inter splash normal");
+            Log.e("TamBT", "loadAdsNormal: inter splash normal");
             isLoadingNormal = true;
             AdRequest adRequest = new AdRequest.Builder().build();
             InterstitialAd.load(activity, FirebaseQuery.getIdIntersSplash(), adRequest,

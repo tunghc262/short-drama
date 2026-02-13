@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.shortdrama.movie.databinding.ItemMovieCategoryBinding
 import com.shortdrama.movie.views.bases.BaseViewHolder
 
 class HomeCategoryAdapter(
+    val activity: Activity,
     val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.DataViewHolder>() {
     private var mContext: Context? = null
@@ -55,7 +57,8 @@ class HomeCategoryAdapter(
             StorageSource.getStorageDownloadUrl(
                 path,
                 onSuccess = { uri ->
-                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(activity).load(uri).into(binding.ivBannerMovie)
                 },
                 onError = {
                     Log.e("TAG", "bindData: ")

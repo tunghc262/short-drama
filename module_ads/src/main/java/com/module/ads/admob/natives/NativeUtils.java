@@ -406,12 +406,15 @@ public class NativeUtils {
                 case 2:
                     idLayout = R.layout.layout_native_6;
                     break;
+                case 3:
+                    idLayout = R.layout.layout_native_7;
+                    break;
             }
             return idLayout;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return R.layout.layout_native_popular;
+        return R.layout.layout_native_7;
     }
 
 

@@ -61,7 +61,7 @@ class HomeTrendingViewModel @Inject constructor(
 
     fun loadMovieNewRelease() {
         viewModelScope.launch {
-            dramaRepository.getAllDramaByCategoryWithGenres("category1")
+            dramaRepository.getAllDramaByCategoryWithGenres("category3")
                 .collect { list ->
                     val uiList = list.map { it.toUIModel() }
                     _newRelease.value = uiList
@@ -71,7 +71,7 @@ class HomeTrendingViewModel @Inject constructor(
 
     fun loadMovieTopChart() {
         viewModelScope.launch {
-            dramaRepository.getAllDramaByCategoryWithGenres("category1")
+            dramaRepository.getAllDramaByCategoryWithGenres("category5")
                 .collect { list ->
                     val uiList = list.map { it.toUIModel() }
                     _topChart.value = uiList

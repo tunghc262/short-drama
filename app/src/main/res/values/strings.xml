@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Short Drama</string>
+    <string name="app_name" translatable="false">Short TV - Drama Reels</string>
     <string name="notification_channel_id" translatable="false">Notification Channel</string>
 
     <string name="text_ads_shown">Ads are about to be shown…</string>

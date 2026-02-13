@@ -87,10 +87,12 @@ class MovieTopChartAdapter(
                     )
                 }
             }
+            val path = "${item.dramaUIModel.dramaName}/${item.dramaUIModel.dramaThumb}"
             StorageSource.getStorageDownloadUrl(
-                item.dramaUIModel.dramaThumb,
+                path,
                 onSuccess = { uri ->
-                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(activity).load(uri).into(binding.ivBannerMovie)
                 },
                 onError = {
                     Log.e("TAG", "bindData: ")

@@ -115,9 +115,13 @@ public class FirebaseQuery {
     public static final String NUMBER_OF_2FLOOR = "number_of_2floor";
 
     public static final String NUMBER_LOCK_MOVIE = "number_lock_movie";
+
+    public static final String NUMBER_FREE_WATCH_MOVIE = "number_free_watch_movie";
     public static final String SHOW_IAP = "show_iap";
 
     public static final String LAYOUT_BUTTON_ADS = "layout_button_ads";
+
+    public static final String TIME_SHOW_ICON_X = "nfs_time_x";
 
     private FirebaseRemoteConfig remoteConfig;
     private GoogleMobileAdsConsentManager googleMobileAdsConsentManager;
@@ -415,6 +419,12 @@ public class FirebaseQuery {
 
         long numberLockMovie = firebaseRemoteConfig.getLong(NUMBER_LOCK_MOVIE);
         setNumberLockMovie(numberLockMovie);
+
+        long numberFreeWatchMovie = firebaseRemoteConfig.getLong(NUMBER_FREE_WATCH_MOVIE);
+        setNumberFreeWatchMovie(numberFreeWatchMovie);
+
+        long timeShowIconX = firebaseRemoteConfig.getLong(TIME_SHOW_ICON_X);
+        setTimeShowIconX(timeShowIconX);
 
         String layoutButtonAds = firebaseRemoteConfig.getString(LAYOUT_BUTTON_ADS);
         setLayoutButtonAds(layoutButtonAds);
@@ -1009,12 +1019,28 @@ public class FirebaseQuery {
     public static long getNumberLockMovie() {
         return SharePreferUtils.getLong(NUMBER_LOCK_MOVIE, 5);
     }
+
+    public static void setNumberFreeWatchMovie(long timeScroll) {
+        SharePreferUtils.putLong(NUMBER_FREE_WATCH_MOVIE, timeScroll);
+    }
+
+    public static long getNumberFreeWatchMovie() {
+        return SharePreferUtils.getLong(NUMBER_FREE_WATCH_MOVIE, 5);
+    }
     public static void setLayoutButtonAds(String layout) {
         SharePreferUtils.putString(LAYOUT_BUTTON_ADS, layout);
     }
 
     public static String getLayoutButtonAds() {
         return SharePreferUtils.getString(LAYOUT_BUTTON_ADS, "");
+    }
+
+    public static void setTimeShowIconX(long timeScroll) {
+        SharePreferUtils.putLong(TIME_SHOW_ICON_X, timeScroll);
+    }
+
+    public static long getTimeShowIconX() {
+        return SharePreferUtils.getLong(TIME_SHOW_ICON_X, 5000L);
     }
 
 }

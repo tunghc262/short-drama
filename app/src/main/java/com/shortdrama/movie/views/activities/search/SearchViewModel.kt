@@ -33,7 +33,7 @@ class SearchViewModel @Inject constructor(
 
     fun loadDramaTrending() {
         viewModelScope.launch {
-            dramaRepository.getAllDramaByCategoryWithGenres("category1")
+            dramaRepository.getAllDramaByCategoryWithGenres("category2")
                 .collect { list ->
                     val uiList = list.map { it.toUIModel() }
                     _dramaTrending.value = uiList

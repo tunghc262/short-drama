@@ -4,9 +4,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.module.ads.admob.inters.IntersInApp
@@ -64,7 +62,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
                     override fun onAdImpression() {
                     }
                 },
-                1
+                3
             )
         }
         Log.e("TAG", "init HomeTrendingFragment")
@@ -78,7 +76,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
 
     private fun setUpRecyclerView() {
         activity?.let { act ->
-            moviePopularAdapter = MoviePopularAdapter(onClickItem = { movie ->
+            moviePopularAdapter = MoviePopularAdapter(act, onClickItem = { movie ->
                 goToWatchMovie(movie)
             })
             mBinding.rvPopularMovie.apply {
@@ -86,7 +84,7 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
                 layoutManager = GridLayoutManager(act, 2)
             }
 
-            newReleaseAdapter = MovieNewReleaseAdapter(onClickItem = { movie ->
+            newReleaseAdapter = MovieNewReleaseAdapter(act, onClickItem = { movie ->
                 goToWatchMovie(movie)
             })
             mBinding.rvNewRelease.apply {
@@ -109,15 +107,17 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
     }
 
     private fun setUpBannerTrending() {
-        homeTrendingBannerAdapter =
-            HomeTrendingBannerAdapter(onClickItem = { obj ->
-                goToWatchMovie(obj)
-            })
-        mBinding.vpBannerTrending.adapter = homeTrendingBannerAdapter
-        mBinding.vpBannerTrending.clipToPadding = false
-        mBinding.vpBannerTrending.clipChildren = false
-        mBinding.vpBannerTrending.offscreenPageLimit = 3
-        mBinding.dotIndicators.attachTo(mBinding.vpBannerTrending)
+        activity?.let { act ->
+            homeTrendingBannerAdapter =
+                HomeTrendingBannerAdapter(act, onClickItem = { obj ->
+                    goToWatchMovie(obj)
+                })
+            mBinding.vpBannerTrending.adapter = homeTrendingBannerAdapter
+            mBinding.vpBannerTrending.clipToPadding = false
+            mBinding.vpBannerTrending.clipChildren = false
+            mBinding.vpBannerTrending.offscreenPageLimit = 3
+            mBinding.dotIndicators.attachTo(mBinding.vpBannerTrending)
+        }
     }
 
     override fun onClickViews() {
@@ -135,44 +135,36 @@ class HomeTrendingFragment : BaseFragment<FragmentHomeTrendingBinding>() {
         super.observerData()
         //banner
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.banner.collect { list ->
-                    if (list.isNotEmpty()) {
-                        homeTrendingBannerAdapter?.submitData(list)
-                    }
+            viewModel.banner.collect { list ->
+                if (list.isNotEmpty()) {
+                    homeTrendingBannerAdapter?.submitData(list)
                 }
             }
         }
 
         //popular
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.popular.collect { list ->
-                    if (list.isNotEmpty()) {
-                        listPopular.clear()
-                        listPopular.addAll(list)
-                        moviePopularAdapter?.submitData(list)
-                    }
+            viewModel.popular.collect { list ->
+                if (list.isNotEmpty()) {
+                    listPopular.clear()
+                    listPopular.addAll(list)
+                    moviePopularAdapter?.submitData(list)
                 }
             }
         }
         // new release
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.newRelease.collect { list ->
-                    if (list.isNotEmpty()) {
-                        newReleaseAdapter?.submitData(list)
-                    }
+            viewModel.newRelease.collect { list ->
+                if (list.isNotEmpty()) {
+                    newReleaseAdapter?.submitData(list)
                 }
             }
         }
         // top chart
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.topChart.collect { list ->
-                    if (list.isNotEmpty()) {
-                        movieTopChartAdapter?.submitData(list)
-                    }
+            viewModel.topChart.collect { list ->
+                if (list.isNotEmpty()) {
+                    movieTopChartAdapter?.submitData(list)
                 }
             }
         }

@@ -30,6 +30,8 @@ class GlobalApp : ModuleApplication() {
 
         var isShowRecommendDialog = false
 
+        var mapLockMovie: MutableMap<String, Boolean> = mutableMapOf()
+
     }
 
     init {

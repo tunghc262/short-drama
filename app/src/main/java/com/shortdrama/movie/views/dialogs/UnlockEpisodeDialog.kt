@@ -1,13 +1,13 @@
 package com.shortdrama.movie.views.dialogs
 
 import android.app.Activity
-import android.util.Log
-import com.module.ads.admob.reward.RewardInApp
 import com.module.ads.remote.FirebaseQuery
+import com.module.ads.utils.PurchaseUtils
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.DialogUnlockEpisodeBinding
 import com.shortdrama.movie.utils.UnlockEpisodeManager
 import com.shortdrama.movie.views.bases.BaseDialog
+import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.showToastByString
 
@@ -23,11 +23,10 @@ class UnlockEpisodeDialog(
 
     override fun initViews() {
         super.initViews()
-        Log.e(
-            "MOVIE",
-            "UnlockEpisodeDialog free: ${UnlockEpisodeManager.getRemainingRewards(activity)}",
-        )
-        RewardInApp.getInstance().loadReward(activity)
+
+        if (!FirebaseQuery.getEnableAds() || PurchaseUtils.isNoAds(activity) || !FirebaseQuery.getEnableIap()) {
+            mBinding.btnUpgrade.goneView()
+        }
     }
 
     override fun onClickViews() {
@@ -42,7 +41,7 @@ class UnlockEpisodeDialog(
                 onClickWatchAds()
                 UnlockEpisodeManager.incrementRewardCount(activity)
             } else {
-                context.showToastByString("You've used up your ${FirebaseQuery.getNumberLockMovie()} ad views for today. Upgrade to Premium to continue watching!")
+                context.showToastByString("You've used up your ${FirebaseQuery.getNumberFreeWatchMovie()} ad views for today. Upgrade to Premium to continue watching!")
             }
         }
         mBinding.ivClose.onClickAlpha {

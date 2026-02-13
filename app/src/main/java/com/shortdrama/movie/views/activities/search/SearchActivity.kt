@@ -59,7 +59,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     }
 
     private fun initRecyclerViewTrending() {
-        trendingSearchAdapter = TrendingSearchAdapter {
+        trendingSearchAdapter = TrendingSearchAdapter(this) {
             IntersInApp.getInstance().showAds(this) {
                 val intent = Intent(this, PlayMovieActivity::class.java)
                 intent.putExtra(AppConstants.OBJ_MOVIE, it)

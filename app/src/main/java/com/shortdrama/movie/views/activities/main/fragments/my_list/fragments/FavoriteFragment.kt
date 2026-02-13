@@ -3,9 +3,7 @@ package com.shortdrama.movie.views.activities.main.fragments.my_list.fragments
 import android.content.Intent
 import android.util.Log
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.module.ads.admob.inters.IntersInApp
@@ -62,33 +60,31 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
     override fun observerData() {
         super.observerData()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.favouriteMovies.collect { list ->
-                    Log.e("MOVIE", "observerData: favourite: ${list.size}")
-                    if (list.isNotEmpty()) {
-                        mBinding.rvMyFavourite.visibleView()
-                        mBinding.llEmpty.goneView()
-                        val movies = list.map {
-                            DramaWithGenresUIModel(
-                                dramaUIModel = DramaUIModel(
-                                    dramaId = it.dramaId,
-                                    dramaName = it.name,
-                                    dramaDescription = it.description,
-                                    dramaThumb = it.thumb,
-                                    dramaTrailer = it.dramaTrailer,
-                                    totalEpisode = it.totalEpisode
-                                ),
-                                dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
-                                    it.genresJson,
-                                    object : TypeToken<List<DramaGenresUIModel>>() {}.type
-                                ) ?: emptyList(),
-                            )
-                        }
-                        favouriteAdapter?.submitData(movies)
-                    } else {
-                        mBinding.rvMyFavourite.goneView()
-                        mBinding.llEmpty.visibleView()
+            viewModel.favouriteMovies.collect { list ->
+                Log.e("MOVIE", "observerData: favourite: ${list.size}")
+                if (list.isNotEmpty()) {
+                    mBinding.rvMyFavourite.visibleView()
+                    mBinding.llEmpty.goneView()
+                    val movies = list.map {
+                        DramaWithGenresUIModel(
+                            dramaUIModel = DramaUIModel(
+                                dramaId = it.dramaId,
+                                dramaName = it.name,
+                                dramaDescription = it.description,
+                                dramaThumb = it.thumb,
+                                dramaTrailer = it.dramaTrailer,
+                                totalEpisode = it.totalEpisode
+                            ),
+                            dramaGenresUIModel = Gson().fromJson<List<DramaGenresUIModel>>(
+                                it.genresJson,
+                                object : TypeToken<List<DramaGenresUIModel>>() {}.type
+                            ) ?: emptyList(),
+                        )
                     }
+                    favouriteAdapter?.submitData(movies)
+                } else {
+                    mBinding.rvMyFavourite.goneView()
+                    mBinding.llEmpty.visibleView()
                 }
             }
         }

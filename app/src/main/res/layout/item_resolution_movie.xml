@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="Auto (recommend)"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_13ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <TextView
                     android:id="@+id/tv_des"
@@ -46,7 +46,7 @@
                     android:layout_marginTop="@dimen/_2sdp"
                     android:text="Adjust to optimize your experience"
                     android:textColor="@color/white_60"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_9ssp" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatImageView

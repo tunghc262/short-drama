@@ -9,12 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.AdapterResponseInfo;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.OnPaidEventListener;
-import com.module.ads.mmp.AdjustTracking;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
 import com.module.ads.utils.FBTracking;
@@ -57,6 +53,7 @@ public class BannerInApp {
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                     isLoadingAd = false;
+                    lnBanner.setVisibility(View.GONE);
                 }
 
                 @Override

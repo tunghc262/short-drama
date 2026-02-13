@@ -23,7 +23,7 @@ interface CommonDao {
     fun getDramasByCategory(categoryId: String): Flow<List<DramaWithGenres>>
 
     // get all episode by dramaId
-    @Query("SELECT * FROM episode_table WHERE dramaOwnerId = :dramaId ORDER BY serialNo ASC")
+    @Query("SELECT * FROM episode_table WHERE dramaOwnerId = :dramaId ORDER BY CAST (serialNo AS INTEGER) ASC")
     fun getEpisodesOfDrama(dramaId: String): Flow<List<DramaEpisodeEntity>>
 
     //get all drama with genres

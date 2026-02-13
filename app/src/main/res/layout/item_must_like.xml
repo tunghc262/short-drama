@@ -48,15 +48,19 @@
                     app:layout_constraintStart_toStartOf="@id/iv_banner_movie" />
 
                 <TextView
-                    android:paddingVertical="@dimen/_2sdp"
-                    android:paddingHorizontal="@dimen/_5sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:background="@drawable/bg_btn_fill_8"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textSize="@dimen/_8ssp"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_1sdp"
                     android:text="NEW RELEASE"
-                    android:background="@drawable/bg_btn_fill_8" />
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_6ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

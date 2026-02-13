@@ -1,10 +1,10 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.fragments
 
 import android.content.Intent
+import androidx.annotation.OptIn
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.common.util.UnstableApi
 import com.module.ads.admob.inters.IntersInApp
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
@@ -22,7 +22,6 @@ import com.shortdrama.movie.views.dialogs.CategoryTabDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
     private var tabCategoryAdapter: TabCategoryAdapter? = null
@@ -39,6 +38,8 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
 
     private var currentIndexTab = 0
 
+    private var isFirstResume = true
+
     private val viewModel: HomeCategoryViewModel by activityViewModels()
 
     override fun getLayoutFragment(): Int = R.layout.fragment_home_category
@@ -49,9 +50,10 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
         viewModel.loadCategory()
     }
 
+    @OptIn(UnstableApi::class)
     private fun initListCate() {
         activity?.let { act ->
-            categoryAdapter = HomeCategoryAdapter { obj ->
+            categoryAdapter = HomeCategoryAdapter(act) { obj ->
                 activity?.let { act ->
                     IntersInApp.getInstance().showAds(act) {
                         val intent = Intent(act, PlayMovieActivity::class.java)
@@ -94,7 +96,6 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
                 setHorizontalNestedScrollFix()
             }
             tabCategoryAdapter?.submitData(listCate)
-
         }
     }
 
@@ -124,20 +125,18 @@ class HomeCategoryFragment : BaseFragment<FragmentHomeCategoryBinding>() {
     override fun observerData() {
         super.observerData()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.category.collect { list ->
-                    if (list.isNotEmpty()) {
-                        val listPart = partitionList(list, 7)
-                        listMovie = list.toMutableList()
-                        listMoviePart1 = listPart[0].toMutableList()
-                        listMoviePart2 = listPart[1].toMutableList()
-                        listMoviePart3 = listPart[2].toMutableList()
-                        listMoviePart4 = listPart[3].toMutableList()
-                        listMoviePart5 = listPart[4].toMutableList()
-                        listMoviePart6 = listPart[5].toMutableList()
-                        listMoviePart7 = listPart[6].toMutableList()
-                        categoryAdapter?.submitData(list)
-                    }
+            viewModel.category.collect { list ->
+                if (list.isNotEmpty()) {
+                    val listPart = partitionList(list, 7)
+                    listMovie = list.toMutableList()
+                    listMoviePart1 = listPart[0].toMutableList()
+                    listMoviePart2 = listPart[1].toMutableList()
+                    listMoviePart3 = listPart[2].toMutableList()
+                    listMoviePart4 = listPart[3].toMutableList()
+                    listMoviePart5 = listPart[4].toMutableList()
+                    listMoviePart6 = listPart[5].toMutableList()
+                    listMoviePart7 = listPart[6].toMutableList()
+                    categoryAdapter?.submitData(list)
                 }
             }
         }

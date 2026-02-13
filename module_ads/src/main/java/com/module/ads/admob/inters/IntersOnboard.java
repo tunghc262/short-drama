@@ -69,7 +69,6 @@ public class IntersOnboard {
                                         isLoadingHigh = false;
                                         isLoadingNormal = false;
                                         interstitialAdHigh = null;
-                                        loadAdsAll(activity);
                                         IntersInApp.getInstance().timeLoad = System.currentTimeMillis();
                                         DialogUtils.dismissDialogLoading();
                                         if (mCallbackAd != null) {
@@ -137,7 +136,6 @@ public class IntersOnboard {
                                     isLoadingNormal = false;
                                     interstitialAdHigh = null;
                                     interstitialAdNormal = null;
-                                    loadAdsAll(activity);
                                     IntersInApp.getInstance().timeLoad = System.currentTimeMillis();
                                     DialogUtils.dismissDialogLoading();
                                     if (mCallbackAd != null) {
@@ -201,7 +199,6 @@ public class IntersOnboard {
                     }
                 }, 500L);
             } else {
-                loadAdsAll(activity);
                 if (callbackAd != null) {
                     callbackAd.onNextAction();
                 }

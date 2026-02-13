@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
+import android.app.Activity
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -10,6 +11,7 @@ import com.shortdrama.movie.databinding.ItemMovieExclusiveBinding
 import com.shortdrama.movie.views.bases.BaseRecyclerView
 
 class MovieExclusiveAdapter(
+    val activity: Activity,
     val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : BaseRecyclerView<DramaWithGenresUIModel>() {
     override fun getItemLayout(): Int = R.layout.item_movie_exclusive
@@ -30,7 +32,8 @@ class MovieExclusiveAdapter(
             StorageSource.getStorageDownloadUrl(
                 path,
                 onSuccess = { uri ->
-                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(activity).load(uri).into(binding.ivBannerMovie)
                 },
                 onError = {
                     Log.e("TAG", "bindData: ")

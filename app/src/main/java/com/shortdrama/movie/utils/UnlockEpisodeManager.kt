@@ -5,7 +5,6 @@ import com.module.ads.remote.FirebaseQuery
 import java.util.Calendar
 
 object UnlockEpisodeManager {
-    private const val PREF_NAME = "reward_limit_prefs"
     private const val KEY_REWARD_COUNT = "reward_count"
     private const val KEY_LAST_RESET_DATE = "last_reset_date"
 
@@ -18,7 +17,7 @@ object UnlockEpisodeManager {
             SharePrefUtils.putInt(KEY_REWARD_COUNT, 0)
             count = 0
         }
-        return count < FirebaseQuery.getNumberLockMovie()
+        return count < FirebaseQuery.getNumberFreeWatchMovie()
     }
 
     fun incrementRewardCount(context: Context) {
@@ -28,7 +27,7 @@ object UnlockEpisodeManager {
 
     fun getRemainingRewards(context: Context): Int {
         val today = getTodayMidnightMillis()
-        val maxCount = FirebaseQuery.getNumberLockMovie().toInt()
+        val maxCount = FirebaseQuery.getNumberFreeWatchMovie().toInt()
         val lastReset = SharePrefUtils.getLong(KEY_LAST_RESET_DATE, 0L)
         if (lastReset < today) return maxCount
         return maxCount - SharePrefUtils.getInt(KEY_REWARD_COUNT, 0)

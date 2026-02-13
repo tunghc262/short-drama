@@ -46,22 +46,27 @@
                     android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_movie_name"
-                style="@style/TextViewMedium"
+            <HorizontalScrollView
+                android:id="@+id/horizontal_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_7sdp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="LAPD! Open your heart"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:overScrollMode="never"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@id/rv_genre"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
-                app:layout_constraintTop_toTopOf="@id/cv_banner_movie" />
-
+                app:layout_constraintTop_toTopOf="@id/cv_banner_movie">
+                <TextView
+                    android:id="@+id/tv_movie_name"
+                    style="@style/TextViewMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LAPD! Open your heart"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp" />
+            </HorizontalScrollView>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_genre"
                 android:layout_width="0dp"
@@ -73,7 +78,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cv_banner_movie"
-                app:layout_constraintTop_toBottomOf="@id/tv_movie_name"
+                app:layout_constraintTop_toBottomOf="@id/horizontal_tv"
                 tools:listitem="@layout/item_genre_episodes" />
 
             <LinearLayout

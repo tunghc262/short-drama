@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
+import android.app.Activity
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -15,6 +16,7 @@ import com.shortdrama.movie.views.bases.ext.toMonthDayOrdinal
 import com.shortdrama.movie.views.bases.ext.visibleView
 
 class MovieComingSoonAdapter(
+    val activity: Activity,
     val isShowDateOriginal: Boolean = true,
     val iShowDateNumeric: Boolean = false,
     val onClickItem: (DramaWithGenresUIModel) -> Unit
@@ -57,7 +59,8 @@ class MovieComingSoonAdapter(
             StorageSource.getStorageDownloadUrl(
                 path,
                 onSuccess = { uri ->
-                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(activity).load(uri).into(binding.ivBannerMovie)
                 },
                 onError = {
                     Log.e("TAG", "bindData: ")

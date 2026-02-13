@@ -141,13 +141,13 @@
                 android:id="@+id/lav_hand"
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_100sdp"
-                app:lottie_colorFilter="@color/purple"
                 android:layout_centerInParent="true"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:lottie_autoPlay="true"
+                app:lottie_colorFilter="@color/purple"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/ic_hand_swipe" />
 
@@ -171,7 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -197,6 +197,22 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:src="@drawable/ic_close"
                 android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/iv_time"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/bg_time"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:paddingTop="@dimen/_2sdp"
+                android:text="5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="visible" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

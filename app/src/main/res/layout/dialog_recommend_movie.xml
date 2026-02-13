@@ -22,7 +22,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:paddingHorizontal="@dimen/_20sdp"
             android:id="@+id/vp_recommend_movie"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -30,6 +29,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/_20sdp"
             app:layout_constraintBottom_toTopOf="@id/ll_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,20 +44,28 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/ll_button_watch_movie">
 
-            <TextView
-                android:id="@+id/tvMovieName"
+            <HorizontalScrollView
+                android:id="@+id/horizontal_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/poppins_medium"
-                android:maxLines="1"
-
-                android:text="The Book of Dreams"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:overScrollMode="never"
+                android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvMovieName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:singleLine="true"
+                    android:text="The Book of Dreams"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+            </HorizontalScrollView>
+
 
             <TextView
                 android:id="@+id/tv_description"

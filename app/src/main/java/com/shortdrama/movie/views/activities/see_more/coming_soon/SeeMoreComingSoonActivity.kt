@@ -27,6 +27,7 @@ class SeeMoreComingSoonActivity : BaseActivity<ActivitySeeMoreComingSoonBinding>
 
     private fun initAdapter() {
         seeMoreComingSoonAdapter = MovieComingSoonAdapter(
+            this,
             isShowDateOriginal = false,
             iShowDateNumeric = true
         ) { movie ->

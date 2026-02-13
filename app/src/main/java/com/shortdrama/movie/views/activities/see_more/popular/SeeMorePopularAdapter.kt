@@ -131,7 +131,8 @@ class SeeMorePopularAdapter(
             StorageSource.getStorageDownloadUrl(
                 path,
                 onSuccess = { uri ->
-                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(activity).load(uri).into(binding.ivBannerMovie)
                 },
                 onError = {
                     Log.e("TAG_drama_thumb", "bindData: ")

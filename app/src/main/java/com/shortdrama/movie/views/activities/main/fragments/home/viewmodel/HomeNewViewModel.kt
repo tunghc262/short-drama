@@ -46,7 +46,7 @@ class HomeNewViewModel @Inject constructor(
 
     fun loadComingSoon() {
         viewModelScope.launch {
-            dramaRepository.getAllDramaByCategoryWithGenres("category3")
+            dramaRepository.getAllDramaByCategoryWithGenres("category4")
                 .collect { list ->
                     val uiList = list.map { it.toUIModel() }
                     val comingSoonDates = DataUtils.generateComingSoonDates(uiList.size)

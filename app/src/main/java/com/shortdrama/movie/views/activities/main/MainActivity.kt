@@ -31,6 +31,7 @@ import com.shortdrama.movie.databinding.ActivityMainBinding
 import com.shortdrama.movie.notification.DailyWorkReceiver
 import com.shortdrama.movie.utils.AppUtils
 import com.shortdrama.movie.utils.PermissionUtils
+import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.views.activities.main.fragments.for_you.ForYouFragment
 import com.shortdrama.movie.views.activities.main.fragments.home.HomeFragment
 import com.shortdrama.movie.views.activities.main.fragments.my_list.MyListFragment
@@ -80,10 +81,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         )
         IntersInApp.getInstance().loadAdsAll(this)
         UpdateAppDialog(this).showDialog()
-        initPermission()
+//        initPermission()
         ivNavCurrent = mBinding.ivMainHome
         tvNavCurrent = mBinding.tvMainHome
         setUpViewPager()
+        SharePrefUtils.putBoolean(AppConstants.KEY_SELECT_LANGUAGE, true)
     }
 
     override fun onClickViews() {

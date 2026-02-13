@@ -50,6 +50,19 @@
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
 
+
+                    <TextView
+                        android:id="@+id/ad_headline"
+                        style="@style/TextViewBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="@tools:sample/full_names" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -63,35 +76,22 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_ads"
                             android:paddingHorizontal="@dimen/_6sdp"
-                            android:paddingVertical="@dimen/_2sdp"
-                            android:text="Ad"
+                            android:text="AD"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
                         <TextView
-                            android:id="@+id/ad_headline"
-                            style="@style/TextViewSemiBold"
+                            android:id="@+id/ad_body"
+                            style="@style/TextViewRegular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_13ssp"
+                            android:textColor="#787878"
+                            android:textSize="@dimen/_10ssp"
                             tools:text="@tools:sample/full_names" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/ad_body"
-                        style="@style/TextViewRegular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_11ssp"
-                        tools:text="@tools:sample/full_names" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

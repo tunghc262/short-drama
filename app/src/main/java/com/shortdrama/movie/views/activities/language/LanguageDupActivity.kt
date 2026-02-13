@@ -152,7 +152,6 @@ class LanguageDupActivity : BaseActivity<ActivityLanguageBinding>() {
     }
 
     private fun onClickDone() {
-        SharePrefUtils.putBoolean(AppConstants.KEY_SELECT_LANGUAGE, true)
         languageModel?.let { model ->
             SharePrefUtils.putString(AppConstants.KEY_LANGUAGE_CODE, model.isoLanguage)
             SharePrefUtils.putString(AppConstants.KEY_LANGUAGE_COUNTRY, model.countryLanguage)

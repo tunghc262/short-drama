@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.module.ads.admob.reward.RewardInApp
 import com.module.core_api_storage.model_ui.DramaEpisodeUIModel
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
 import com.shortdrama.movie.databinding.DialogEpisodesMovieBinding
+import com.shortdrama.movie.utils.UnlockEpisodeManager
 import com.shortdrama.movie.views.activities.play_movie.adapter.EpisodesMovieAdapter
 import com.shortdrama.movie.views.activities.play_movie.adapter.GenreEpisodesAdapter
 import com.shortdrama.movie.views.bases.BaseBottomSheetDialog
@@ -22,7 +24,6 @@ import com.shortdrama.movie.views.bases.ext.goneView
 import com.shortdrama.movie.views.bases.ext.onClickAlpha
 import com.shortdrama.movie.views.bases.ext.setTextColorById
 import com.shortdrama.movie.views.bases.ext.visibleView
-import dagger.hilt.android.AndroidEntryPoint
 
 
 class EpisodesMovieDialog(
@@ -45,22 +46,25 @@ class EpisodesMovieDialog(
         val bottomSheet = mBinding.root.parent as? View
         bottomSheet?.let { view ->
             val behavior = BottomSheetBehavior.from(view)
-
             val displayMetrics = activity.resources.displayMetrics
             val screenHeight = displayMetrics.heightPixels
-            val maxHeight = (screenHeight * 0.85).toInt()
-            val peekHeight = (screenHeight * 0.45).toInt()
-
+            val maxHeight = (screenHeight * 0.9).toInt()
+            val peekHeight = (screenHeight * 0.6).toInt()
             val layoutParams = view.layoutParams
             layoutParams.height = maxHeight
             view.layoutParams = layoutParams
-
             behavior.maxHeight = maxHeight
             behavior.peekHeight = peekHeight
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         initData()
-
+        Log.e(
+            "MOVIEE",
+            "UnlockEpisodeDialog free: ${UnlockEpisodeManager.getRemainingRewards(activity)}",
+        )
+        if (UnlockEpisodeManager.getRemainingRewards(activity) > 0) {
+            RewardInApp.getInstance().loadReward(activity)
+        }
     }
 
     private fun initData() {

@@ -11,6 +11,7 @@ import com.module.ads.utils.PurchaseUtils
 import com.module.core_api_storage.model_ui.DramaEpisodeUIModel
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
+import com.shortdrama.movie.app.GlobalApp
 import com.shortdrama.movie.databinding.ItemContainerEpisodeBinding
 import com.shortdrama.movie.utils.SharePrefUtils
 import com.shortdrama.movie.views.bases.BaseRecyclerView
@@ -81,10 +82,12 @@ class EpisodesMovieAdapter(
                     )
                 }"
             )
-            val isLocked = item.serialNo.toInt() > numberLockMovie && !SharePrefUtils.getBoolean(
-                key,
-                false
-            ) && FirebaseQuery.getEnableAds() && !PurchaseUtils.isNoAds(activity)
+            GlobalApp.mapLockMovie[key]
+            val isLocked =
+                item.serialNo.toInt() > numberLockMovie && !GlobalApp.mapLockMovie.getOrDefault(
+                    key,
+                    false
+                ) && FirebaseQuery.getEnableAds() && !PurchaseUtils.isNoAds(activity)
             if (isLocked) {
                 binding.ivLock.visibleView()
             } else {
@@ -99,7 +102,7 @@ class EpisodesMovieAdapter(
                             activity,
                             onClickWatchAds = {
                                 RewardInApp.getInstance().showReward(activity) {
-                                    SharePrefUtils.putBoolean(key, true)
+                                    GlobalApp.mapLockMovie[key] = true
                                     setSelectedItem(layoutPosition)
                                     onClickItem(layoutPosition)
                                 }

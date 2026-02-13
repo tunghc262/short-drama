@@ -8,17 +8,13 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdValue;
-import com.google.android.gms.ads.AdapterResponseInfo;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.module.ads.callback.CallbackAd;
-import com.module.ads.mmp.AdjustTracking;
 import com.module.ads.remote.FirebaseQuery;
 import com.module.ads.utils.AdUtils;
 import com.module.ads.utils.FBTracking;
@@ -43,7 +39,7 @@ public class RewardInApp {
     }
 
     public void loadReward(Activity activity) {
-        if (isLoadingAd) return;
+        if (isLoadingAd || rewardedAd != null) return;
         if (!PurchaseUtils.isNoAds(activity) && FirebaseQuery.getEnableAds() && FirebaseQuery.getEnableReward()) {
             isLoadingAd = true;
             AdRequest adRequest = new AdRequest.Builder().build();
@@ -72,7 +68,6 @@ public class RewardInApp {
                                     rewardedAd = null;
                                     isShowing = false;
                                     isLoadingAd = false;
-                                    loadReward(activity);
                                     if (myCallback != null) {
                                         myCallback.onNextAction();
                                     }

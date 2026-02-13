@@ -50,6 +50,7 @@ public class BannerSplash {
 
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    Log.e("TamBT", "onAdFailedToLoad: banner spl" + loadAdError.getMessage());
                     isLoaded = true;
                     if (callbackBanner != null) {
                         callbackBanner.onFailed();

@@ -1,5 +1,6 @@
 package com.shortdrama.movie.views.activities.main.fragments.home.adapter
 
+import android.app.Activity
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -10,6 +11,7 @@ import com.shortdrama.movie.views.bases.BaseRecyclerView
 import com.shortdrama.movie.views.bases.ext.visibleView
 
 class MoviePopularAdapter(
+    val activity: Activity,
     val onClickItem: (DramaWithGenresUIModel) -> Unit
 ) : BaseRecyclerView<DramaWithGenresUIModel>() {
     override fun getItemLayout(): Int = com.shortdrama.movie.R.layout.item_movie_popular
@@ -30,7 +32,8 @@ class MoviePopularAdapter(
             StorageSource.getStorageDownloadUrl(
                 path,
                 onSuccess = { uri ->
-                    Glide.with(binding.ivBannerMovie.context).load(uri).into(binding.ivBannerMovie)
+                    if (activity.isFinishing || activity.isDestroyed) return@getStorageDownloadUrl
+                    Glide.with(activity).load(uri).into(binding.ivBannerMovie)
                 },
                 onError = {
                     Log.e("TAG_drama_thumb", "bindData: ")

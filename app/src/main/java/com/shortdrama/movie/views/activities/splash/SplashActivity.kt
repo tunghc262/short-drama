@@ -112,8 +112,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     private fun actionInit() {
-        initPermission()
-        initNotification()
+//        initPermission()
+//        initNotification()
         initIAP()
         initAds()
     }

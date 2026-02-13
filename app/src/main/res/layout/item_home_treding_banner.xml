@@ -41,10 +41,10 @@
                 android:background="@drawable/bg_top_image"
                 android:fontFamily="@font/poppins_bold"
                 android:paddingHorizontal="@dimen/_6sdp"
-                android:paddingVertical="@dimen/_2sdp"
+                android:paddingVertical="@dimen/_1sdp"
                 android:text="TRENDING"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp" />
+                android:textSize="@dimen/_8ssp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

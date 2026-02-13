@@ -3,9 +3,7 @@ package com.shortdrama.movie.views.activities.main.fragments.home.fragments
 import android.content.Intent
 import androidx.annotation.OptIn
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
 import com.module.ads.admob.inters.IntersInApp
 import com.module.ads.admob.natives.NativeInAppAll
@@ -13,7 +11,6 @@ import com.module.ads.callback.CallbackNative
 import com.module.ads.remote.FirebaseQuery
 import com.module.core_api_storage.model_ui.DramaWithGenresUIModel
 import com.shortdrama.movie.R
-import com.shortdrama.movie.app.AdPlaceName
 import com.shortdrama.movie.app.AppConstants
 import com.shortdrama.movie.databinding.FragmentHomeNewBinding
 import com.shortdrama.movie.views.activities.main.fragments.home.adapter.HomeCategoryAdapter
@@ -49,20 +46,24 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
     }
 
     private fun initAdapter() {
-        exclusiveAdapter = MovieExclusiveAdapter {
-            goToWatchMovie(it)
+        activity?.let { act ->
+
+            exclusiveAdapter = MovieExclusiveAdapter(act) {
+                goToWatchMovie(it)
+            }
+            mBinding.rcvExclusive.adapter = exclusiveAdapter
+            mBinding.rcvExclusive.setHorizontalNestedScrollFix()
+            newReleaseAdapter = HomeCategoryAdapter(act, onClickItem = { movie ->
+                goToWatchMovie(movie)
+            })
+            mBinding.rvNewRelease.apply {
+                adapter = newReleaseAdapter
+            }
+            comingSoonAdapter = MovieComingSoonAdapter(act) { item ->
+            }
+            mBinding.rcvComingSoon.adapter = comingSoonAdapter
         }
-        mBinding.rcvExclusive.adapter = exclusiveAdapter
-        mBinding.rcvExclusive.setHorizontalNestedScrollFix()
-        newReleaseAdapter = HomeCategoryAdapter(onClickItem = { movie ->
-            goToWatchMovie(movie)
-        })
-        mBinding.rvNewRelease.apply {
-            adapter = newReleaseAdapter
-        }
-        comingSoonAdapter = MovieComingSoonAdapter { item ->
-        }
-        mBinding.rcvComingSoon.adapter = comingSoonAdapter
+
     }
 
     override fun onClickViews() {
@@ -79,27 +80,21 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
     override fun observerData() {
         super.observerData()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.exclusive.collect { list ->
-                    exclusiveAdapter?.submitData(list)
-                }
+            viewModel.exclusive.collect { list ->
+                exclusiveAdapter?.submitData(list)
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.newRelease.collect { list ->
-                    newReleaseAdapter?.submitData(list)
-                }
+            viewModel.newRelease.collect { list ->
+                newReleaseAdapter?.submitData(list)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.comingSoon.collect { list ->
-                    listComingSoon.clear()
-                    listComingSoon.addAll(list)
-                    comingSoonAdapter?.submitData(list)
-                }
+            viewModel.comingSoon.collect { list ->
+                listComingSoon.clear()
+                listComingSoon.addAll(list)
+                comingSoonAdapter?.submitData(list)
             }
         }
     }
@@ -125,7 +120,7 @@ class HomeNewFragment : BaseFragment<FragmentHomeNewBinding>() {
                             mBinding.lnNative.goneView()
                         }
                     },
-                    2
+                    3
                 )
                 isFirstResume = false
             }

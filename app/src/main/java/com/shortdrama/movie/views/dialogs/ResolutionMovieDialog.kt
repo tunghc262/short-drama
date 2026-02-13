@@ -2,6 +2,8 @@ package com.shortdrama.movie.views.dialogs
 
 import android.app.Activity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.module.ads.remote.FirebaseQuery
+import com.module.ads.utils.PurchaseUtils
 import com.shortdrama.movie.R
 import com.shortdrama.movie.data.models.ResolutionMovieModel
 import com.shortdrama.movie.databinding.DialogResolutionMovieBinding
@@ -29,6 +31,7 @@ class ResolutionMovieDialog(
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         }
         resolutionMovieAdapter?.submitListData(DataUtils.listResolution, currentResolutionIndex)
+
     }
 
     override fun onClickViews() {
